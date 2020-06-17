@@ -439,7 +439,7 @@ namespace Kane.Extension
         /// <param name="rsa">RSA实例</param>
         /// <param name="padding">填充方式</param>
         /// <returns></returns>
-        private int MaxBlockSize(RSA rsa, RSAEncryptionPadding padding)
+        private static int MaxBlockSize(RSA rsa, RSAEncryptionPadding padding)
         {
             int offset = 0;
             if (padding.Equals(RSAEncryptionPadding.Pkcs1)) offset = 11;
@@ -524,7 +524,7 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="stream">原MemoryStream</param>
         /// <param name="length">长度</param>
-        private void WriteLenByte(MemoryStream stream, int length)
+        private static void WriteLenByte(MemoryStream stream, int length)
         {
             if (length < 0x80) stream.WriteByte((byte)length);
             else if (length <= 0xff)
@@ -547,7 +547,7 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="stream">原MemoryStream</param>
         /// <param name="data">写入的数据</param>
-        private void WriteBlock(MemoryStream stream, byte[] data)
+        private static void WriteBlock(MemoryStream stream, byte[] data)
         {
             var zeroFlag = (data[0] >> 4) >= 0x8;
             stream.WriteByte(0x02);
@@ -566,7 +566,7 @@ namespace Kane.Extension
         /// <param name="index">写入的长度</param>
         /// <param name="data">写入的数据</param>
         /// <returns></returns>
-        private byte[] WriteLen(MemoryStream stream, int index, byte[] data)
+        private static byte[] WriteLen(MemoryStream stream, int index, byte[] data)
         {
             var length = data.Length - index;
             stream.SetLength(0);
@@ -584,7 +584,7 @@ namespace Kane.Extension
         /// <param name="data">原数据</param>
         /// <param name="line">换行长度</param>
         /// <returns></returns>
-        private string WriteLineBreak(string data, int line)
+        private static string WriteLineBreak(string data, int line)
         {
             var index = 0;
             var builder = new StringBuilder();
@@ -661,7 +661,7 @@ namespace Kane.Extension
         /// <param name="first">起始字节</param>
         /// <param name="index">位置</param>
         /// <returns></returns>
-        private int ReadLen(byte[] data, byte first, ref int index)
+        private static int ReadLen(byte[] data, byte first, ref int index)
         {
             if (data[index] == first)
             {
@@ -689,7 +689,7 @@ namespace Kane.Extension
         /// <param name="data">原数据</param>
         /// <param name="index">位置</param>
         /// <returns></returns>
-        private byte[] ReadBlock(byte[] data, ref int index)
+        private static byte[] ReadBlock(byte[] data, ref int index)
         {
             var len = ReadLen(data, 0x02, ref index);
             if (data[index] == 0x00)
@@ -713,7 +713,7 @@ namespace Kane.Extension
         /// <param name="value">判断的内容</param>
         /// <param name="index">数组位置</param>
         /// <returns></returns>
-        private bool EqualsBytes(byte[] data, byte[] value, ref int index)
+        private static bool EqualsBytes(byte[] data, byte[] value, ref int index)
         {
             for (var i = 0; i < value.Length; i++, index++)
             {

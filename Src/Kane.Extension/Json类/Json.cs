@@ -9,9 +9,9 @@
 * 机器名称 ：KK-HOME 
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
-* 创建时间 ：2020/1/15 23:29:15
-* 更新时间 ：2020/03/10 21:29:15
-* 版 本 号 ：v1.0.2.0
+* 创建时间 ：2020/01/15 23:29:15
+* 更新时间 ：2020/06/17 11:29:15
+* 版 本 号 ：v1.0.3.0
 *******************************************************************
 * Copyright @ Kane Leung 2020. All rights reserved.
 *******************************************************************
@@ -41,20 +41,20 @@ namespace Kane.Extension.Json
         static Json()
         {
             #region 自用的【System.Text.Json】序列化和反序列化的配置选项
-            JsonSerializerOptions options = new JsonSerializerOptions
+            GlobalOption = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = null,//保持属性名称不变
                 AllowTrailingCommas = true,//忽略多余的逗号
                 IgnoreNullValues = true,//忽略Null值
                 //PropertyNameCaseInsensitive = true;//反序列化是否不区分大小写
             };
-            options.Converters.Add(new JsonConverters.DateTimeConverter());//使用【2020-02-21 17:06:15】时间格式
-            options.Converters.Add(new JsonConverters.BoolConverter());//"true"/"false"识别为boolean的True/False
-            options.Converters.Add(new JsonConverters.IntConverter());//"88"转为Int
-            options.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);//中文不会被编码
-            options.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+            GlobalOption.Converters.Add(new JsonConverters.DateTimeConverter());//使用【2020-02-21 17:06:15】时间格式
+            GlobalOption.Converters.Add(new JsonConverters.BoolConverter());//"true"/"false"识别为boolean的True/False
+            GlobalOption.Converters.Add(new JsonConverters.IntConverter());//"88"转为Int
+            GlobalOption.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);//中文不会被编码
+            GlobalOption.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
             #endregion
-            GlobalOption = options;
+            //GlobalOption = options;
         }
         #endregion
 

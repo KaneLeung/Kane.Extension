@@ -43,15 +43,11 @@ namespace Kane.Extension.JsonNet
             #region 自用的【Newtonsoft.Json】全局序列化和反序列化的配置选项
             GlobalSetting = new JsonSerializerSettings
             {
-                //日期类型默认格式化处理
                 DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
-                DateFormatString = "yyyy-MM-dd HH:mm:ss",
-                //空值处理
-                NullValueHandling = NullValueHandling.Ignore,
-                //设置不处理循环引用
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                //使用默认方式，保持属性名称不变
-                ContractResolver = new DefaultContractResolver()
+                DateFormatString = "yyyy-MM-dd HH:mm:ss",//日期类型默认格式化处理
+                NullValueHandling = NullValueHandling.Ignore,//空值处理
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,//设置不处理循环引用
+                ContractResolver = new DefaultContractResolver()//使用默认方式，保持属性名称不变
             };
             #endregion
         }
