@@ -14,7 +14,7 @@ namespace Kane.Extension.Test
         [TestMethod]
         public void TestToObject()
         {
-            TextReader reader = new StringReader(GlobalData.RsaPrivateXmlKey);
+            using TextReader reader = new StringReader(GlobalData.RsaPrivateXmlKey);
             var rsa = reader.ToObject<RsaModels>();
             Assert.AreEqual("x4gXVwd8NQveOqrLSPypvjQMU+w4DsKIH1NOcEX5hpKntIwc9b5StObbXMZVnDWCuSbxI+1NzJ4/dex8PQ8FxCG/gNV1Uv7R9Y+/+ZTFhPQrMR6XMMQh0Skt99Bz6chphw/RVY9bzD47ANO0dY/z9Gm9c2wrMfDcEGOuwnfRmLJD8wyZ9Q1WASAO6aklyq6/LMc+7Uj0WIJoJPmndHRYgEYoE1xnYhJx2POlppbCKJwhzyVsPKizTxHpxA1cmW/04fD8D9ClC+q/UxVhJqPb4RRY1WMSgFZITbpJ2pd2C4cQL7zyKgF4Ap52fAbUztQXPT1zIkeAjypZllzJ5Wrf4w==", rsa.Modulus);
             Assert.AreEqual("AQAB", rsa.Exponent);

@@ -9,8 +9,8 @@
 * 机器名称 ：KK-HOME 
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
-* 创建时间 ：2020/3/16 23:10:46
-* 更新时间 ：2020/3/19 13:10:46
+* 创建时间 ：2020/03/16 23:10:46
+* 更新时间 ：2020/06/18 16:10:46
 * 版 本 号 ：v1.0.1.0
 *******************************************************************
 * Copyright @ Kane Leung 2020. All rights reserved.
@@ -64,7 +64,11 @@ namespace Kane.Extension
         /// <param name="removeVersion">是否去掉版本信息</param>
         /// <returns></returns>
         public static string ToXml<T>(this T value, bool removeNamespace = false, bool removeVersion = false) where T : class, new()
-            => ToXmlBytes(value, removeNamespace, removeVersion).BytesToString();
+        {
+            var temp = ToXmlBytes(value, removeNamespace, removeVersion).BytesToString();
+            if (!temp.StartsWith("<")) return temp.Substring(1, temp.Length - 1);//写入器使用UTF8编码时，转换后第一个字符会出现一个不存在的符号，其十六进制为【0xEFBBBF】
+            return temp;
+        }
         #endregion
 
         #region 将对象Xml序列化 + ToXml<T>(this T value, bool removeNamespace = false, XmlWriterSettings settings = null) where T : class, new()
@@ -77,7 +81,11 @@ namespace Kane.Extension
         /// <param name="settings">Xml写入器配置</param>
         /// <returns></returns>
         public static string ToXml<T>(this T value, bool removeNamespace = false, XmlWriterSettings settings = null) where T : class, new()
-            => ToXmlBytes(value, removeNamespace, settings).BytesToString();
+        {
+            var temp = ToXmlBytes(value, removeNamespace, settings).BytesToString();
+            if (!temp.StartsWith("<")) return temp.Substring(1, temp.Length - 1);//写入器使用UTF8编码时，转换后第一个字符会出现一个不存在的符号，其十六进制为【0xEFBBBF】
+            return temp;
+        }
         #endregion
 
         #region 将对象Xml序列化成字节数组【Btye[]】 + ToXmlBytes<T>(this T value, bool removeNamespace = false, bool removeVersion = false) where T : class, new()
