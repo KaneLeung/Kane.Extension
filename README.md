@@ -27,24 +27,33 @@
 using Kane.Extension.Json;
 public class TestClass
 {
-    public int ID { get; set; }
-    public string Name { get; set; }
+    public int Int { get; set; }
+    public string String { get; set; }
+    public DateTime Time { get; set; }
+    public int? NullableInt { get; set; }
+    public DateTime NullableTime { get; set; }
+    public int[] IntArray { get; set; }
+    public List<string> StringList { get; set; }
 }
 var testClass = new TestClass{ ID = 123, Name="Hello World"};
-string jsonString = testClass.ToJson();//"{\"ID\":123,\"Name\":\"Hello World\"}"
-TestClass entity = jsonString.ToObject<TestClass>();
+string customOption = testClass.ToJson();//使用预设的【JsonSerializerOptions】
+//【customOption】{"Int":123,"String":"Hello World","Time":"2020-06-18 00:00:00","NullableTime":"0001-01-01 00:00:00"}
+string ingoreOption = testClass.ToJson(true);//忽略预设选项
+//【ingoreOption】{"Int":123,"String":"Hello World","Time":"2020-06-18T00:00:00","NullableInt":null,"NullableTime":"0001-01-01T00:00:00","IntArray":null,"StringList":null}
+TestClass entity = jsonString.ToObject<TestClass>();//使用预设反序列化
+//也可以自定义全局【JsonSerializerOptions】配置选项
+Kane.Extension.Json.Json.GlobalOption = new System.Text.Json.JsonSerializerOptions();
 ```
 
 #### 使用【Newtonsoft.Json】,适合 Net4.0 以及 NetCore2.1 以上
 
 ```csharp
 using Kane.Extension.JsonNet;
-public class TestClass
-{
-    public int ID { get; set; }
-    public string Name { get; set; }
-}
-var testClass = new TestClass{ ID = 123, Name="Hello World"};
-string jsonString = testClass.ToJson();//"{\"ID\":123,\"Name\":\"Hello World\"}"
-TestClass entity = jsonString.ToObject<TestClass>();
+string customOption = testClass.ToJson();//使用预设的【JsonSerializerSettings】
+//【customOption】{"Int":123,"String":"Hello World","Time":"2020-06-18 00:00:00","NullableTime":"0001-01-01 00:00:00"}
+string ingoreOption = testClass.ToJson(true);//忽略预设选项
+//【ingoreOption】{"Int":123,"String":"Hello World","Time":"2020-06-18T00:00:00","NullableInt":null,"NullableTime":"0001-01-01T00:00:00","IntArray":null,"StringList":null}
+TestClass entity = jsonString.ToObject<TestClass>();//使用预设反序列化
+//也可以自定义全局【JsonSerializerSettings】配置选项
+Kane.Extension.JsonNet.JsonNet.GlobalSetting = new Newtonsoft.Json.JsonSerializerSettings();
 ```

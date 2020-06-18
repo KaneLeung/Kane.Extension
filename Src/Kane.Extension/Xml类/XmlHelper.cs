@@ -67,6 +67,19 @@ namespace Kane.Extension
             => ToXmlBytes(value, removeNamespace, removeVersion).BytesToString();
         #endregion
 
+        #region 将对象Xml序列化 + ToXml<T>(this T value, bool removeNamespace = false, XmlWriterSettings settings = null) where T : class, new()
+        /// <summary>
+        /// 将对象Xml序列化
+        /// </summary>
+        /// <typeparam name="T">要序列化的对象类型</typeparam>
+        /// <param name="value">要序列化的对象</param>
+        /// <param name="removeNamespace">是否去掉命名空间</param>
+        /// <param name="settings">Xml写入器配置</param>
+        /// <returns></returns>
+        public static string ToXml<T>(this T value, bool removeNamespace = false, XmlWriterSettings settings = null) where T : class, new()
+            => ToXmlBytes(value, removeNamespace, settings).BytesToString();
+        #endregion
+
         #region 将对象Xml序列化成字节数组【Btye[]】 + ToXmlBytes<T>(this T value, bool removeNamespace = false, bool removeVersion = false) where T : class, new()
         /// <summary>
         /// 将对象Xml序列化成字节数组【Btye[]】
@@ -86,6 +99,28 @@ namespace Kane.Extension
             };
             using MemoryStream stream = new MemoryStream();
             using (XmlWriter xmlWriter = XmlWriter.Create(stream, settings))
+            {
+                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                if (removeNamespace) ns.Add(string.Empty, string.Empty);//去除默认命名空间xmlns:xsd和xmlns:xsi
+                new XmlSerializer(typeof(T)).Serialize(xmlWriter, value, ns);//序列化对象
+            }
+            return stream.ToArray();
+        }
+        #endregion
+
+        #region 将对象Xml序列化成字节数组【Btye[]】，可设置写入器配置 + ToXmlBytes<T>(this T value, bool removeNamespace = false, XmlWriterSettings settings =null) where T : class, new()
+        /// <summary>
+        /// 将对象Xml序列化成字节数组【Btye[]】，可设置写入器配置
+        /// </summary>
+        /// <typeparam name="T">要序列化的对象类型</typeparam>
+        /// <param name="value">要序列化的对象</param>
+        /// <param name="removeNamespace">是否去掉命名空间</param>
+        /// <param name="settings">Xml写入器配置</param>
+        /// <returns></returns>
+        public static byte[] ToXmlBytes<T>(this T value, bool removeNamespace = false, XmlWriterSettings settings = null) where T : class, new()
+        {
+            using MemoryStream stream = new MemoryStream();
+            using (XmlWriter xmlWriter = settings.IsNull() ? XmlWriter.Create(stream) : XmlWriter.Create(stream, settings))
             {
                 XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
                 if (removeNamespace) ns.Add(string.Empty, string.Empty);//去除默认命名空间xmlns:xsd和xmlns:xsi

@@ -18,22 +18,19 @@ namespace Kane.Extension.Test
         [TestMethod]
         public void ToJson()
         {
-            var json = "{\"Int\":10086,\"NullableHasValue\":10010,\"String\":\"KaneLeung\",\"EmptyString\":\"\",\"Short\":711,\"NullableShortHasValue\":520,\"Long\":99709394,\"NullableLongHasValue\":997093940,\"Float\":10086.68,\"NullableFloatHasValue\":10010.01,\"Decimal\":10086.68001,\"NullableDecimalHasValue\":10010.01001,\"Time\":\"2020-02-02 00:00:00\",\"NullableTimeHasValue\":\"2020-10-10 00:00:00\",\"List\":[{\"PocoValue\":\"Hello World\"},{\"PocoValue\":\"Hello C#\"}]}";
-            Assert.AreEqual(Temp.ToJson(), json);
+            Assert.AreEqual(Temp.ToJson(), GlobalData.CustomOptionJsonString);
         }
 
         [TestMethod]
         public void ToJsonIgnore()
         {
-            var json = "{\"Int\":10086,\"Nullable\":null,\"NullableHasValue\":10010,\"String\":\"KaneLeung\",\"EmptyString\":\"\",\"NullableString\":null,\"Short\":711,\"NullableShort\":null,\"NullableShortHasValue\":520,\"Long\":99709394,\"NullableLong\":null,\"NullableLongHasValue\":997093940,\"Float\":10086.68,\"NullableFloat\":null,\"NullableFloatHasValue\":10010.01,\"Decimal\":10086.68001,\"NullableDecimal\":null,\"NullableDecimalHasValue\":10010.01001,\"Time\":\"2020-02-02T00:00:00\",\"NullableTime\":null,\"NullableTimeHasValue\":\"2020-10-10T00:00:00\",\"List\":[{\"PocoValue\":\"Hello World\"},{\"PocoValue\":\"Hello C#\"}],\"NullList\":null}";
-            Assert.AreEqual(Temp.ToJson(true), json);
+            Assert.AreEqual(Temp.ToJson(true), GlobalData.IgnoreOptionJsonString);
         }
 
         [TestMethod]
         public void ToObject()
         {
-            var json = "{\"Int\":10086,\"NullableHasValue\":10010,\"String\":\"KaneLeung\",\"EmptyString\":\"\",\"Short\":711,\"NullableShortHasValue\":520,\"Long\":99709394,\"NullableLongHasValue\":997093940,\"Float\":10086.68,\"NullableFloatHasValue\":10010.01,\"Decimal\":10086.68001,\"NullableDecimalHasValue\":10010.01001,\"Time\":\"2020-02-02 00:00:00\",\"NullableTimeHasValue\":\"2020-10-10 00:00:00\",\"List\":[{\"PocoValue\":\"Hello World\"},{\"PocoValue\":\"Hello C#\"}]}";
-            var obj = json.ToObject<ComplexModels>();
+            var obj = GlobalData.CustomOptionJsonString.ToObject<ComplexModels>();
             Assert.AreEqual(Temp.Int, obj.Int);
             Assert.AreEqual(Temp.Nullable, obj.Nullable);
             Assert.AreEqual(Temp.NullableHasValue, obj.NullableHasValue);
@@ -64,8 +61,7 @@ namespace Kane.Extension.Test
         [TestMethod]
         public void ToObjectIgnore()
         {
-            var json = "{\"Int\":10086,\"Nullable\":null,\"NullableHasValue\":10010,\"String\":\"KaneLeung\",\"EmptyString\":\"\",\"NullableString\":null,\"Short\":711,\"NullableShort\":null,\"NullableShortHasValue\":520,\"Long\":99709394,\"NullableLong\":null,\"NullableLongHasValue\":997093940,\"Float\":10086.68,\"NullableFloat\":null,\"NullableFloatHasValue\":10010.01,\"Decimal\":10086.68001,\"NullableDecimal\":null,\"NullableDecimalHasValue\":10010.01001,\"Time\":\"2020-02-02T00:00:00\",\"NullableTime\":null,\"NullableTimeHasValue\":\"2020-10-10T00:00:00\",\"List\":[{\"PocoValue\":\"Hello World\"},{\"PocoValue\":\"Hello C#\"}],\"NullList\":null}";
-            var obj = json.ToObject<ComplexModels>(true);
+            var obj = GlobalData.IgnoreOptionJsonString.ToObject<ComplexModels>(true);
             Assert.AreEqual(Temp.Int, obj.Int);
             Assert.AreEqual(Temp.Nullable, obj.Nullable);
             Assert.AreEqual(Temp.NullableHasValue, obj.NullableHasValue);
