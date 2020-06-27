@@ -3,7 +3,7 @@
     services.AddControllers().AddJsonOptions(options =>
     {
         //使用自定义时间格式转换器设置时间格式
-        options.JsonSerializerOptions.Converters.Add(new JsonConverterEx.DateTimeConverter("yyyy-MM-dd HH:mm:ss"));
+        options.JsonSerializerOptions.Converters.Add(new DateTimeConverter("yyyy-MM-dd HH:mm:ss"));
         //使用自定义Bool转换器设置bool获取格式
         options.JsonSerializerOptions.Converters.Add(new BoolJsonConverter());
         //若为null，则保持属性名称不变。

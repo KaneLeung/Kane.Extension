@@ -54,7 +54,6 @@ namespace Kane.Extension.Json
             GlobalOption.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);//中文不会被编码
             GlobalOption.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
             #endregion
-            //GlobalOption = options;
         }
         #endregion
 

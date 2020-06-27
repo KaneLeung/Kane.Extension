@@ -192,7 +192,7 @@ namespace Kane.Extension
         }
         #endregion
 
-        #region 判断字符串是否为安全Sql语句
+        #region 判断字符串是否为安全Sql语句 + IsSafeSql(string value)
         /// <summary>
         /// 判断字符串是否为安全Sql语句
         /// </summary>

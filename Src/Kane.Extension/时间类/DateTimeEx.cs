@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:17:28
-* 更新时间 ：2020/06/10 09:17:28
-* 版 本 号 ：v1.0.8.0
+* 更新时间 ：2020/06/25 09:17:28
+* 版 本 号 ：v1.0.9.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
 *******************************************************************
@@ -245,88 +245,142 @@ namespace Kane.Extension
         /// </summary>  
         /// <param name="seconds">增加或减少【秒】</param>
         /// <returns></returns>  
-        public static string TimeStamp(int seconds = 0)
+        public static long TimeStamp(int seconds = 0)
         {
 #if NET40 || NET45
             TimeSpan ts = DateTime.UtcNow.AddSeconds(seconds) - new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            return Convert.ToInt64(ts.TotalSeconds).ToString();
+            return Convert.ToInt64(ts.TotalSeconds);
 #else
-            return DateTimeOffset.UtcNow.AddSeconds(seconds).ToUnixTimeSeconds().ToString();//和【DateTimeOffset.Now.ToUnixTimeSeconds()】结果一样
+            return DateTimeOffset.UtcNow.AddSeconds(seconds).ToUnixTimeSeconds();//和【DateTimeOffset.Now.ToUnixTimeSeconds()】结果一样
 #endif
         }
         #endregion
 
-        #region 时间戳转为【当地时区】的DateTime + StampToLocal(long timeStamp)
+        #region 获取毫秒级时间戳，可增加或减少【秒】 + MillisecondTimeStamp(int seconds = 0)
         /// <summary>
-        /// 时间戳转为【当地时区】的DateTime
+        /// 获取毫秒级时间戳，可增加或减少【秒】
+        /// <para>时间戳, 又叫Unix Stamp. 从1970年1月1日（UTC/GMT的午夜）开始所经过的秒数，不考虑闰秒。</para>
+        /// </summary>
+        /// <param name="seconds">增加或减少【秒】</param>
+        /// <returns></returns>
+        public static long MillisecondTimeStamp(int seconds = 0)
+        {
+#if NET40 || NET45
+            TimeSpan ts = DateTime.UtcNow.AddSeconds(seconds) - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return Convert.ToInt64(ts.TotalMilliseconds);
+#else
+            return DateTimeOffset.UtcNow.AddSeconds(seconds).ToUnixTimeMilliseconds();//和【DateTimeOffset.Now.ToUnixTimeSeconds()】结果一样
+#endif
+        }
+        #endregion
+
+        #region 时间戳转为【当地时区】的DateTime，默认为【秒级】 + StampToLocal(this long timeStamp, bool isMillisecond = false)
+        /// <summary>
+        /// 时间戳转为【当地时区】的DateTime，默认为【秒级】
         /// <para>要到 2286/11/21 01:46:40 才会变成11位（10000000000）</para>
         /// <para>int范围 -2,147,483,648 到 2,147,483,647</para>
         /// </summary>
         /// <param name="timeStamp">时间戳</param>
+        /// <param name="isMillisecond">是否为毫秒级</param>
         /// <returns></returns>
-        public static DateTime StampToLocal(long timeStamp)
+        public static DateTime StampToLocal(this long timeStamp, bool isMillisecond = false)
         {
-            timeStamp *= 10000000;//new DateTime(621355968000000000 + long.Parse(timestamp) * 10000000);//更简单的方法
+            timeStamp *= isMillisecond ? 10000 : 10000000;//new DateTime(621355968000000000 + long.Parse(timestamp) * 10000000);//更简单的方法
             DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);//621355968000000000
-            return startTime.Add(new TimeSpan(timeStamp));//以nanosecond为单位，nanosecond：十亿分之一秒   new TimeSpan(10,000,000)为一秒
+            return startTime.Add(new TimeSpan(timeStamp));//以nanosecond为单位，nanosecond：十亿分之一秒   new TimeSpan(10,000,000)为一秒，1Ticks = 100ns
         }
         #endregion
 
-        #region 时间戳转为【当地时区】的DateTime + StampToLocal(string timeStamp)
+        #region 时间戳转为【当地时区】的DateTime，默认为【秒级】 + StampToLocal(string timeStamp, bool isMillisecond = false)
         /// <summary>
-        /// 时间戳转为【当地时区】的DateTime
+        /// 时间戳转为【当地时区】的DateTime，默认为【秒级】
         /// </summary>
         /// <param name="timeStamp">时间戳</param>
+        /// <param name="isMillisecond">是否为毫秒级</param>
         /// <returns></returns>
-        public static DateTime StampToLocal(string timeStamp)
+        public static DateTime StampToLocal(string timeStamp, bool isMillisecond = false)
         {
-            long stamp = long.Parse(string.Concat(timeStamp, "0000000"));
-            DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);//621355968000000000
-            return startTime.Add(new TimeSpan(stamp));//以nanosecond为单位，nanosecond：十亿分之一秒   new TimeSpan(10,000,000)为一秒
+            if (long.TryParse(string.Concat(timeStamp, isMillisecond ? "0000" : "0000000"), out long stamp))
+            {
+                DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);//621355968000000000
+                return startTime.Add(new TimeSpan(stamp));//以nanosecond为单位，nanosecond：十亿分之一秒   new TimeSpan(10,000,000)为一秒，1Ticks = 100ns
+            }
+            else throw new FormatException("时间戳格式有误");
         }
         #endregion
 
-        #region 时间戳转为【Utc时区】的DateTime + StampToUtc(long timeStamp)
+        #region 时间戳转为【Utc时区】的DateTime + StampToUtc(this long timeStamp, bool isMillisecond = false)
         /// <summary>
-        /// 时间戳转为【Utc时区】的DateTime
+        /// 时间戳转为【Utc时区】的DateTime，默认为【秒级】
         /// <para>要到 2286/11/21 01:46:40 才会变成11位（10000000000）</para>
         /// <para>int范围 -2,147,483,648 到 2,147,483,647</para>
         /// </summary>
         /// <param name="timeStamp">时间戳</param>
+        /// <param name="isMillisecond">是否为毫秒级</param>
         /// <returns></returns>
-        public static DateTime StampToUtc(long timeStamp)
+        public static DateTime StampToUtc(this long timeStamp, bool isMillisecond = false)
         {
-            timeStamp *= 10000000;//new DateTime(621355968000000000 + long.Parse(timestamp) * 10000000);//更简单的方法
+            timeStamp *= isMillisecond ? 10000 : 10000000;//new DateTime(621355968000000000 + long.Parse(timestamp) * 10000000);//更简单的方法
             DateTime startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);//621355968000000000
             return startTime.Add(new TimeSpan(timeStamp));//以nanosecond为单位，nanosecond：十亿分之一秒   new TimeSpan(10,000,000)为一秒
         }
         #endregion
 
-        #region 时间戳转为【Utc时区】的DateTime + StampToUtc(string timeStamp)
+        #region 时间戳转为【Utc时区】的DateTime，默认为【秒级】 + StampToUtc(string timeStamp, bool isMillisecond = false)
         /// <summary>
-        /// 时间戳转为【Utc时区】的DateTime
+        /// 时间戳转为【Utc时区】的DateTime，默认为【秒级】
         /// </summary>
         /// <param name="timeStamp">时间戳</param>
+        /// <param name="isMillisecond">是否为毫秒级</param>
         /// <returns></returns>
-        public static DateTime StampToUtc(string timeStamp)
+        public static DateTime StampToUtc(string timeStamp, bool isMillisecond = false)
         {
-            long stamp = long.Parse(string.Concat(timeStamp, "0000000"));
-            DateTime startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);//621355968000000000
-            return startTime.Add(new TimeSpan(stamp));//以nanosecond为单位，nanosecond：十亿分之一秒   new TimeSpan(10,000,000)为一秒
+            if (long.TryParse(string.Concat(timeStamp, isMillisecond ? "0000" : "0000000"), out long stamp))
+            {
+                DateTime startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);//621355968000000000
+                return startTime.Add(new TimeSpan(stamp));//以nanosecond为单位，nanosecond：十亿分之一秒   new TimeSpan(10,000,000)为一秒
+            }
+            else throw new FormatException("时间戳格式有误");
         }
         #endregion
 
-        #region DateTime时间格式转换为Unix时间戳格式 + ToStamp(this DateTime datetime)
+        #region DateTime时间格式转换为Unix秒级时间戳 + ToStamp(this DateTime datetime)
         /// <summary>
-        /// DateTime时间格式转换为Unix时间戳格式
-        /// <para>用Int最大值是2038年01月19日03时14分07秒，超过可用Long</para>
+        /// DateTime时间格式转换为Unix秒级时间戳，返回<see cref="int"/>格式
+        /// <para>用Int最大值是2038年01月19日03时14分07秒，超过可用<see cref="ToLongStamp(DateTime)"/></para>
         /// </summary>
         /// <param name="datetime">要转换的时间</param>
-        /// <returns></returns>
+        /// <returns>Int格式</returns>
         public static int ToStamp(this DateTime datetime)
         {
             DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
             return (int)(datetime - startTime).TotalSeconds;
+        }
+        #endregion
+
+        #region DateTime时间格式转换为Unix秒级时间戳 + ToLongStamp(this DateTime datetime)
+        /// <summary>
+        /// DateTime时间格式转换为Unix秒级时间戳，返回<see cref="long"/>格式
+        /// </summary>
+        /// <param name="datetime">要转换的时间</param>
+        /// <returns>Long格式</returns>
+        public static long ToLongStamp(this DateTime datetime)
+        {
+            DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+            return (long)(datetime - startTime).TotalSeconds;
+        }
+        #endregion
+
+        #region DateTime时间格式转换为Unix毫秒级时间戳 + ToMillisecondStamp(this DateTime datetime)
+        /// <summary>
+        /// DateTime时间格式转换为Unix毫秒级时间戳，返回<see cref="long"/>格式
+        /// </summary>
+        /// <param name="datetime">要转换的时间</param>
+        /// <returns></returns>
+        public static long ToMillisecondStamp(this DateTime datetime)
+        {
+            DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+            return (long)(datetime - startTime).TotalMilliseconds;
         }
         #endregion
 
@@ -463,7 +517,7 @@ namespace Kane.Extension
             action();
             watch.Stop();
             return watch.Elapsed;
-        } 
+        }
         #endregion
     }
 }

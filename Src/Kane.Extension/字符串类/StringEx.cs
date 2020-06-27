@@ -327,7 +327,7 @@ namespace Kane.Extension
         public static bool EqualsIgnoreCase(this string str0, string str1, bool strict = false)
         {
             if (strict == false && str0.IsNullOrEmpty() && str1.IsNullOrEmpty()) return true;
-            if (str0 is null || str1 is null) return str0 is null && str1 is null ? true : false;
+            if (str0 is null || str1 is null) return str0 is null && str1 is null;
             return str0.Equals(str1, StringComparison.OrdinalIgnoreCase);
         }
         #endregion
