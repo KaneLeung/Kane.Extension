@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\Kane.Extension\Kane.Extension.csproj" />
+    <ProjectReference Include="..\Src\Kane.Extension.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{3ABF894D-3F79-4E3E-870A-68C05AF2A215}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kane.Extension", "Src\Kane.Extension\Kane.Extension.csproj", "{490E8527-62C6-4E67-A57A-3AA4B8E43BC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kane.Extension", "Src\Kane.Extension.csproj", "{490E8527-62C6-4E67-A57A-3AA4B8E43BC0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{8F9F3F12-745B-4880-9467-5557B8C7DD1A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kane.Extension.Test", "Test\Kane.Extension.Test\Kane.Extension.Test.csproj", "{8538E603-184D-477A-AAF8-4298181BEAB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kane.Extension.Test", "Test\Kane.Extension.Test.csproj", "{8538E603-184D-477A-AAF8-4298181BEAB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
