@@ -39,7 +39,7 @@ namespace Kane.Extension
         /// <param name="fileName">启动进程时使用的应用程序或文档的文件名</param>
         /// <param name="arguments">进程启动时要传递给应用程序的命令行参数</param>
         /// <returns>每一行结果</returns>
-        public static List<string> RunCommand(string fileName, string arguments)
+        public List<string> RunCommand(string fileName, string arguments)
         {
             Process process = null;
             try
@@ -87,7 +87,7 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="port">端口</param>
         /// <returns></returns>
-        public static int GetPortPid(int port)
+        public int GetPortPid(int port)
         {
             int portColumnIndex = 1;//【Windows】命令行中，返回【端口】信息的列的索引
             int pidColumnIndex = 4;//【Windows】命令行中，返回【Pid】信息的列的索引
@@ -96,21 +96,21 @@ namespace Kane.Extension
 #if NETCOREAPP
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                RunCommand("netstat", $"-anv -p tcp|grep {port}").ForEach(k => commandResult.Add(k.Split(' ', StringSplitOptions.RemoveEmptyEntries)));
-                RunCommand("netstat", $"-anv -p udp|grep {port}").ForEach(k => commandResult.Add(k.Split(' ', StringSplitOptions.RemoveEmptyEntries)));
+                RunCommand("netstat", $"-anv -p tcp").ForEach(k => commandResult.Add(k.Split(' ', StringSplitOptions.RemoveEmptyEntries)));
+                RunCommand("netstat", $"-anv -p udp").ForEach(k => commandResult.Add(k.Split(' ', StringSplitOptions.RemoveEmptyEntries)));
                 portColumnIndex = 3;
                 pidColumnIndex = 8;
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                RunCommand("ss", $"-tunlp|grep {port}").ForEach(k => commandResult.Add(k.Split(' ', StringSplitOptions.RemoveEmptyEntries)));
+                RunCommand("ss", $"-tunlp").ForEach(k => commandResult.Add(k.Split(' ', StringSplitOptions.RemoveEmptyEntries)));
                 portColumnIndex = 4;
                 pidColumnIndex = 6;
                 pidRegex = @"(?:^|"",|"",pid=)(\d+)";
             }
-            else RunCommand("netstat", $"-ano|finstr {port}").ForEach(k => commandResult.Add(k.Split(' ', StringSplitOptions.RemoveEmptyEntries)));
+            else RunCommand("netstat", $"-ano").ForEach(k => commandResult.Add(k.Split(' ', StringSplitOptions.RemoveEmptyEntries)));
 #else
-            RunCommand("netstat", $"-ano|finstr {port}").ForEach(k => commandResult.Add(k.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)));
+            RunCommand("netstat", $"-ano").ForEach(k => commandResult.Add(k.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)));
 #endif
             foreach (var line in commandResult)
             {
@@ -143,7 +143,7 @@ namespace Kane.Extension
         /// <param name="force">是否强制终止进程</param>
         /// <param name="tree">是否终止由它启用的子进程</param>
         /// <returns></returns>
-        public static bool KillProcess(string process, bool ignoreCase = true, bool force = false, bool tree = true)
+        public bool KillProcess(string process, bool ignoreCase = true, bool force = false, bool tree = true)
         {
             var arguments = new List<string>();
             try
@@ -191,7 +191,7 @@ namespace Kane.Extension
         /// <param name="force">是否强制终止进程</param>
         /// <param name="tree">是否终止由它启用的子进程</param>
         /// <returns></returns>
-        public static bool KillProcess(int pid, bool force = false, bool tree = true)
+        public bool KillProcess(int pid, bool force = false, bool tree = true)
         {
             if (pid == -1) return false;
             var arguments = new List<string>();
