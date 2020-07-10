@@ -10,10 +10,10 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:16:16
-* 更新时间 ：2020/05/14 13:16:16
-* 版 本 号 ：v1.0.3.0
+* 更新时间 ：2020/07/09 13:16:16
+* 版 本 号 ：v1.0.4.0
 *******************************************************************
-* Copyright @ Kane Leung 2019. All rights reserved.
+* Copyright @ Kane Leung 2020. All rights reserved.
 *******************************************************************
 -----------------------------------------------------------------*/
 #endregion
@@ -86,6 +86,38 @@ namespace Kane.Extension
                 result.Add(temp);
             }
             return result;
+        }
+        #endregion
+
+        #region 将字符串转为Enum成员，失败时返回Null，默认【忽略大小写】 + ToNEnum<T>(this string value, bool ignoreCase = true) where T : struct
+        /// <summary>
+        /// 将字符串转为Enum成员，失败时返回Null，默认【忽略大小写】
+        /// </summary>
+        /// <typeparam name="T">要转的枚举类型</typeparam>
+        /// <param name="value">要转的字符串</param>
+        /// <param name="ignoreCase">是否忽略大小写，默认【是】</param>
+        /// <returns></returns>
+        public static T? ToNEnum<T>(this string value, bool ignoreCase = true) where T : struct
+        {
+            if (value.IsValuable() && Enum.TryParse(value, ignoreCase, out T result)) return result;
+            else return null;
+        }
+        #endregion
+
+        #region 将字符串转为Enum成员，可设置失败返回值，默认【忽略大小写】 + ToEnum<T>(this string value, T returnValue = default, bool ignoreCase = true)
+        /// <summary>
+        /// 将字符串转为Enum成员，可设置失败返回值，默认【忽略大小写】
+        /// <para>如果不设置返回值，失败后返回【default】</para>
+        /// </summary>
+        /// <typeparam name="T">要转的枚举类型</typeparam>
+        /// <param name="value">要转的字符串</param>
+        /// <param name="returnValue">失败返回值</param>
+        /// <param name="ignoreCase">是否忽略大小写，默认【是】</param>
+        /// <returns></returns>
+        public static T ToEnum<T>(this string value, T returnValue = default, bool ignoreCase = true) where T : struct
+        {
+            if (value.IsValuable() && Enum.TryParse(value, ignoreCase, out T result)) return result;
+            else return returnValue;
         }
         #endregion
     }

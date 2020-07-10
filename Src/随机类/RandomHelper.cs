@@ -10,7 +10,7 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:19:31
-* 更新时间 ：2020/03/21 22:19:31
+* 更新时间 ：2020/07/10 09:14:21
 * 版 本 号 ：v1.0.3.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
@@ -19,8 +19,8 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
+using System.Text;
 
 namespace Kane.Extension
 {
@@ -29,6 +29,7 @@ namespace Kane.Extension
     /// </summary>
     public static class RandomHelper
     {
+        private static readonly Random random = new Random();
 #if NETCOREAPP
         static RandomHelper() => Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//NetCore中使用GB2312编码
 #endif
@@ -54,7 +55,6 @@ namespace Kane.Extension
                 charList.AddRange(new char[] { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '~', '`', '|', '}', '{', '[', ']', '\\', ':', ';', '?', '>', '<', ',', '.', '/', '-', '=' });
             if (exceptChar.Length > 0) charList = charList.Except(exceptChar).ToList();
             StringBuilder result = new StringBuilder();
-            Random random = new Random(Guid.NewGuid().GetHashCode());
             int charCount = charList.Count;
             for (int i = 0; i < length; i++)
                 result.Append(charList[random.Next(0, charCount)]);
@@ -92,7 +92,6 @@ namespace Kane.Extension
             var result = new StringBuilder();
             //每循环一次产生一个含两个元素的十六进制字节数组，并放入bytes数组中
             //汉字由四个区位码组成，1、2位作为字节数组的第一个元素，3、4位作为第二个元素
-            Random random = new Random(Guid.NewGuid().GetHashCode());//如果直接使用new Random()连续生成时会出现相同结果
             for (int i = 0; i < length; i++)
             {
                 int index1 = random.Next(11, 14);
@@ -105,6 +104,64 @@ namespace Kane.Extension
                 result.Append(Encoding.GetEncoding("GB2312").GetString(new byte[] { prefix, postfix }));
             }
             return result.ToString();
+        }
+        #endregion
+
+        #region 在范围内随机一个整数，可包含最大值 + RandomInt(int min, int max)
+        /// <summary>
+        /// 在范围内随机一个整数，可包含最大值
+        /// </summary>
+        /// <param name="min">最小值</param>
+        /// <param name="max">最大值</param>
+        /// <returns></returns>
+        public static int RandomInt(int min, int max) => random.Next(min, max + 1);
+        #endregion
+
+        #region 在范围内随机一个小数，小数位最多只有10位 + RandomDouble(double min, double max)
+        /// <summary>
+        /// 在范围内随机一个小数，小数位最多只有9位，可包含最大值
+        /// <para>直接使用<see cref="Random.NextDouble"/>是不包含最大值</para>
+        /// </summary>
+        /// <param name="min">最小值</param>
+        /// <param name="max">最大值</param>
+        /// <returns></returns>
+        public static double RandomDouble(double min, double max)
+        {
+            var temp = (double)random.Next(0, 1000000001) / 1000000000;//随机生成【1-1000000000】的整
+            return temp * (max - min) + min;
+        }
+        #endregion
+
+        #region 在范围内随机一个小数，小数位可设置 + RandomDouble(double min, double max, int digits)
+        /// <summary>
+        /// 在范围内随机一个小数，小数位可设置
+        /// <para>※注意：范围有限！！※</para>
+        /// <para>范围：min * 10^digits ≤ 2147483647 并且 max * 10^digits + 1 ≤ 2147483647</para>
+        /// </summary>
+        /// <param name="min">最小值</param>
+        /// <param name="max">最大值</param>
+        /// <param name="digits">小数保留数位</param>
+        /// <returns></returns>
+        public static double RandomDouble(double min, double max, int digits)
+        {
+            var pow = (int)Math.Pow(10, digits);
+            double _min = min * pow, _max = max * pow + 1;
+            if (_min > int.MaxValue || _max > int.MaxValue) throw new ArgumentOutOfRangeException(_min > int.MaxValue ? nameof(min) : nameof(max), "参数超出范围");
+            return (double)random.Next((int)_min, (int)_max) / pow;
+        }
+        #endregion
+
+        #region 在集合中随机返回一个元素 + RandomItem<T>(this IList<T> list)
+        /// <summary>
+        /// 在集合中随机返回一个元素
+        /// </summary>
+        /// <typeparam name="T">元素类型</typeparam>
+        /// <param name="list">当前集合</param>
+        /// <returns></returns>
+        public static T RandomItem<T>(this IList<T> list)
+        {
+            if (list.IsNullOrEmpty()) return default;
+            else return list[random.Next(0, list.Count)];
         }
         #endregion
     }

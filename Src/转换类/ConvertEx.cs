@@ -266,7 +266,7 @@ namespace Kane.Extension
         }
         #endregion
 
-        #region 泛型转Decimal,默认保留两位小数，默认【采用4舍6入5取偶】 + ToRoundDec<T>(this T value, int digits = 2, int returnValue = 0)
+        #region 泛型转Decimal,默认保留两位小数，默认【采用4舍6入5取偶】 + ToRoundDec<T>(...)
         /// <summary>
         /// 泛型转Decimal,默认保留两位小数，默认【采用4舍6入5取偶】
         /// <para>采用Banker's rounding（银行家算法），即：四舍六入五取偶。事实上这也是IEEE的规范。</para>
@@ -277,7 +277,7 @@ namespace Kane.Extension
         /// <param name="returnValue">失败时返回的值</param>
         /// <param name="mode">可选择模式</param>
         /// <returns></returns>
-        public static decimal ToRoundDec<T>(this T value, int digits = 2, int returnValue = 0, MidpointRounding mode = MidpointRounding.ToEven)
+        public static decimal ToRoundDec<T>(this T value, int digits = 2, decimal returnValue = 0, MidpointRounding mode = MidpointRounding.ToEven)
             => Math.Round(value.ToDec(returnValue), digits, mode);
         #endregion
 
