@@ -36,7 +36,7 @@ namespace Kane.Extension
         /// <param name="regex">正则表达式</param>
         /// <param name="newValue">替换后的字符串</param>
         /// <returns></returns>
-        public static string RegexReplace(this string value, string regex, string newValue) => Regex.Replace(value, regex, newValue);
+        public static string RegexReplace(this string value, string regex, string newValue) => Regex.Replace(value, regex, newValue, RegexOptions.Compiled);
         #endregion
 
         #region 利用正则表达式替换多个关键词的文字，区分大小写 + RegexReplace(this string value, string newValue, params string[] keys)
@@ -51,7 +51,7 @@ namespace Kane.Extension
         public static string RegexReplace(this string value, string newValue, params string[] keys)
         {
             if (value.IsNullOrEmpty() || keys.Length < 1) return value;
-            return Regex.Replace(value, $"({string.Join("|", keys)})", newValue);
+            return Regex.Replace(value, $"({string.Join("|", keys)})", newValue, RegexOptions.Compiled);
         }
         #endregion
 
@@ -75,7 +75,7 @@ namespace Kane.Extension
         public static bool IsMatch(this string value, string pattern)
         {
             if (value.IsNullOrEmpty()) return false;
-            return Regex.IsMatch(value, pattern);
+            return Regex.IsMatch(value, pattern, RegexOptions.Compiled);
         }
         #endregion
 
@@ -104,7 +104,7 @@ namespace Kane.Extension
         public static string Match(this string value, string pattern)
         {
             if (value.IsNullOrEmpty()) return string.Empty;
-            return Regex.Match(value, pattern).Value;
+            return Regex.Match(value, pattern, RegexOptions.Compiled).Value;
         }
         #endregion
 
@@ -118,7 +118,7 @@ namespace Kane.Extension
         public static IEnumerable<string> Matches(this string value, string pattern)
         {
             if (value.IsNullOrEmpty()) return new string[] { };
-            MatchCollection matches = Regex.Matches(value, pattern);
+            MatchCollection matches = Regex.Matches(value, pattern, RegexOptions.Compiled);
             return from Match match in matches select match.Value;
         }
         #endregion

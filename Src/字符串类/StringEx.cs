@@ -120,7 +120,7 @@ namespace Kane.Extension
         /// <param name="value">原来的字符串</param>
         /// <param name="key">拆分关键词</param>
         /// <returns></returns>
-        public static string[] Split(this string value, string key) => Regex.Split(value, key, RegexOptions.IgnoreCase);
+        public static string[] Split(this string value, string key) => Regex.Split(value, key, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         #endregion
 
         #region 统计某字符在字符串中出现的次数 + CharCount(this string value, char key)
