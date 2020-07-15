@@ -9,9 +9,9 @@
 * 机器名称 ：KK-HOME 
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
-* 创建时间 ：2020/2/25 23:24:13
-* 更新时间 ：2020/06/10 11:24:13
-* 版 本 号 ：v1.0.1.0
+* 创建时间 ：2020/02/25 23:24:13
+* 更新时间 ：2020/07/15 11:24:13
+* 版 本 号 ：v1.0.2.0
 *******************************************************************
 * Copyright @ Kane Leung 2020. All rights reserved.
 *******************************************************************
@@ -21,7 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Kane.Extension
 {
@@ -95,15 +94,7 @@ namespace Kane.Extension
         /// <param name="descending">是否降序</param>
         /// <returns></returns>
         public static IQueryable<TSource> OrderBy<TSource>(this IQueryable<TSource> source, string property, bool descending = false) where TSource : class
-        {
-            ParameterExpression param = Expression.Parameter(typeof(TSource), "k");
-            PropertyInfo pi = typeof(TSource).GetProperty(property);
-            MemberExpression selector = Expression.MakeMemberAccess(param, pi);
-            LambdaExpression exp = Expression.Lambda(selector, param);
-            string methodName = descending ? "OrderByDescending" : "OrderBy";
-            MethodCallExpression resultExp = Expression.Call(typeof(Queryable), methodName, new Type[] { typeof(TSource), pi.PropertyType }, source.Expression, exp);
-            return source.Provider.CreateQuery<TSource>(resultExp);
-        }
+            => CreateExpression(source, property, descending ? "OrderByDescending" : "OrderBy");
         #endregion
 
         #region 根据属性名进行【降序】排序 + OrderByDesc<TSource>(this IQueryable<TSource> source, string property) where TSource : class
@@ -115,12 +106,50 @@ namespace Kane.Extension
         /// <param name="property">属性名</param>
         /// <returns></returns>
         public static IQueryable<TSource> OrderByDesc<TSource>(this IQueryable<TSource> source, string property) where TSource : class
+            => CreateExpression(source, property, "OrderByDescending");
+        #endregion
+
+        #region 根据属性名进行ThenBy排序，默认为【升序】 + ThenBy<TSource>(this IQueryable<TSource> source, string property, bool descending = false) where TSource : class
+        /// <summary>
+        /// 根据属性名进行ThenBy排序，默认为【升序】
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="property"></param>
+        /// <param name="descending"></param>
+        /// <returns></returns>
+        public static IQueryable<TSource> ThenBy<TSource>(this IQueryable<TSource> source, string property, bool descending = false) where TSource : class
+            => CreateExpression(source, property, descending ? "ThenByDescending" : "ThenBy");
+        #endregion
+
+        #region 根据属性名进行ThenBy【降序】排序 + ThenByDesc<TSource>(this IQueryable<TSource> source, string property) where TSource : class
+        /// <summary>
+        /// 根据属性名进行ThenBy【降序】排序
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public static IQueryable<TSource> ThenByDesc<TSource>(this IQueryable<TSource> source, string property) where TSource : class
+            => CreateExpression(source, property, "ThenByDescending");
+        #endregion
+
+        #region 创建表达式 + CreateExpression<TSource>(IQueryable<TSource> source, string property, string methodName) where TSource : class
+        /// <summary>
+        /// 创建表达式
+        /// </summary>
+        /// <typeparam name="TSource">数据元素类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="property">属性名</param>
+        /// <param name="methodName">方法名</param>
+        /// <returns></returns>
+        private static IQueryable<TSource> CreateExpression<TSource>(IQueryable<TSource> source, string property, string methodName) where TSource : class
         {
-            ParameterExpression param = Expression.Parameter(typeof(TSource), "k");
-            PropertyInfo pi = typeof(TSource).GetProperty(property);
-            MemberExpression selector = Expression.MakeMemberAccess(param, pi);
-            LambdaExpression exp = Expression.Lambda(selector, param);
-            MethodCallExpression resultExp = Expression.Call(typeof(Queryable), "OrderByDescending", new Type[] { typeof(TSource), pi.PropertyType }, source.Expression, exp);
+            var param = Expression.Parameter(typeof(TSource), "KK");
+            var pi = typeof(TSource).GetProperty(property);
+            var selector = Expression.MakeMemberAccess(param, pi);
+            var exp = Expression.Lambda(selector, param);
+            var resultExp = Expression.Call(typeof(Queryable), methodName, new Type[] { typeof(TSource), pi.PropertyType }, source.Expression, exp);
             return source.Provider.CreateQuery<TSource>(resultExp);
         }
         #endregion

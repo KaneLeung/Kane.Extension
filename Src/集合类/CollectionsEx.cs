@@ -9,9 +9,9 @@
 * 机器名称 ：KK-HOME 
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
-* 创建时间 ：2020/5/5 15:27:09
-* 更新时间 ：2020/06/02 22:52:09
-* 版 本 号 ：v1.0.1.0
+* 创建时间 ：2020/05/05 15:27:09
+* 更新时间 ：2020/07/15 09:02:09
+* 版 本 号 ：v1.0.2.0
 *******************************************************************
 * Copyright @ Kane Leung 2020. All rights reserved.
 *******************************************************************
@@ -19,7 +19,6 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -35,7 +34,20 @@ namespace Kane.Extension
         /// <summary>
         /// 判断集合是否为Null或空集合
         /// </summary>
+        /// <typeparam name="T">泛型集合类型</typeparam>
+        /// <param name="collection">当前集合</param>
+        /// <returns></returns>
         public static bool IsNullOrEmpty<T>(this IEnumerable<T> collection) => collection == null || !collection.Any();
+        #endregion
+
+        #region 判断集合是否不为Null并且非空集合 + IsNotEmpty<T>(this IEnumerable<T> collection)
+        /// <summary>
+        /// 判断集合是否不为Null并且非空集合
+        /// </summary>
+        /// <typeparam name="T">泛型集合类型</typeparam>
+        /// <param name="collection">当前集合</param>
+        /// <returns></returns>
+        public static bool IsNotEmpty<T>(this IEnumerable<T> collection) => collection != null && collection.Any();
         #endregion
 
         #region 泛型集合转换为DataTable + ToDataTable<T>(this IEnumerable<T> source, string tableName = "")
