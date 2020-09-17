@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:08:22
-* 更新时间 ：2020/07/15 10:55:22
-* 版 本 号 ：v1.0.3.0
+* 更新时间 ：2020/09/17 20:55:22
+* 版 本 号 ：v1.0.4.0
 *******************************************************************
 * Copyright @ Kane Leung 2020. All rights reserved.
 *******************************************************************
@@ -38,7 +38,7 @@ namespace Kane.Extension
         /// <para>获取所有成员：BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance</para>
         /// <para>获取公有的实例成员：BindingFlags.Public | BindingFlags.Instance</para>
         /// </summary>
-        internal const BindingFlags BINDING_FLAGS = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+        internal const BindingFlags BINDING_FLAGS = BindingFlags.Public | BindingFlags.Instance;
 
         #region 获取类所有成员的属性信息 + GetProps<T>(this T target)
         /// <summary>

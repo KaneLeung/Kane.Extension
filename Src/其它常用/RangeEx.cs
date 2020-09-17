@@ -94,9 +94,9 @@ namespace Kane.Extension
         public static short InRange(this short value, short min, short max, short returnValue) => value.InRange(min, max) ? value : returnValue;
         #endregion
 
-        #region 判断当前【float】值是否在指定范围内 + InRange(this float value, short min, short max)
+        #region 判断当前【Float】值是否在指定范围内 + InRange(this float value, short min, short max)
         /// <summary>
-        /// 判断当前【float】值是否在指定范围内
+        /// 判断当前【Float】值是否在指定范围内
         /// </summary>
         /// <param name="value">要判断的值</param>
         /// <param name="min">最小值</param>
@@ -105,9 +105,9 @@ namespace Kane.Extension
         public static bool InRange(this float value, short min, short max) => value >= min && value <= max;
         #endregion
 
-        #region 判断当前【float】值是否在指定范围内，否则返回默认值 + InRange(this float value, short min, short max, float returnValue)
+        #region 判断当前【Float】值是否在指定范围内，否则返回默认值 + InRange(this float value, short min, short max, float returnValue)
         /// <summary>
-        /// 判断当前【float】值是否在指定范围内，否则返回默认值
+        /// 判断当前【Float】值是否在指定范围内，否则返回默认值
         /// </summary>
         /// <param name="value">要判断的值</param>
         /// <param name="min">最小值</param>

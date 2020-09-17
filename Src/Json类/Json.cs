@@ -46,7 +46,7 @@ namespace Kane.Extension.Json
                 PropertyNamingPolicy = null,//保持属性名称不变
                 AllowTrailingCommas = true,//忽略多余的逗号
                 IgnoreNullValues = true,//忽略Null值
-                //PropertyNameCaseInsensitive = true;//反序列化是否不区分大小写
+                PropertyNameCaseInsensitive = true,//反序列化是否不区分大小写
             };
             GlobalOption.Converters.Add(new DateTimeConverter());//使用【2020-02-21 17:06:15】时间格式
             GlobalOption.Converters.Add(new BoolConverter());//"true"/"false"识别为boolean的True/False

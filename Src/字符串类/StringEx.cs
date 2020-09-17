@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:26:06
-* 更新时间 ：2020/06/11 09:26:06
-* 版 本 号 ：v1.0.7.0
+* 更新时间 ：2020/09/17 19:26:06
+* 版 本 号 ：v1.0.8.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
 *******************************************************************
@@ -249,7 +249,7 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool ToBool(this string value) => BoolFormats.Any(k => k == value.ToLower());
+        public static bool ToBool(this string value) => BoolFormats.Any(k => k.Equals(value, StringComparison.OrdinalIgnoreCase));
         #endregion
 
         #region 校验字符串是否为Url地址，返回校验结果和转为Uri类型的值联 + CheckUrl(this string value)

@@ -95,8 +95,8 @@ namespace Kane.Extension
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        => long.TryParse(reader.GetString(), out long result) ? result : default;
+        public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) 
+            => long.TryParse(reader.GetString(), out long result) ? result : default;
 
         /// <summary>
         /// 重写转换器Write方法

@@ -155,7 +155,7 @@ namespace Kane.Extension
                     if (ignoreCase) arguments.Add("-i");
                     arguments.Add(process);
                     RunCommand("pkill", string.Join(" ", arguments));
-                    //DOTO:返回的结果还没有上机调试
+                    //TODO:返回的结果还没有上机调试
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
@@ -163,7 +163,7 @@ namespace Kane.Extension
                     if (ignoreCase) arguments.Add("-I");
                     arguments.Add(process);
                     RunCommand("killall", string.Join(" ", arguments));//注意，有些系统没有安装killall命令，要安装【yum install psmisc -y】
-                    //DOTO:返回的结果还没有上机调试
+                    //TODO:返回的结果还没有上机调试
                 }
                 else
                 {
@@ -203,14 +203,14 @@ namespace Kane.Extension
                     if (force) arguments.Add("-9");
                     arguments.Add(pid.ToString());
                     RunCommand("kill", string.Join(" ", arguments));
-                    //DOTO:返回的结果还没有上机调试
+                    //TODO:返回的结果还没有上机调试
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
                     if (force) arguments.Add("-9");
                     arguments.Add(pid.ToString());
                     RunCommand("kill", string.Join(" ", arguments));
-                    //DOTO:返回的结果还没有上机调试
+                    //TODO:返回的结果还没有上机调试
                 }
                 else
                 {
