@@ -70,7 +70,7 @@ namespace Kane.Extension
                 return temp.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
 #endif
             }
-            catch (Exception)
+            catch
             {
                 return new List<string>();
             }

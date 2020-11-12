@@ -10,7 +10,7 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/11/15 23:56:17
-* 更新时间 ：2020/05/05 11:16:17
+* 更新时间 ：2020/11/12 16:16:17
 * 版 本 号 ：v1.0.2.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1 || NET5_0
 using System.Text.Json;
 #else
 using Newtonsoft.Json;
@@ -43,7 +43,7 @@ namespace Kane.Extension
         /// 默认分割的字符，默认为【:】半角冒号
         /// </summary>
         public static char SplitChar = ':';
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1 || NET5_0
         /// <summary>
         /// 字符串转JsonDocument时设置的参数，可设置深度
         /// <para>【MaxDepth】深度默认为64</para>
@@ -120,7 +120,7 @@ namespace Kane.Extension
         }
         #endregion
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1 || NET5_0
         #region 根据关键词，获取对应的值 + GetValue<T>(string keys, T returnValue = default)
         /// <summary>
         /// 根据关键词，获取对应的值，关键词可用 Key1:Key2:Key3进行遍历，
@@ -163,7 +163,7 @@ namespace Kane.Extension
 #if DEBUG
                 Console.WriteLine(ex.Message);
 #endif
-                throw ex;
+                throw;
                 //return returnValue;
             }
         }
@@ -254,7 +254,7 @@ namespace Kane.Extension
 #if DEBUG
                 Console.WriteLine(ex.Message);
 #endif
-                throw ex;
+                throw;
             }
         }
         #endregion
@@ -269,27 +269,20 @@ namespace Kane.Extension
         /// <returns>修改后或添加后的Json字符串</returns>
         public string SetValue<T>(string keys, T value)
         {
-            try
+            var keyValues = keys.Trim(SplitChar).Split(SplitChar);
+            var buffer = new System.Buffers.ArrayBufferWriter<byte>();
+            using var writer = new Utf8JsonWriter(buffer, new JsonWriterOptions { Indented = true });
+            writer.WriteStartObject();
+            if (JSON_DATA.IsValuable())
             {
-                var keyValues = keys.Trim(SplitChar).Split(SplitChar);
-                var buffer = new System.Buffers.ArrayBufferWriter<byte>();
-                using var writer = new Utf8JsonWriter(buffer, new JsonWriterOptions { Indented = true });
-                writer.WriteStartObject();
-                if (JSON_DATA.IsValuable())
-                {
-                    using var document = JsonDocument.Parse(JSON_DATA, Options);
-                    WriteJsonObject(writer, keyValues, document.RootElement.EnumerateObject(), value);
-                }
-                else WriteJsonObject(writer, keyValues, new List<JsonProperty>(), value);
-                writer.WriteEndObject();
-                writer.Flush();
-                JSON_DATA = Encoding.UTF8.GetString(buffer.WrittenSpan.ToArray());
-                return JSON_DATA;
+                using var document = JsonDocument.Parse(JSON_DATA, Options);
+                WriteJsonObject(writer, keyValues, document.RootElement.EnumerateObject(), value);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            else WriteJsonObject(writer, keyValues, new List<JsonProperty>(), value);
+            writer.WriteEndObject();
+            writer.Flush();
+            JSON_DATA = Encoding.UTF8.GetString(buffer.WrittenSpan.ToArray());
+            return JSON_DATA;
         }
         #endregion
 
@@ -305,27 +298,20 @@ namespace Kane.Extension
         /// <returns>修改后或添加后的Json字符串</returns>
         public string SetValue<T>(string source, Encoding encoding, string keys, T value)
         {
-            try
+            if (File.Exists(source)) source = File.ReadAllText(source, encoding);
+            var keyValues = keys.Trim(SplitChar).Split(SplitChar);
+            var buffer = new System.Buffers.ArrayBufferWriter<byte>();
+            using var writer = new Utf8JsonWriter(buffer, new JsonWriterOptions { Indented = true });
+            writer.WriteStartObject();
+            if (source.IsValuable())
             {
-                if (File.Exists(source)) source = File.ReadAllText(source, encoding);
-                var keyValues = keys.Trim(SplitChar).Split(SplitChar);
-                var buffer = new System.Buffers.ArrayBufferWriter<byte>();
-                using var writer = new Utf8JsonWriter(buffer, new JsonWriterOptions { Indented = true });
-                writer.WriteStartObject();
-                if (source.IsValuable())
-                {
-                    using var document = JsonDocument.Parse(source, Options);
-                    WriteJsonObject(writer, keyValues, document.RootElement.EnumerateObject(), value);
-                }
-                else WriteJsonObject(writer, keyValues, new List<JsonProperty>(), value);
-                writer.WriteEndObject();
-                writer.Flush();
-                return Encoding.UTF8.GetString(buffer.WrittenSpan.ToArray());
+                using var document = JsonDocument.Parse(source, Options);
+                WriteJsonObject(writer, keyValues, document.RootElement.EnumerateObject(), value);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            else WriteJsonObject(writer, keyValues, new List<JsonProperty>(), value);
+            writer.WriteEndObject();
+            writer.Flush();
+            return Encoding.UTF8.GetString(buffer.WrittenSpan.ToArray());
         }
         #endregion
 
@@ -522,7 +508,7 @@ namespace Kane.Extension
 #if DEBUG
                 Console.WriteLine(ex.Message);
 #endif
-                throw ex;
+                throw;
                 //return returnValue;
             }
         }
@@ -555,28 +541,20 @@ namespace Kane.Extension
         /// <returns>修改后或添加后的Json字符串</returns>
         public string SetValue<T>(string keys, T value)
         {
-            try
+            var keyValues = keys.Trim(SplitChar).Split(SplitChar);
+            StringWriter stringWriter = new StringWriter();
+            using JsonWriter writer = new JsonTextWriter(stringWriter) { Formatting = Formatting.Indented };
+            writer.WriteStartObject();
+            if (JSON_DATA.IsValuable())
             {
-                var keyValues = keys.Trim(SplitChar).Split(SplitChar);
-                StringWriter stringWriter = new StringWriter();
-                using JsonWriter writer = new JsonTextWriter(stringWriter) { Formatting = Formatting.Indented };
-                writer.WriteStartObject();
-                if (JSON_DATA.IsValuable())
-                {
-                    var rootData = JObject.Parse(JSON_DATA, Settings);
-                    WriteJsonObject(writer, keyValues, rootData.Properties(), value);
-                }
-                else WriteJsonObject(writer, keyValues, new List<JProperty>(), value);
-                writer.WriteEndObject();
-                writer.Flush();
-                JSON_DATA = stringWriter.GetStringBuilder().ToString();
-                return JSON_DATA;
-
+                var rootData = JObject.Parse(JSON_DATA, Settings);
+                WriteJsonObject(writer, keyValues, rootData.Properties(), value);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            else WriteJsonObject(writer, keyValues, new List<JProperty>(), value);
+            writer.WriteEndObject();
+            writer.Flush();
+            JSON_DATA = stringWriter.GetStringBuilder().ToString();
+            return JSON_DATA;
         }
         #endregion
 
@@ -592,27 +570,20 @@ namespace Kane.Extension
         /// <returns>修改后或添加后的Json字符串</returns>
         public string SetValue<T>(string source, Encoding encoding, string keys, T value)
         {
-            try
+            if (File.Exists(source)) source = File.ReadAllText(source, encoding);
+            var keyValues = keys.Trim(SplitChar).Split(SplitChar);
+            StringWriter stringWriter = new StringWriter();
+            using JsonWriter writer = new JsonTextWriter(stringWriter) { Formatting = Formatting.Indented };
+            writer.WriteStartObject();
+            if (source.IsValuable())
             {
-                if (File.Exists(source)) source = File.ReadAllText(source, encoding);
-                var keyValues = keys.Trim(SplitChar).Split(SplitChar);
-                StringWriter stringWriter = new StringWriter();
-                using JsonWriter writer = new JsonTextWriter(stringWriter) { Formatting = Formatting.Indented };
-                writer.WriteStartObject();
-                if (source.IsValuable())
-                {
-                    var rootData = JObject.Parse(source, Settings);
-                    WriteJsonObject(writer, keyValues, rootData.Properties(), value);
-                }
-                else WriteJsonObject(writer, keyValues, new List<JProperty>(), value);
-                writer.WriteEndObject();
-                writer.Flush();
-                return stringWriter.GetStringBuilder().ToString();
+                var rootData = JObject.Parse(source, Settings);
+                WriteJsonObject(writer, keyValues, rootData.Properties(), value);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            else WriteJsonObject(writer, keyValues, new List<JProperty>(), value);
+            writer.WriteEndObject();
+            writer.Flush();
+            return stringWriter.GetStringBuilder().ToString();
         }
         #endregion
 
@@ -904,16 +875,10 @@ namespace Kane.Extension
         /// <returns>是否成功</returns>
         public bool SaveFile()
         {
-            if (!IS_FILE || FILE_PATH.IsNullOrEmpty()) throw new Exception("没有加载到Json文件，请用【SetValueSaveFile<T>(string source, string keys, T value, string path)】");
-            try
-            {
-                File.WriteAllText(FILE_PATH, JSON_DATA);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            if (!IS_FILE || FILE_PATH.IsNullOrEmpty())
+                throw new Exception("没有加载到Json文件，请用【SetValueSaveFile<T>(string source, string keys, T value, string path)】");
+            File.WriteAllText(FILE_PATH, JSON_DATA);
+            return true;
         }
         #endregion
     }

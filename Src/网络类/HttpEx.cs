@@ -25,7 +25,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1 || NET5_0
 using Kane.Extension.Json;
 #else
 using Kane.Extension.JsonNet;
@@ -46,7 +46,7 @@ namespace Kane.Extension
         /// </summary>
         static HttpEx()
         {
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1 || NET5_0
             var handler = new HttpClientHandler() { UseCookies = true, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli };
 #else
             var handler = new HttpClientHandler() { UseCookies = true, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate };

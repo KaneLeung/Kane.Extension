@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net45;net46;net47;net48</TargetFrameworks>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

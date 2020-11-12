@@ -38,35 +38,27 @@ namespace Kane.Extension
         /// <returns></returns>
         public byte[] Compress(byte[] data, CompressMode mode)
         {
-            try
+            if (mode == CompressMode.None) return data;
+            using MemoryStream inputStream = new MemoryStream(data);
+            using var outputStream = new MemoryStream();
+            if (mode == CompressMode.Deflate)
             {
-                if (mode == CompressMode.None) return data;
-                using MemoryStream inputStream = new MemoryStream(data);
-                using var outputStream = new MemoryStream();
-                if (mode == CompressMode.Deflate)
-                {
-                    using var compressor = new DeflateStream(outputStream, CompressionMode.Compress, true);
-                    inputStream.CopyTo(compressor);
-                }
+                using var compressor = new DeflateStream(outputStream, CompressionMode.Compress, true);
+                inputStream.CopyTo(compressor);
+            }
 #if NETCOREAPP
-                else if (mode == CompressMode.Brotli)
-                {
-                    using var compressor = new BrotliStream(outputStream, CompressionMode.Compress, true);
-                    inputStream.CopyTo(compressor);
-                }
-#endif
-                else
-                {
-                    using var compressor = new GZipStream(outputStream, CompressionMode.Compress, true);
-                    inputStream.CopyTo(compressor);
-
-                }
-                return outputStream.ToArray();
-            }
-            catch (Exception ex)
+            else if (mode == CompressMode.Brotli)
             {
-                throw ex;
+                using var compressor = new BrotliStream(outputStream, CompressionMode.Compress, true);
+                inputStream.CopyTo(compressor);
             }
+#endif
+            else
+            {
+                using var compressor = new GZipStream(outputStream, CompressionMode.Compress, true);
+                inputStream.CopyTo(compressor);
+            }
+            return outputStream.ToArray();
         }
         #endregion
 
@@ -79,35 +71,27 @@ namespace Kane.Extension
         /// <returns></returns>
         public Stream Compress(Stream data, CompressMode mode)
         {
-            try
+            if (mode == CompressMode.None) return data;
+            data.Seek(0, SeekOrigin.Begin);
+            MemoryStream outputStream = new MemoryStream();
+            if (mode == CompressMode.Deflate)
             {
-                if (mode == CompressMode.None) return data;
-                data.Seek(0, SeekOrigin.Begin);
-                MemoryStream outputStream = new MemoryStream();
-                if (mode == CompressMode.Deflate)
-                {
-                    using var compressor = new DeflateStream(outputStream, CompressionMode.Compress, true);
-                    data.CopyTo(compressor);
-                }
+                using var compressor = new DeflateStream(outputStream, CompressionMode.Compress, true);
+                data.CopyTo(compressor);
+            }
 #if NETCOREAPP
-                else if (mode == CompressMode.Brotli)
-                {
-                    using var compressor = new BrotliStream(outputStream, CompressionMode.Compress, true);
-                    data.CopyTo(compressor);
-                }
-#endif
-                else
-                {
-                    using var compressor = new GZipStream(outputStream, CompressionMode.Compress, true);
-                    data.CopyTo(compressor);
-
-                }
-                return outputStream;
-            }
-            catch (Exception ex)
+            else if (mode == CompressMode.Brotli)
             {
-                throw ex;
+                using var compressor = new BrotliStream(outputStream, CompressionMode.Compress, true);
+                data.CopyTo(compressor);
             }
+#endif
+            else
+            {
+                using var compressor = new GZipStream(outputStream, CompressionMode.Compress, true);
+                data.CopyTo(compressor);
+            }
+            return outputStream;
         }
         #endregion
 
@@ -172,34 +156,27 @@ namespace Kane.Extension
         /// <returns></returns>
         public byte[] DeCompress(byte[] data, CompressMode mode)
         {
-            try
+            if (mode == CompressMode.None) return data;
+            using MemoryStream inputStream = new MemoryStream(data);
+            using var outputStream = new MemoryStream();
+            if (mode == CompressMode.Deflate)
             {
-                if (mode == CompressMode.None) return data;
-                using MemoryStream inputStream = new MemoryStream(data);
-                using var outputStream = new MemoryStream();
-                if (mode == CompressMode.Deflate)
-                {
-                    using var decompressor = new DeflateStream(inputStream, CompressionMode.Decompress, true);
-                    decompressor.CopyTo(outputStream);
-                }
+                using var decompressor = new DeflateStream(inputStream, CompressionMode.Decompress, true);
+                decompressor.CopyTo(outputStream);
+            }
 #if NETCOREAPP
-                else if (mode == CompressMode.Brotli)
-                {
-                    using var decompressor = new BrotliStream(inputStream, CompressionMode.Decompress, true);
-                    decompressor.CopyTo(outputStream);
-                }
-#endif
-                else
-                {
-                    using var decompressor = new GZipStream(inputStream, CompressionMode.Decompress, true);
-                    decompressor.CopyTo(outputStream);
-                }
-                return outputStream.GetBuffer();
-            }
-            catch (Exception ex)
+            else if (mode == CompressMode.Brotli)
             {
-                throw ex;
+                using var decompressor = new BrotliStream(inputStream, CompressionMode.Decompress, true);
+                decompressor.CopyTo(outputStream);
             }
+#endif
+            else
+            {
+                using var decompressor = new GZipStream(inputStream, CompressionMode.Decompress, true);
+                decompressor.CopyTo(outputStream);
+            }
+            return outputStream.GetBuffer();
         }
         #endregion
 
@@ -212,34 +189,27 @@ namespace Kane.Extension
         /// <returns></returns>
         public Stream DeCompress(Stream data, CompressMode mode)
         {
-            try
+            if (mode == CompressMode.None) return data;
+            data.Seek(0, SeekOrigin.Begin);
+            var outputStream = new MemoryStream();
+            if (mode == CompressMode.Deflate)
             {
-                if (mode == CompressMode.None) return data;
-                data.Seek(0, SeekOrigin.Begin);
-                var outputStream = new MemoryStream();
-                if (mode == CompressMode.Deflate)
-                {
-                    using var decompressor = new DeflateStream(data, CompressionMode.Decompress, true);
-                    decompressor.CopyTo(outputStream);
-                }
+                using var decompressor = new DeflateStream(data, CompressionMode.Decompress, true);
+                decompressor.CopyTo(outputStream);
+            }
 #if NETCOREAPP
-                else if (mode == CompressMode.Brotli)
-                {
-                    using var decompressor = new BrotliStream(data, CompressionMode.Decompress, true);
-                    decompressor.CopyTo(outputStream);
-                }
-#endif
-                else
-                {
-                    using var decompressor = new GZipStream(data, CompressionMode.Decompress, true);
-                    decompressor.CopyTo(outputStream);
-                }
-                return outputStream;
-            }
-            catch (Exception ex)
+            else if (mode == CompressMode.Brotli)
             {
-                throw ex;
+                using var decompressor = new BrotliStream(data, CompressionMode.Decompress, true);
+                decompressor.CopyTo(outputStream);
             }
+#endif
+            else
+            {
+                using var decompressor = new GZipStream(data, CompressionMode.Decompress, true);
+                decompressor.CopyTo(outputStream);
+            }
+            return outputStream;
         }
         #endregion
 

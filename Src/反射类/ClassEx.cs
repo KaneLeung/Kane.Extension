@@ -230,7 +230,7 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="type">要判断的类型</param>
         /// <returns></returns>
-        public static bool IsCollection(this Type type) => type.IsArray || type.GetInterfaces().Any(x => x == typeof(ICollection) || x == typeof(IEnumerable));
+        public static bool IsCollection(this Type type) => type.IsArray || type.GetInterfaces().Any(k => k == typeof(ICollection) || k == typeof(IEnumerable));
         #endregion
     }
 }

@@ -10,14 +10,14 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2020/02/19 23:23:07
-* 更新时间 ：2020/06/18 10:23:07
-* 版 本 号 ：v1.0.3.0
+* 更新时间 ：2020/11/12 16:16:17
+* 版 本 号 ：v1.0.4.0
 *******************************************************************
 * Copyright @ Kane Leung 2020. All rights reserved.
 *******************************************************************
 -----------------------------------------------------------------*/
 #endregion
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1 || NET5_0
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -192,6 +192,21 @@ namespace Kane.Extension
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options) => writer.WriteBooleanValue(value);
         #endregion
+    }
+    #endregion
+
+    #region 自定义名称策略，属性名全为【小写】 + LowerCaseNamingPolicy : JsonNamingPolicy
+    /// <summary>
+    /// 自定义名称策略，属性名全为【小写】
+    /// </summary>
+    public class LowerCaseNamingPolicy : JsonNamingPolicy
+    {
+        /// <summary>
+        /// 重写转换器
+        /// </summary>
+        /// <param name="name">原名称</param>
+        /// <returns></returns>
+        public override string ConvertName(string name) => name.ToLower();
     }
     #endregion
 }
