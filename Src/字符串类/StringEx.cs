@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:26:06
-* 更新时间 ：2020/09/17 19:26:06
-* 版 本 号 ：v1.0.8.0
+* 更新时间 ：2020/12/04 19:26:06
+* 版 本 号 ：v1.0.9.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
 *******************************************************************
@@ -239,13 +239,13 @@ namespace Kane.Extension
         /// <summary>
         /// 全局字符串转换Bool格式
         /// </summary>
-        public static IEnumerable<string> BoolFormats = new string[] { "true", "是", "1", "ok", "yes", "enable" };
+        public static IEnumerable<string> BoolFormats = new string[] { "true", "是", "真", "1", "ok", "yes", "enable" };
         #endregion
 
-        #region 将字符串转换为Bool类型，默认包含【true】【是】【1】【ok】【yes】【enable】 + ToBool(this string value)
+        #region 将字符串转换为Bool类型，默认包含【true】【是】【真】【1】【ok】【yes】【enable】 + ToBool(this string value)
         /// <summary>
         /// 将字符串转换为Bool类型
-        /// <para>默认包含【true】【是】【1】【ok】【yes】【enable】</para>
+        /// <para>默认包含【true】【是】【真】【1】【ok】【yes】【enable】</para>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>

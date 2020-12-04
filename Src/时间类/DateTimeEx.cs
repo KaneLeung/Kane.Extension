@@ -10,7 +10,7 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:17:28
-* 更新时间 ：2020/06/25 09:17:28
+* 更新时间 ：2020/12/04 14:37:28
 * 版 本 号 ：v1.0.9.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
@@ -413,29 +413,27 @@ namespace Kane.Extension
                 else if (days >= 7) return $"{days / 7}周{tag}";
                 else return $"{days}天{tag}";
             }
-            if (timeSpan.Hours != 0)
-                return $"{(timeSpan.Hours < 0 ? timeSpan.Hours * -1 : timeSpan.Hours)}小时{tag}";
-            if (timeSpan.Minutes != 0)
-                return $"{(timeSpan.Minutes < 0 ? timeSpan.Minutes * -1 : timeSpan.Minutes)}分钟{tag}";
+            if (timeSpan.Hours != 0) return $"{(timeSpan.Hours < 0 ? timeSpan.Hours * -1 : timeSpan.Hours)}小时{tag}";
+            if (timeSpan.Minutes != 0) return $"{(timeSpan.Minutes < 0 ? timeSpan.Minutes * -1 : timeSpan.Minutes)}分钟{tag}";
             return $"{(timeSpan.Seconds < 0 ? timeSpan.Seconds * -1 : timeSpan.Seconds)}秒{tag}";
         }
         #endregion
 
-        #region 计算周岁年龄 + GetAge(this DateTime dateOfBirth)
+        #region 计算周岁年龄 + CalculateAge(this DateTime dateOfBirth)
         /// <summary>
         /// 计算周岁年龄
         /// </summary>
         /// <param name="dateOfBirth">出生日期</param>
-        public static int GetAge(this DateTime dateOfBirth) => GetAge(dateOfBirth, DateTime.Now.Date);
+        public static int CalculateAge(this DateTime dateOfBirth) => CalculateAge(dateOfBirth, DateTime.Now.Date);
         #endregion
 
-        #region 计算周岁年龄，指定参考日期 + GetAge(this DateTime dateOfBirth, DateTime point)
+        #region 计算周岁年龄，指定参考日期 + CalculateAge(this DateTime dateOfBirth, DateTime point)
         /// <summary>
         /// 计算周岁年龄，指定参考日期
         /// </summary>
         /// <param name="dateOfBirth">出生日期</param>
         /// <param name="point">时间基准点</param>
-        public static int GetAge(this DateTime dateOfBirth, DateTime point)
+        public static int CalculateAge(this DateTime dateOfBirth, DateTime point)
         {
             var age = point.Year - dateOfBirth.Year;
             if (point.Month < dateOfBirth.Month || (point.Month == dateOfBirth.Month && point.Day < dateOfBirth.Day)) --age;

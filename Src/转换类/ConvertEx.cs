@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:25:16
-* 更新时间 ：2020/05/16 13:00:16
-* 版 本 号 ：v1.0.5.0
+* 更新时间 ：2020/12/04 14:30:16
+* 版 本 号 ：v1.0.6.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
 *******************************************************************
@@ -198,70 +198,35 @@ namespace Kane.Extension
         }
         #endregion
 
-        #region 转换大写金额 + ToAmoutInWords(float value)
+        #region [short/ushort/int/uint/long/ulong/float/double/decimal]转换大写金额，默认为设置【整】的结束标签 + ToAmoutInWords<T>(this T value, bool hasTag = true) where T : struct, IFormattable
         /// <summary>
-        /// 转换大写金额
+        /// [short/ushort/int/uint/long/ulong/float/double/decimal]转换大写金额，默认为设置【整】的结束标签
         /// <para>【资料来源】https://baike.baidu.com/item/大写金额</para>
         /// </summary>
         /// <param name="value">要转换的值</param>
+        /// <param name="hasTag">以【元】结尾时，是否包含【整】字标签</param>
         /// <returns></returns>
-        public static string ToAmoutInWords(this float value)
+        public static string ToAmoutInWords<T>(this T value, bool hasTag = true) where T : struct, IFormattable
         {
-            var valueString = value.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A");
+            var valueString = value.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A", null);
             var temp = Regex.Replace(valueString, @"((?<=-|^)[^1-9]*)|((?'z'0)[0A-E]*((?=[1-9])|(?'-z'(?=[F-L\.]|$))))|((?'b'[F-L])(?'z'0)[0A-L]*((?=[1-9])|(?'-z'(?=[\.]|$))))", "${b}${z}", RegexOptions.Compiled);
             var result = Regex.Replace(temp, ".", m => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟万亿兆京垓秭穰"[m.Value[0] - '-'].ToString(), RegexOptions.Compiled);
+            if (hasTag && result.EndsWith("元")) result += "整";
             return result;
         }
         #endregion
 
-        #region 转换大写金额 + ToAmoutInWords(double value)
+        #region 字符串转换大写金额，失败返回【string.Empty】，默认为设置【整】的结束标签 + ToAmoutInWords(this string value)
         /// <summary>
-        /// 转换大写金额
-        /// <para>【资料来源】https://baike.baidu.com/item/大写金额</para>
-        /// </summary>
-        /// <param name="value">要转换的值</param>
-        /// <returns></returns>
-        public static string ToAmoutInWords(this double value)
-        {
-            var valueString = value.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A");
-            var temp = Regex.Replace(valueString, @"((?<=-|^)[^1-9]*)|((?'z'0)[0A-E]*((?=[1-9])|(?'-z'(?=[F-L\.]|$))))|((?'b'[F-L])(?'z'0)[0A-L]*((?=[1-9])|(?'-z'(?=[\.]|$))))", "${b}${z}", RegexOptions.Compiled);
-            var result = Regex.Replace(temp, ".", m => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟万亿兆京垓秭穰"[m.Value[0] - '-'].ToString(), RegexOptions.Compiled);
-            return result;
-        }
-        #endregion
-
-        #region 转换大写金额 + ToAmoutInWords(decimal value)
-        /// <summary>
-        /// 转换大写金额
-        /// <para>【资料来源】https://baike.baidu.com/item/大写金额</para>
-        /// </summary>
-        /// <param name="value">要转换的值</param>
-        /// <returns></returns>
-        public static string ToAmoutInWords(this decimal value)
-        {
-            var valueString = value.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A");
-            var temp = Regex.Replace(valueString, @"((?<=-|^)[^1-9]*)|((?'z'0)[0A-E]*((?=[1-9])|(?'-z'(?=[F-L\.]|$))))|((?'b'[F-L])(?'z'0)[0A-L]*((?=[1-9])|(?'-z'(?=[\.]|$))))", "${b}${z}", RegexOptions.Compiled);
-            var result = Regex.Replace(temp, ".", m => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟万亿兆京垓秭穰"[m.Value[0] - '-'].ToString(), RegexOptions.Compiled);
-            return result;
-        }
-        #endregion
-
-        #region 转换大写金额 + ToAmoutInWords(this string value)
-        /// <summary>
-        /// 字符串转换大写金额，失败返回【string.Empty】
+        /// 字符串转换大写金额，失败返回【string.Empty】，默认为设置【整】的结束标签
         /// <para>【资料来源】https://baike.baidu.com/item/大写金额</para>
         /// </summary>
         /// <param name="value">要转换的字符串</param>
+        /// <param name="hasTag">以【元】结尾时，是否包含【整】字标签</param>
         /// <returns></returns>
-        public static string ToAmoutInWords(this string value)
+        public static string ToAmoutInWords(this string value, bool hasTag = true)
         {
-            if (decimal.TryParse(value, out decimal dec))
-            {
-                value = dec.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A");
-                var temp = Regex.Replace(value, @"((?<=-|^)[^1-9]*)|((?'z'0)[0A-E]*((?=[1-9])|(?'-z'(?=[F-L\.]|$))))|((?'b'[F-L])(?'z'0)[0A-L]*((?=[1-9])|(?'-z'(?=[\.]|$))))", "${b}${z}", RegexOptions.Compiled);
-                var result = Regex.Replace(temp, ".", m => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟万亿兆京垓秭穰"[m.Value[0] - '-'].ToString(), RegexOptions.Compiled);
-                return result;
-            }
+            if (decimal.TryParse(value, out decimal result)) return result.ToAmoutInWords(hasTag);
             else return string.Empty;
         }
         #endregion

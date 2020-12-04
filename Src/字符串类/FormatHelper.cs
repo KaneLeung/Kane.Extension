@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2020/02/20 19:38:55
-* 更新时间 ：2020/11/12 16:16:17
-* 版 本 号 ：v1.0.3.0
+* 更新时间 ：2020/12/04 09:16:17
+* 版 本 号 ：v1.0.4.0
 *******************************************************************
 * Copyright @ Kane Leung 2020. All rights reserved.
 *******************************************************************
@@ -154,9 +154,9 @@ namespace Kane.Extension
         }
         #endregion
 
-        #region 检测字符串是否为中国国内手机号码段，数据更新日期【2020-03-19】 + IsMobilePhone(string value)
+        #region 检测字符串是否为中国国内手机号码段，数据更新日期【2020-11-10】 + IsMobilePhone(string value)
         /// <summary>
-        /// 检测字符串是否为中国国内手机号码段，数据更新日期【2020-03-19】
+        /// 检测字符串是否为中国国内手机号码段，数据更新日期【2020-11-10】
         /// <para>【资料来源】https://baike.baidu.com/item/手机号码 </para>
         /// </summary>
         /// <param name="value">要检测的字符串</param>
@@ -167,14 +167,15 @@ namespace Kane.Extension
             if (new Regex(@"^1[0-9]{10}$").IsMatch(value.Trim()))
             {
                 var prefix = new List<string>();
-                string[] ChinaTelecomPrefix = "133、149、153、162、173、177、180、181、189、190、191、193、199".Split('、');
-                string[] ChinaUnicomPrefix = "130、131、132、145、155、156、166、175、176、185、186、196".Split('、');
-                string[] ChinaMobilePrefix = "134(0-8)、135、136、137、138、139、147、150、151、152、157、158、159、172、178、182、183、184、187、188、195、197、198".Split('、');
+                string[] ChinaTelecomPrefix = "133、149、153、173、177、180、181、189、190、191、193、199".Split('、');
+                string[] ChinaUnicomPrefix = "130、131、132、145、155、156、166、167、171、175、176、185、186、196".Split('、');
+                string[] ChinaMobilePrefix = "134(0-8)、135、136、137、138、139、1440、147、148、150、151、152、157、158、159、172、178、182、183、184、187、188、195、197、198".Split('、');
                 string[] ChinaBroadcstPrefix = new[] { "192" };
                 string[] ChinaTelecomVirtualPrefix = "1700、1701、1702、162".Split('、');
                 string[] ChinaMobileVirtualPrefix = "1703、1705、1706、165".Split('、');
                 string[] ChinaUnicomVirtualPrefix = "1704、1707、1708、1709、171、167".Split('、');
                 string[] SatelliteCommunicationPrefix = "1349、174".Split('、');
+                string[] InternetOfThingsPrefix = "140、141、144、146、148".Split('、');
 
                 prefix.AddRange(ChinaTelecomPrefix); // 中国电信号段
                 prefix.AddRange(ChinaUnicomPrefix); // 中国联通号段
@@ -183,9 +184,10 @@ namespace Kane.Extension
                 prefix.AddRange(ChinaMobilePrefix.Skip(1)); // 中国移动号段
                 prefix.AddRange(ChinaBroadcstPrefix); // 中国广电号段
                 prefix.AddRange(ChinaTelecomVirtualPrefix); // 中国电信虚拟运营商号段
-                prefix.AddRange(ChinaUnicomVirtualPrefix); // 中国联通虚拟运营商号段
                 prefix.AddRange(ChinaMobileVirtualPrefix); // 中国移动虚拟运营商号段
+                prefix.AddRange(ChinaUnicomVirtualPrefix); // 中国联通虚拟运营商号段
                 prefix.AddRange(SatelliteCommunicationPrefix); // 卫星通信号段
+                prefix.AddRange(InternetOfThingsPrefix); // 物联网号段
                 return value.StartsWith(prefix.ToArray());
             }
             else return false;
