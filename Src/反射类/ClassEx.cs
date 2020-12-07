@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:08:22
-* 更新时间 ：2020/09/17 20:55:22
-* 版 本 号 ：v1.0.4.0
+* 更新时间 ：2020/12/07 10:55:22
+* 版 本 号 ：v1.0.5.0
 *******************************************************************
 * Copyright @ Kane Leung 2020. All rights reserved.
 *******************************************************************
@@ -40,141 +40,147 @@ namespace Kane.Extension
         /// </summary>
         internal const BindingFlags BINDING_FLAGS = BindingFlags.Public | BindingFlags.Instance;
 
-        #region 获取类所有成员的属性信息 + GetProps<T>(this T target)
+        #region 获取类所有成员的属性信息 + GetProps<TSource>(this TSource source)
         /// <summary>
         /// 获取类所有成员的属性信息
         /// </summary>
-        /// <param name="target">反射对象</param>
+        /// <param name="source">反射对象</param>
         /// <returns>属性信息</returns>
-        public static PropertyInfo[] GetProps<T>(this T target) => target.GetType().GetProperties(BINDING_FLAGS);
+        public static PropertyInfo[] GetProps<TSource>(this TSource source) => source.GetType().GetProperties(BINDING_FLAGS);
         #endregion
 
-        #region 根据BindingFlags获取类指定成员的属性信息 + GetProps<T>(this T target, BindingFlags flags)
+        #region 根据BindingFlags获取类指定成员的属性信息 + GetProps<TSource>(this TSource source, BindingFlags flags)
         /// <summary>
         /// 根据<see cref="BindingFlags"/>获取类指定成员的属性信息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="target">反射对象</param>
+        /// <typeparam name="TSource">反射对象类型</typeparam>
+        /// <param name="source">反射对象</param>
         /// <param name="flags">自定义搜索类型</param>
         /// <returns>属性信息</returns>
-        public static PropertyInfo[] GetProps<T>(this T target, BindingFlags flags) => target.GetType().GetProperties(flags);
+        public static PropertyInfo[] GetProps<TSource>(this TSource source, BindingFlags flags) => source.GetType().GetProperties(flags);
         #endregion
 
-        #region 获取类指定成员的属性信息 + GetProp<T>(this T target, string name)
+        #region 获取类指定成员的属性信息 + GetProp<TSource>(this TSource source, string name)
         /// <summary>
         /// 获取类指定成员的属性信息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="target">反射对象</param>
+        /// <typeparam name="TSource">反射对象类型</typeparam>
+        /// <param name="source">反射对象</param>
         /// <param name="name">成员名称</param>
         /// <returns></returns>
-        public static PropertyInfo GetProp<T>(this T target, string name) => target.GetType().GetProperty(name, BINDING_FLAGS);
+        public static PropertyInfo GetProp<TSource>(this TSource source, string name) => source.GetType().GetProperty(name, BINDING_FLAGS);
         #endregion
 
-        #region 检测对象是否包含指定【属性】 + HasProp<T>(this T target, string name)
+        #region 检测对象是否包含指定【属性】 + HasProp<TSource>(this TSource source, string name)
         /// <summary>
         /// 检测对象是否包含指定【属性】
         /// </summary>
-        /// <typeparam name="T">要检测对象类型</typeparam>
-        /// <param name="target">要检测对象</param>
+        /// <typeparam name="TSource">要检测对象类型</typeparam>
+        /// <param name="source">要检测对象</param>
         /// <param name="name">属性名</param>
         /// <returns></returns>
-        public static bool HasProp<T>(this T target, string name) => target.GetType().GetProperty(name, BINDING_FLAGS) != null;
+        public static bool HasProp<TSource>(this TSource source, string name) => source.GetType().GetProperty(name, BINDING_FLAGS) != null;
         #endregion
 
-        #region 获取属性的值 + GetPropValue<T, Target>(this Target target, string name)
+        #region 通过反射，根据属性名获取属性值，失败返回TResult的默认值 + GetPropValue<TSource, TResult>(this TSource source, string name)
         /// <summary>
-        /// 获取属性的值，失败返回T的默认值
+        /// 通过反射，根据属性名获取属性值，失败返回TResult的默认值
+        /// <para>也可使用<see cref="ExpressionEx.GetPropValueExp{TSource, TResult}(TSource, string)"/>表达式树方法实现，性能高一些</para>
         /// </summary>
-        /// <param name="target">反射对象</param>
+        /// <typeparam name="TSource">反射对象类型</typeparam>
+        /// <typeparam name="TResult">获取值类型</typeparam>
+        /// <param name="source">反射对象</param>
         /// <param name="name">属性名</param>
         /// <returns>属性值</returns>
-        public static T GetPropValue<T, Target>(this Target target, string name)
+        public static TResult GetPropValue<TSource, TResult>(this TSource source, string name)
         {
-            PropertyInfo fieldInfo = target.GetProp(name);
-            return fieldInfo == null ? default : (T)fieldInfo.GetValue(target, null);
+            PropertyInfo fieldInfo = source.GetProp(name);
+            return fieldInfo == null ? default : (TResult)fieldInfo.GetValue(source, null);
         }
         #endregion
 
-        #region 设置属性的值，返回是否成功 + SetPropValue<T, Target>(this Target target, string name, T value)
+        #region 通过反射，根据属性名称设置属性的值 + SetPropValue<TSource, TValue>(this TSource source, string name, TValue value)
         /// <summary>
-        /// 设置属性的值，返回是否成功
+        /// 通过反射，根据属性名称设置属性的值
+        /// <para>也可以使用<see cref="ExpressionEx.SetPropValueExp{TSource, TValue}(TSource, string, TValue)"/>表达式树方法实现，性能高一些</para>
         /// </summary>
-        /// <param name="target">反射对象</param>
+        /// <typeparam name="TSource">反射对象类型</typeparam>
+        /// <typeparam name="TValue">属性类型</typeparam>
+        /// <param name="source">对象</param>
         /// <param name="name">属性名</param>
-        /// <param name="value">值</param>
-        /// <returns></returns>
-        public static bool SetPropValue<T, Target>(this Target target, string name, T value)
+        /// <param name="value">要设置的值</param>
+        /// <returns>是否设置成功</returns>
+        public static bool SetPropValue<TSource, TValue>(this TSource source, string name, TValue value)
         {
-            PropertyInfo fieldInfo = target.GetProp(name);
+            PropertyInfo fieldInfo = source.GetProp(name);
             if (fieldInfo != null)
             {
-                fieldInfo.SetValue(target, value, null);
+                fieldInfo.SetValue(source, value, null);
                 return true;
             }
             else return false;
         }
         #endregion
 
-        #region 获取所有的字段信息 + GetFields<T>(this T target)
+        #region 获取所有的字段信息 + GetFields<TSource>(this TSource source)
         /// <summary>
         /// 获取所有的字段信息
         /// </summary>
-        /// <param name="target">反射对象</param>
+        /// <param name="source">反射对象</param>
         /// <returns>字段信息</returns>
-        public static FieldInfo[] GetFields<T>(this T target) => target.GetType().GetFields(BINDING_FLAGS);
+        public static FieldInfo[] GetFields<TSource>(this TSource source) => source.GetType().GetFields(BINDING_FLAGS);
         #endregion
 
-        #region 根据BindingFlags获取所有的字段信息 + GetFields<T>(this T target, BindingFlags flags)
+        #region 根据BindingFlags获取所有的字段信息 + GetFields<TSource>(this TSource source, BindingFlags flags)
         /// <summary>
         /// 根据<see cref="BindingFlags"/>获取所有的字段信息
         /// </summary>
-        /// <param name="target">反射对象</param>
+        /// <param name="source">反射对象</param>
         /// <param name="flags">自定义搜索类型</param>
         /// <returns>字段信息</returns>
-        public static FieldInfo[] GetFields<T>(this T target, BindingFlags flags) => target.GetType().GetFields(flags);
+        public static FieldInfo[] GetFields<TSource>(this TSource source, BindingFlags flags) => source.GetType().GetFields(flags);
         #endregion
 
-        #region 获取所有的字段信息 + GetField<T>(this T target, string name)
+        #region 获取所有的字段信息 + GetField<TSource>(this TSource source, string name)
         /// <summary>
         /// 获取指定的字段信息
         /// </summary>
-        /// <param name="target">反射对象</param>
+        /// <param name="source">反射对象</param>
         /// <param name="name">字段名称</param>
         /// <returns>字段信息</returns>
-        public static FieldInfo GetField<T>(this T target, string name) => target.GetType().GetField(name, BINDING_FLAGS);
+        public static FieldInfo GetField<TSource>(this TSource source, string name) => source.GetType().GetField(name, BINDING_FLAGS);
         #endregion
 
-        #region 获取单个字段的值 + GetFieldValue<T, Target>(this Target target, string name)
+        #region 获取单个字段的值 + GetFieldValue<TSource, TResult>(this TSource source, string name)
         /// <summary>
         /// 获取单个字段的值
         /// </summary>
-        /// <param name="target">反射对象</param>
+        /// <param name="source">反射对象</param>
         /// <param name="name">字段名</param>
-        /// <typeparam name="T">约束返回的T</typeparam>
-        /// <typeparam name="Target">当前对象的类型</typeparam>
+        /// <typeparam name="TSource">反射对象的类型</typeparam>
+        /// <typeparam name="TResult">返回字段类型</typeparam>
         /// <returns>T类型</returns>
-        public static T GetFieldValue<T, Target>(this Target target, string name)
+        public static TResult GetFieldValue<TSource, TResult>(this TSource source, string name)
         {
-            FieldInfo fieldInfo = target.GetField(name);
-            return fieldInfo == null ? default : (T)fieldInfo.GetValue(target);
+            FieldInfo fieldInfo = source.GetField(name);
+            return fieldInfo == null ? default : (TResult)fieldInfo.GetValue(source);
         }
         #endregion
 
-        #region 设置单个字段的值，返回是否成功 + SetFieldValue<T, Target>(this Target target, string name, T value)
+        #region 设置单个字段的值，返回是否成功 + SetFieldValue<TSource, TValue>(this TSource source, string name, TValue value)
         /// <summary>
         /// 设置单个字段的值，返回是否成功
         /// </summary>
-        /// <param name="target">反射对象</param>
+        /// <param name="source">反射对象</param>
         /// <param name="name">字段名</param>
         /// <param name="value">值</param>
         /// <returns></returns>
-        public static bool SetFieldValue<T, Target>(this Target target, string name, T value)
+        public static bool SetFieldValue<TSource, TValue>(this TSource source, string name, TValue value)
         {
-            FieldInfo fieldInfo = target.GetField(name);
+            FieldInfo fieldInfo = source.GetField(name);
             if (fieldInfo != null)
             {
-                fieldInfo.SetValue(target, value);
+                fieldInfo.SetValue(source, value);
                 return true;
             }
             else return false;
