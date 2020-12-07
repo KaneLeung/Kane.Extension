@@ -10,13 +10,15 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2020/5/5 11:00:35
-* 更新时间 ：2020/5/23 11:00:35
-* 版 本 号 ：v1.0.1.0
+* 更新时间 ：2020/12/07 11:00:35
+* 版 本 号 ：v1.0.2.0
 *******************************************************************
 * Copyright @ Kane Leung 2020. All rights reserved.
 *******************************************************************
 -----------------------------------------------------------------*/
 #endregion
+
+using System;
 
 namespace Kane.Extension
 {
@@ -25,142 +27,70 @@ namespace Kane.Extension
     /// </summary>
     public static class RangeEx
     {
-        #region 判断当前【Int】值是否在指定范围内 + InRange(this int value, int min, int max)
+        #region 判断当前值是否在指定范围内，默认左右都是包含在内 + In<T>(this T value, T min, T max, bool leftContain = true, bool rightContain = true)
         /// <summary>
-        /// 判断当前【Int】值是否在指定范围内
+        /// 判断当前值是否在指定范围内，默认左右都是包含在内
+        /// <para>补充知识点，（a,a） = [a,a) = (a,a] = Ø 【空集】</para>
         /// </summary>
+        /// <typeparam name="T">要判断值的类型</typeparam>
         /// <param name="value">要判断的值</param>
-        /// <param name="min">最小值</param>
-        /// <param name="max">最大值</param>
-        /// <returns>bool</returns>
-        public static bool InRange(this int value, int min, int max) => value >= min && value <= max;
+        /// <param name="min">比较的最小值</param>
+        /// <param name="max">比较的最大值</param>
+        /// <param name="leftContain">是否左包含【左闭区间】，默认为包含</param>
+        /// <param name="rightContain">是否右包含【右闭区间】，默认为包含</param>
+        /// <returns>是否在范围内</returns>
+        public static bool In<T>(this T value, T min, T max, bool leftContain = true, bool rightContain = true) where T : struct, IComparable<T>
+            => value.CompareTo(min) >= (leftContain ? 0 : 1) && value.CompareTo(max) <= (rightContain ? 0 : -1);
         #endregion
 
-        #region 判断当前【Int】值是否在指定范围内，否则返回默认值 + InRange(this int value, int min, int max, int returnValue)
+        #region 判断当前值【可空类型】是否在指定范围内，默认左右都是包含在内 + In<T>(this T? value, T min, T max, bool leftContain = true, bool rightContain = true)
         /// <summary>
-        /// 判断当前【Int】值是否在指定范围内，否则返回默认值
+        /// 判断当前值【可空类型】是否在指定范围内，默认左右都是包含在内
+        /// <para>补充知识点，（a,a） = [a,a) = (a,a] = Ø 【空集】</para>
         /// </summary>
+        /// <typeparam name="T">要判断值的类型</typeparam>
         /// <param name="value">要判断的值</param>
-        /// <param name="min">最小值</param>
-        /// <param name="max">最大值</param>
-        /// <param name="returnValue">默认值</param>
-        /// <returns>int</returns>
-        public static int InRange(this int value, int min, int max, int returnValue) => value.InRange(min, max) ? value : returnValue;
+        /// <param name="min">比较的最小值</param>
+        /// <param name="max">比较的最大值</param>
+        /// <param name="leftContain">是否左包含【左闭区间】，默认为包含</param>
+        /// <param name="rightContain">是否右包含【右闭区间】，默认为包含</param>
+        /// <returns>是否在范围内</returns>
+        public static bool In<T>(this T? value, T min, T max, bool leftContain = true, bool rightContain = true) where T : struct, IComparable<T>
+            => value.HasValue && value.Value.In(min, max, leftContain, rightContain);
         #endregion
 
-        #region 判断当前【Long】值是否在指定范围内 + InRange(this long value, long min, long max)
+        #region 判断当前值是否在指定范围内，如果是，则返回该值得，不是则返回预计值，默认左右都是包含在内 + In<T>(this T value, T min, T max, T returnValue, bool leftContain = true, bool rightContain = true)
         /// <summary>
-        /// 判断当前【Long】值是否在指定范围内
+        /// 判断当前值是否在指定范围内，如果是，则返回该值得，不是则返回预计值，默认左右都是包含在内
+        /// <para>补充知识点，（a,a） = [a,a) = (a,a] = Ø 【空集】</para>
         /// </summary>
+        /// <typeparam name="T">要判断值的类型</typeparam>
         /// <param name="value">要判断的值</param>
-        /// <param name="min">最小值</param>
-        /// <param name="max">最大值</param>
-        /// <returns>bool</returns>
-        public static bool InRange(this long value, long min, long max) => value >= min && value <= max;
+        /// <param name="min">比较的最小值</param>
+        /// <param name="max">比较的最大值</param>
+        /// <param name="returnValue">不在范围内时返回的预计值</param>
+        /// <param name="leftContain">是否左包含【左闭区间】，默认为包含</param>
+        /// <param name="rightContain">是否右包含【右闭区间】，默认为包含</param>
+        /// <returns></returns>
+        public static T In<T>(this T value, T min, T max, T returnValue, bool leftContain = true, bool rightContain = true) where T : struct, IComparable<T>
+            => value.In(min, max, leftContain, rightContain) ? value : returnValue;
         #endregion
 
-        #region 判断当前【Long】值是否在指定范围内，否则返回默认值 + InRange(this long value, long min, long max, long returnValue)
+        #region 判断当前值【可空类型】是否在指定范围内，如果是，则返回该值得，不是则返回预计值，默认左右都是包含在内 + In<T>(this T? value, T min, T max, T returnValue, bool leftContain = true, bool rightContain = true)
         /// <summary>
-        /// 判断当前【Long】值是否在指定范围内，否则返回默认值
+        /// 判断当前值【可空类型】是否在指定范围内，如果是，则返回该值得，不是则返回预计值，默认左右都是包含在内
+        /// <para>补充知识点，（a,a） = [a,a) = (a,a] = Ø 【空集】</para>
         /// </summary>
+        /// <typeparam name="T">要判断值的类型</typeparam>
         /// <param name="value">要判断的值</param>
-        /// <param name="min">最小值</param>
-        /// <param name="max">最大值</param>
-        /// <param name="returnValue">默认值</param>
-        /// <returns>long</returns>
-        public static long InRange(this long value, long min, long max, long returnValue) => value.InRange(min, max) ? value : returnValue;
-        #endregion
-
-        #region 判断当前【Short】值是否在指定范围内 + InRange(this short value, short min, short max)
-        /// <summary>
-        /// 判断当前【Short】值是否在指定范围内
-        /// </summary>
-        /// <param name="value">要判断的值</param>
-        /// <param name="min">最小值</param>
-        /// <param name="max">最大值</param>
-        /// <returns>bool</returns>
-        public static bool InRange(this short value, short min, short max) => value >= min && value <= max;
-        #endregion
-
-        #region 判断当前【Short】值是否在指定范围内，否则返回默认值 + InRange(this short value, short min, short max, short returnValue)
-        /// <summary>
-        /// 判断当前【Short】值是否在指定范围内，否则返回默认值
-        /// </summary>
-        /// <param name="value">要判断的值</param>
-        /// <param name="min">最小值</param>
-        /// <param name="max">最大值</param>
-        /// <param name="returnValue">默认值</param>
-        /// <returns>short</returns>
-        public static short InRange(this short value, short min, short max, short returnValue) => value.InRange(min, max) ? value : returnValue;
-        #endregion
-
-        #region 判断当前【Float】值是否在指定范围内 + InRange(this float value, short min, short max)
-        /// <summary>
-        /// 判断当前【Float】值是否在指定范围内
-        /// </summary>
-        /// <param name="value">要判断的值</param>
-        /// <param name="min">最小值</param>
-        /// <param name="max">最大值</param>
-        /// <returns>bool</returns>
-        public static bool InRange(this float value, short min, short max) => value >= min && value <= max;
-        #endregion
-
-        #region 判断当前【Float】值是否在指定范围内，否则返回默认值 + InRange(this float value, short min, short max, float returnValue)
-        /// <summary>
-        /// 判断当前【Float】值是否在指定范围内，否则返回默认值
-        /// </summary>
-        /// <param name="value">要判断的值</param>
-        /// <param name="min">最小值</param>
-        /// <param name="max">最大值</param>
-        /// <param name="returnValue">默认值</param>
-        /// <returns>short</returns>
-        public static float InRange(this float value, short min, short max, float returnValue) => value.InRange(min, max) ? value : returnValue;
-        #endregion
-
-        #region 判断当前【Double】值是否在指定范围内 + InRange(this double value, double min, double max)
-        /// <summary>
-        /// 判断当前【Double】值是否在指定范围内
-        /// </summary>
-        /// <param name="value">要判断的值</param>
-        /// <param name="min">最小值</param>
-        /// <param name="max">最大值</param>
-        /// <returns>bool</returns>
-        public static bool InRange(this double value, double min, double max) => value >= min && value <= max;
-        #endregion
-
-        #region 判断当前【Double】值是否在指定范围内，否则返回默认值 + InRange(this double value, double min, double max, double returnValue)
-        /// <summary>
-        /// 判断当前【Double】值是否在指定范围内，否则返回默认值
-        /// </summary>
-        /// <param name="value">要判断的值</param>
-        /// <param name="min">最小值</param>
-        /// <param name="max">最大值</param>
-        /// <param name="returnValue">默认值</param>
-        /// <returns>double</returns>
-        public static double InRange(this double value, double min, double max, double returnValue) => value.InRange(min, max) ? value : returnValue;
-        #endregion
-
-        #region 判断当前【Decimal】值是否在指定范围内 + InRange(this decimal value, decimal min, decimal max)
-        /// <summary>
-        /// 判断当前【Decimal】值是否在指定范围内
-        /// </summary>
-        /// <param name="value">要判断的值</param>
-        /// <param name="min">最小值</param>
-        /// <param name="max">最大值</param>
-        /// <returns>bool</returns>
-        public static bool InRange(this decimal value, decimal min, decimal max) => value >= min && value <= max;
-        #endregion
-
-        #region 判断当前【Decimal】值是否在指定范围内，否则返回默认值 + InRange(this decimal value, decimal min, decimal max, decimal returnValue)
-        /// <summary>
-        /// 判断当前【Decimal】值是否在指定范围内，否则返回默认值
-        /// </summary>
-        /// <param name="value">要判断的值</param>
-        /// <param name="min">最小值</param>
-        /// <param name="max">最大值</param>
-        /// <param name="returnValue">默认值</param>
-        /// <returns>decimal</returns>
-        public static decimal InRange(this decimal value, decimal min, decimal max, decimal returnValue) => value.InRange(min, max) ? value : returnValue;
+        /// <param name="min">比较的最小值</param>
+        /// <param name="max">比较的最大值</param>
+        /// <param name="returnValue">不在范围内或为空时返回的预计值</param>
+        /// <param name="leftContain">是否左包含【左闭区间】，默认为包含</param>
+        /// <param name="rightContain">是否右包含【右闭区间】，默认为包含</param>
+        /// <returns></returns>
+        public static T In<T>(this T? value, T min, T max, T returnValue, bool leftContain = true, bool rightContain = true) where T : struct, IComparable<T>
+            => value.In(min, max, leftContain, rightContain) ? value.Value : returnValue;
         #endregion
 
         #region 判断字符串长度是否在指定范围内 + InLength(this string value, int min, int max)
