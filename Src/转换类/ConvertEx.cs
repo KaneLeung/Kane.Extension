@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:25:16
-* 更新时间 ：2020/12/04 14:30:16
-* 版 本 号 ：v1.0.6.0
+* 更新时间 ：2021/01/30 14:30:16
+* 版 本 号 ：v1.0.7.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
 *******************************************************************
@@ -438,6 +438,154 @@ namespace Kane.Extension
         /// <param name="format">自定义转换格式</param>
         /// <returns></returns>
         public static DateTime ToDT(this string value, string format) => ToDT(value, format, default);
+        #endregion
+
+        #region 将字符串转换为可空的日期对象 + ToNDT(this string value, string format = "")
+        /// <summary>
+        /// 将字符串转换为可空的日期对象
+        /// </summary>
+        /// <param name="value">日期字符串</param>
+        /// <param name="format">日期格式化字符串</param>
+        /// <returns>日期对象</returns>
+        public static DateTimeOffset? ToNDTO(this string value, string format = "")
+        {
+            DateTimeOffset? result = null;
+            if (value.IsValuable())
+            {
+                if (format.IsValuable() && DateTimeOffset.TryParseExact(value, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTimeOffset temp)) result = temp;
+                if (result == null && DateTimeOffset.TryParse(value, out temp)) result = temp;
+                if (result == null)
+                {
+                    foreach (string item in GlobalFormats)
+                    {
+                        if (DateTimeOffset.TryParseExact(value, item, CultureInfo.InvariantCulture, DateTimeStyles.None, out temp))
+                        {
+                            result = temp;
+                            break;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        #endregion
+
+        #region 常规字符串转换DateTime，可设置失败后的返回值 + ToDT(this string value, DateTime returnValue)
+        /// <summary>
+        /// 常规字符串转换DateTime，可设置失败后的返回值
+        /// <para>对象中的格式设置信息分析字符串value，该对象由当前线程区域性隐式提供。</para>
+        /// </summary>
+        /// <param name="value">要转的字符串</param>
+        /// <param name="returnValue">失败后的返回值</param>
+        /// <returns></returns>
+        public static DateTimeOffset ToDTO(this string value, DateTimeOffset returnValue)
+        {
+            if (value.IsNullOrEmpty()) return returnValue;
+            return value.ToNDTO() ?? returnValue;
+        }
+        #endregion
+
+        #region 常规字符串转换DateTime，失败后的返回默认值 + ToDT(this string value)
+        /// <summary>
+        /// 常规字符串转换DateTime，失败后的返回默认值
+        /// <para>对象中的格式设置信息分析字符串value，该对象由当前线程区域性隐式提供。</para>
+        /// </summary>
+        /// <param name="value">要转的字符串</param>
+        /// <returns></returns>
+        public static DateTimeOffset ToDTO(this string value) => ToDTO(value, default(DateTimeOffset));
+        #endregion
+
+        #region 字符串转换DateTime，可根据自定义格式转换，可设置失败后的返回值 + ToDT(this string value, string format, DateTime returnValue)
+        /// <summary>
+        /// 字符串转换DateTime，可根据自定义格式转换，可设置失败后的返回值
+        /// <para>例如【2019-02-05 18:20:30】</para>
+        /// g 常规日期/短时间; 标准格式字符串 =>【2019/2/5 18:20】
+        /// gg 时期或纪元。如果要设置格式的日期不具有关联的时期或纪元字符串，则忽略该模式。=>【公元】
+        /// y 不包含纪元的年份。如果不包含纪元的年份小于 10，则显示不具有前导零的年份。=>【2019年2月】
+        /// yy 不包含纪元的年份。如果不包含纪元的年份小于 10，则显示具有前导零的年份。=>【19】
+        /// yyyy 包括纪元的四位数的年份。=>【2019】
+        /// M 月份数字。一位数的月份没有前导零。=>【2】
+        /// MM 月份数字。一位数的月份有一个前导零。=>【02】
+        /// MMM 月份的缩写名称，在 AbbreviatedMonthNames 中定义。=>【2月】或【Feb】
+        /// MMMM 月份的完整名称，在 MonthNames 中定义。=>【2月】或【February】
+        /// d 月中的某一天。一位数的日期没有前导零。=>【5】
+        /// dd 月中的某一天。一位数的日期有一个前导零。=>【05】
+        /// ddd 周中某天的缩写名称，在 AbbreviatedDayNames 中定义。=>【周二】
+        /// dddd 周中某天的完整名称，在 DayNames 中定义。=>【星期二】
+        /// h 12 小时制的小时。一位数的小时数没有前导零。 
+        /// hh 12 小时制的小时。一位数的小时数有前导零。 
+        /// H 24 小时制的小时。一位数的小时数没有前导零。 
+        /// HH 24 小时制的小时。一位数的小时数有前导零。 
+        /// m 分钟。一位数的分钟数没有前导零。 
+        /// mm 分钟。一位数的分钟数有一个前导零。 
+        /// s 秒。一位数的秒数没有前导零。 
+        /// ss 秒。一位数的秒数有一个前导零。 
+        /// f 秒的小数精度为一位。其余数字被截断。 
+        /// ff 秒的小数精度为两位。其余数字被截断。 
+        /// fff 秒的小数精度为三位。其余数字被截断。 
+        /// ffff 秒的小数精度为四位。其余数字被截断。 
+        /// fffff 秒的小数精度为五位。其余数字被截断。 
+        /// ffffff 秒的小数精度为六位。其余数字被截断。 
+        /// fffffff 秒的小数精度为七位。其余数字被截断。 
+        /// t 在 AMDesignator 或 PMDesignator 中定义的 AM/PM 指示项的第一个字符（如果存在）。=>【18:20】
+        /// tt 在 AMDesignator 或 PMDesignator 中定义的 AM/PM 指示项（如果存在）。=>【下午】
+        /// : 在 TimeSeparator 中定义的默认时间分隔符。 
+        /// / 在 DateSeparator 中定义的默认日期分隔符。
+        /// https://docs.microsoft.com/zh-cn/dotnet/api/system.globalization.datetimeformatinfo?view=netcore-3.1
+        /// </summary>
+        /// <param name="value">要转的字符串</param>
+        /// <param name="format">自定义转换格式</param>
+        /// <param name="returnValue">失败后的返回值</param>
+        /// <returns></returns>
+        public static DateTimeOffset ToDTO(this string value, string format, DateTimeOffset returnValue)
+        {
+            if (value.IsNullOrEmpty()) return returnValue;
+            return value.ToNDTO(format) ?? returnValue;
+        }
+        #endregion
+
+        #region 字符串转换DateTime，可根据自定义格式转换，失败后的返回默认值 + ToDT(this string value, string format)
+        /// <summary>
+        /// 字符串转换DateTime，可根据自定义格式转换，失败后的返回默认值
+        /// <para>例如【2019-02-05 18:20:30】</para>
+        /// g 常规日期/短时间; 标准格式字符串 =>【2019/2/5 18:20】
+        /// gg 时期或纪元。如果要设置格式的日期不具有关联的时期或纪元字符串，则忽略该模式。=>【公元】
+        /// y 不包含纪元的年份。如果不包含纪元的年份小于 10，则显示不具有前导零的年份。=>【2019年2月】
+        /// yy 不包含纪元的年份。如果不包含纪元的年份小于 10，则显示具有前导零的年份。=>【19】
+        /// yyyy 包括纪元的四位数的年份。=>【2019】
+        /// M 月份数字。一位数的月份没有前导零。=>【2】
+        /// MM 月份数字。一位数的月份有一个前导零。=>【02】
+        /// MMM 月份的缩写名称，在 AbbreviatedMonthNames 中定义。=>【2月】或【Feb】
+        /// MMMM 月份的完整名称，在 MonthNames 中定义。=>【2月】或【February】
+        /// d 月中的某一天。一位数的日期没有前导零。=>【5】
+        /// dd 月中的某一天。一位数的日期有一个前导零。=>【05】
+        /// ddd 周中某天的缩写名称，在 AbbreviatedDayNames 中定义。=>【周二】
+        /// dddd 周中某天的完整名称，在 DayNames 中定义。=>【星期二】
+        /// h 12 小时制的小时。一位数的小时数没有前导零。 
+        /// hh 12 小时制的小时。一位数的小时数有前导零。 
+        /// H 24 小时制的小时。一位数的小时数没有前导零。 
+        /// HH 24 小时制的小时。一位数的小时数有前导零。 
+        /// m 分钟。一位数的分钟数没有前导零。 
+        /// mm 分钟。一位数的分钟数有一个前导零。 
+        /// s 秒。一位数的秒数没有前导零。 
+        /// ss 秒。一位数的秒数有一个前导零。 
+        /// f 秒的小数精度为一位。其余数字被截断。 
+        /// ff 秒的小数精度为两位。其余数字被截断。 
+        /// fff 秒的小数精度为三位。其余数字被截断。 
+        /// ffff 秒的小数精度为四位。其余数字被截断。 
+        /// fffff 秒的小数精度为五位。其余数字被截断。 
+        /// ffffff 秒的小数精度为六位。其余数字被截断。 
+        /// fffffff 秒的小数精度为七位。其余数字被截断。 
+        /// t 在 AMDesignator 或 PMDesignator 中定义的 AM/PM 指示项的第一个字符（如果存在）。=>【18:20】
+        /// tt 在 AMDesignator 或 PMDesignator 中定义的 AM/PM 指示项（如果存在）。=>【下午】
+        /// : 在 TimeSeparator 中定义的默认时间分隔符。 
+        /// / 在 DateSeparator 中定义的默认日期分隔符。
+        /// https://docs.microsoft.com/zh-cn/dotnet/api/system.globalization.datetimeformatinfo?view=netcore-3.1
+        /// </summary>
+        /// <param name="value">要转的字符串</param>
+        /// <param name="format">自定义转换格式</param>
+        /// <returns></returns>
+        public static DateTimeOffset ToDTO(this string value, string format) => ToDTO(value, format, default);
         #endregion
 
         #region 将电话号码转换为国际标准【International Standard】的电话号码，可自定义国家代码 + ToISPhoneNo(this string value, string code)

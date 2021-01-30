@@ -52,7 +52,6 @@ namespace Kane.Extension
         public IntConverter(int value) => returnValue = value;
         #endregion
 
-
         #region 重写转换器Read方法 + Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         /// <summary>
         /// 重写转换器Read方法
@@ -111,7 +110,7 @@ namespace Kane.Extension
     #region 自定义DateTimeConverter + DateTimeConverter : JsonConverter<DateTime>
     /// <summary>
     /// 自定义DateTimeConverter
-    /// https://github.com/dotnet/runtime/blob/ecdb7f36e0/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/Converters/Value/DateTimeConverter.cs
+    /// https://github.com/dotnet/runtime/blob/master/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/Converters/Value/DateTimeConverter.cs
     /// </summary>
     public class DateTimeConverter : JsonConverter<DateTime>
     {
@@ -160,6 +159,58 @@ namespace Kane.Extension
     }
     #endregion
 
+    #region 自定义DateTimeOffsetConverter + DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
+    /// <summary>
+    /// 自定义DateTimeOffsetConverter
+    /// https://github.com/dotnet/runtime/blob/master/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/Converters/Value/DateTimeOffsetConverter.cs
+    /// </summary>
+    public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
+    {
+        #region 转换格式的私有变量
+        /// <summary>
+        /// 转换格式的私有变量
+        /// </summary>
+        private readonly string _format;
+        #endregion
+
+        #region 【构造函数】转换器默认格式【yyyy-MM-dd HH:mm:ss】 + DateTimeConverter()
+        /// <summary>
+        /// 【构造函数】转换器默认格式【yyyy-MM-dd HH:mm:ss】
+        /// </summary>
+        public DateTimeOffsetConverter() => _format = "yyyy-MM-dd HH:mm:ss";
+        #endregion
+
+        #region 【构造函数】转换器自定义格式 + DateTimeConverter(string format)
+        /// <summary>
+        /// 【构造函数】转换器自定义格式
+        /// </summary>
+        /// <param name="format">用户自定义格式</param>
+        public DateTimeOffsetConverter(string format) => _format = format;
+        #endregion
+
+        #region 重写转换器Read方法 + Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        /// <summary>
+        /// 重写转换器Read方法
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="typeToConvert"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) => reader.GetString().ToDT(_format);
+        #endregion
+
+        #region 重写转换器Write方法 + Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+        /// <summary>
+        /// 重写转换器Write方法
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="value"></param>
+        /// <param name="options"></param>
+        public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options) => writer.WriteStringValue(value.ToString(_format));
+        #endregion
+    }
+    #endregion
+
     #region 自定义BoolConverter，可将Json字符串"true"/"false"转成bool + BoolConverter : JsonConverter<bool>
     /// <summary>
     /// 自定义BoolConverter，可将Json字符串"true"/"false"转成bool
@@ -192,21 +243,6 @@ namespace Kane.Extension
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options) => writer.WriteBooleanValue(value);
         #endregion
-    }
-    #endregion
-
-    #region 自定义名称策略，属性名全为【小写】 + LowerCaseNamingPolicy : JsonNamingPolicy
-    /// <summary>
-    /// 自定义名称策略，属性名全为【小写】
-    /// </summary>
-    public class LowerCaseNamingPolicy : JsonNamingPolicy
-    {
-        /// <summary>
-        /// 重写转换器
-        /// </summary>
-        /// <param name="name">原名称</param>
-        /// <returns></returns>
-        public override string ConvertName(string name) => name.ToLower();
     }
     #endregion
 }

@@ -74,6 +74,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Json类\README.md" />
+    <None Remove="加密解密\README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>

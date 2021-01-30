@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2020/05/30 14:11:40
-* 更新时间 ：2020/06/25 14:11:40
-* 版 本 号 ：v1.0.1.0
+* 更新时间 ：2020/01/30 14:11:40
+* 版 本 号 ：v1.0.2.0
 *******************************************************************
 * Copyright @ Kane Leung 2020. All rights reserved.
 *******************************************************************
@@ -27,6 +27,19 @@ namespace Kane.Extension
     /// </summary>
     public static class ExceptionEx
     {
+        #region 判断对象是否为空，如果为空则抛【ArgumentNullException】 + ThrowIfNull<T>(this T value, string message)
+        /// <summary>
+        /// 判断对象是否为空，如果为空则抛【ArgumentNullException】
+        /// </summary>
+        /// <typeparam name="T">要判断的对象的类型</typeparam>
+        /// <param name="value">要判断的对象</param>
+        /// <param name="message">异常消息</param>
+        public static void ThrowIfNull<T>(this T value, string message)
+        {
+            if ((value is string str && str.IsNullOrEmpty()) || value.IsNull()) throw new ArgumentNullException(null, message);
+        }
+        #endregion
+
         #region 判断对象是否为空，如果为空则抛【ArgumentNullException】 + ThrowIfNull<T>(this T value, string paramName, string message = "对象不能为空.")
         /// <summary>
         /// 判断对象是否为空，如果为空则抛【ArgumentNullException】
@@ -35,7 +48,7 @@ namespace Kane.Extension
         /// <param name="value">要判断的对象</param>
         /// <param name="paramName">参数名称</param>
         /// <param name="message">异常消息</param>
-        public static void ThrowIfNull<T>(this T value, string paramName, string message = "对象不能为空.")
+        public static void ThrowIfNull<T>(this T value, string paramName, string message)
         {
             if ((value is string str && str.IsNullOrEmpty()) || value.IsNull()) throw new ArgumentNullException(paramName, message);
         }
@@ -49,7 +62,7 @@ namespace Kane.Extension
         /// <param name="message">异常消息,默认为【文件名】该文件不存在</param>
         public static void ThrowFileNotExist(this string file, string message = "")
         {
-            if (file.IsNullOrEmpty() || !File.Exists(file)) throw new FileNotFoundException(message.IsNullOrEmpty() ? $"【{file}】该文件不存在" : message);
+            if (file.IsNullOrEmpty() || !File.Exists(file)) throw new FileNotFoundException(message ?? $"【{file}】该文件不存在");
         }
         #endregion
 
@@ -61,7 +74,7 @@ namespace Kane.Extension
         /// <param name="message"></param>
         public static void ThrowDirNotExist(this string directory, string message = "")
         {
-            if (directory.IsNullOrEmpty() || !Directory.Exists(directory)) throw new DirectoryNotFoundException(message.IsNullOrEmpty() ? $"【{directory}】该文件夹不存在" : message);
+            if (directory.IsNullOrEmpty() || !Directory.Exists(directory)) throw new DirectoryNotFoundException(message ?? $"【{directory}】该文件夹不存在");
         }
         #endregion
     }
