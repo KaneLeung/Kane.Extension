@@ -125,7 +125,7 @@ namespace Kane.Extension
         public static int RandomInt(int min, int max) => random.Next(min, max + 1);
         #endregion
 
-        #region 在范围内随机一个整数，可包含最大值 + RandomInt(int min, int max)
+        #region 在范围内随机一个整数，可包含最大值 + RandomShort(short min, short max)
         /// <summary>
         /// 在范围内随机一个整数，可包含最大值
         /// </summary>
@@ -150,6 +150,21 @@ namespace Kane.Extension
         }
         #endregion
 
+        #region 在范围内随机一个小数，小数位最多只有10位 + RandomFloat(float min, float max)
+        /// <summary>
+        /// 在范围内随机一个小数，小数位最多只有9位，可包含最大值
+        /// <para>直接使用<see cref="Random.NextDouble"/>是不包含最大值</para>
+        /// </summary>
+        /// <param name="min">最小值</param>
+        /// <param name="max">最大值</param>
+        /// <returns></returns>
+        public static float RandomFloat(float min, float max)
+        {
+            var temp = (float)random.Next(0, 1000000001) / 1000000000;//随机生成【1-1000000000】的整
+            return temp * (max - min) + min;
+        }
+        #endregion
+
         #region 在范围内随机一个小数，小数位可设置 + RandomDouble(double min, double max, int digits)
         /// <summary>
         /// 在范围内随机一个小数，小数位可设置
@@ -166,6 +181,25 @@ namespace Kane.Extension
             double _min = min * pow, _max = max * pow + 1;
             if (_min > int.MaxValue || _max > int.MaxValue) throw new ArgumentOutOfRangeException(_min > int.MaxValue ? nameof(min) : nameof(max), "参数超出范围");
             return (double)random.Next((int)_min, (int)_max) / pow;
+        }
+        #endregion
+
+        #region 在范围内随机一个小数，小数位可设置 + RandomFloat(float min, float max, int digits)
+        /// <summary>
+        /// 在范围内随机一个小数，小数位可设置
+        /// <para>※注意：范围有限！！※</para>
+        /// <para>范围：min * 10^digits ≤ 2147483647 并且 max * 10^digits + 1 ≤ 2147483647</para>
+        /// </summary>
+        /// <param name="min">最小值</param>
+        /// <param name="max">最大值</param>
+        /// <param name="digits">小数保留数位</param>
+        /// <returns></returns>
+        public static float RandomFloat(float min, float max, int digits)
+        {
+            var pow = (int)Math.Pow(10, digits);
+            float _min = min * pow, _max = max * pow + 1;
+            if (_min > int.MaxValue || _max > int.MaxValue) throw new ArgumentOutOfRangeException(_min > int.MaxValue ? nameof(min) : nameof(max), "参数超出范围");
+            return (float)random.Next((int)_min, (int)_max) / pow;
         }
         #endregion
 
