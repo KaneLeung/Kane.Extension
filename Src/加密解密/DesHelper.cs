@@ -35,8 +35,8 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要加密的数据【字节数组】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
-        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(8)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
+        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(8)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns>返回Base64字符串</returns>
@@ -50,8 +50,8 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要加密的数据【字符串】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
-        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(8)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
+        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(8)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns>返回Base64字符串</returns>
@@ -65,8 +65,8 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要加密的数据【字节数组】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
-        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(8)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
+        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(8)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
@@ -105,8 +105,8 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要加密的数据【字符串】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
-        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(8)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
+        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(8)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
@@ -120,8 +120,8 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要解密的数据【字节数组】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
-        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(8)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
+        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(8)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
@@ -135,8 +135,8 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要解密的数据【Base64字符串】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
-        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(8)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
+        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(8)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
@@ -150,8 +150,8 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要解密的数据【字节数组】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
-        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(8)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
+        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(8)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
@@ -195,8 +195,8 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要解密的数据【Base64字符串】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
-        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(8)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
+        /// <param name="iv">向量，通常为8Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(8)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
@@ -210,7 +210,7 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要加密的数据【字节数组】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns>返回Base64字符串</returns>
@@ -224,7 +224,7 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要加密的数据【字符串】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns>返回Base64字符串</returns>
@@ -238,7 +238,7 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要加密的数据【字节数组】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
@@ -271,7 +271,7 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要加密的数据【字符串】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
@@ -285,7 +285,7 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要解密的数据【字节数组】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
@@ -299,7 +299,7 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要解密的数据【Base64字符串】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
@@ -313,7 +313,7 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要解密的数据【字节数组】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
@@ -351,7 +351,7 @@ namespace Kane.Extension
         /// <para>经测试当<see cref="CipherMode"/>为【CBC】或【CFB】IV向量才生效</para>
         /// </summary>
         /// <param name="data">要解密的数据【Base64字符串】</param>
-        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandMethod, char[])"/>RandCode(24)生成</param>
+        /// <param name="key">密钥，通常为24Bit,可由<see cref="RandomHelper.RandCode(int, RandomMode, char[])"/>RandCode(24)生成</param>
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
