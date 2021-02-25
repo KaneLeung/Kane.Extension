@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:25:16
-* 更新时间 ：2021/01/30 14:30:16
-* 版 本 号 ：v1.0.7.0
+* 更新时间 ：2021/02/24 17:30:16
+* 版 本 号 ：v1.0.8.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
 *******************************************************************
@@ -31,6 +31,43 @@ namespace Kane.Extension
     /// </summary>
     public static class ConvertEx
     {
+        #region 泛型转换为Short,失败时返回默认值0 + ToShort<T>(this T value, short returnValue = 0)
+        /// <summary>
+        /// 泛型转换为Short,失败时返回默认值0
+        /// <para>可转【100.001】【-100.001】【  -100.001  】</para>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value">要转换的对象</param>
+        /// <param name="returnValue">可设置失败后的返回值，默认为0</param>
+        /// <returns></returns>
+        public static short ToShort<T>(this T value, short returnValue = 0)
+        {
+            if (value.IsNull() || value.ToString().IsNullOrEmpty()) return returnValue;
+            var temp = value.ToString();
+            if (temp.IndexOf('.') >= 0) temp = temp.Split('.')[0];
+            short.TryParse(temp, out returnValue);
+            return returnValue;
+        }
+        #endregion
+
+        #region 泛型转换为Short?(注意是可空类型) + ToNShort<T>(this T value)
+        /// <summary>
+        /// 泛型转换为Short?(注意是可空类型)
+        /// <para>可转【100.001】【-100.001】【  -100.001  】</para>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value">要转换的对象</param>
+        /// <returns></returns>
+        public static short? ToNShort<T>(this T value)
+        {
+            if (value.IsNull() || value.ToString().IsNullOrEmpty()) return null;
+            var temp = value.ToString();
+            if (temp.IndexOf('.') >= 0) temp = temp.Split('.')[0];
+            if (short.TryParse(temp, out short returnValue)) return returnValue;
+            else return null;
+        }
+        #endregion
+
         #region 泛型转换为Int,失败时返回默认值0 + ToInt<T>(this T value, int returnValue = 0)
         /// <summary>
         /// 泛型转换为Int,失败时返回默认值0
