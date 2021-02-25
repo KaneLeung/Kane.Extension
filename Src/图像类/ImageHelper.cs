@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:21:26
-* 更新时间 ：2020/03/20 13:21:26
-* 版 本 号 ：v1.0.3.0
+* 更新时间 ：2021/02/25 14:21:26
+* 版 本 号 ：v1.0.4.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
 *******************************************************************
@@ -234,6 +234,42 @@ namespace Kane.Extension
             {
                 return string.Empty;
             }
+        }
+        #endregion
+
+        #region 扭曲图片 + TwistImage(this Bitmap bitmap, bool xDirection, double multValue, double phase, Color backgroundColor)
+        /// <summary>
+        /// 扭曲图片
+        /// </summary>
+        /// <param name="bitmap">原图</param>
+        /// <param name="xDirection">是否为[X]轴方向</param>
+        /// <param name="multValue">扭曲度</param>
+        /// <param name="phase">相位</param>
+        /// <param name="backgroundColor">背景颜色</param>
+        /// <returns></returns>
+        public static Bitmap TwistImage(this Bitmap bitmap, bool xDirection, double multValue, double phase, Color backgroundColor)
+        {
+            Bitmap result = new Bitmap(bitmap.Width, bitmap.Height);
+            Graphics graph = Graphics.FromImage(result);//设置背景色为源图片背景色
+            graph.Clear(backgroundColor);
+            graph.Dispose();
+            double dBaseAxisLen = xDirection ? result.Height : result.Width;
+            for (int i = 0; i < result.Width; i++)
+            {
+                for (int j = 0; j < result.Height; j++)
+                {
+                    var targetX = xDirection ? (6.28318530717958 * j) / dBaseAxisLen : (6.28318530717958 * i) / dBaseAxisLen;//6.28318530717958为2π
+                    targetX += phase;
+                    double targetY = Math.Sin(targetX);
+                    var originalX = xDirection ? i + (int)(targetY * multValue) : i;
+                    var originalY = xDirection ? j : j + (int)(targetY * multValue);
+                    if (originalX >= 0 && originalX < result.Width && originalY >= 0 && originalY < result.Height)
+                    {
+                        result.SetPixel(originalX, originalY, bitmap.GetPixel(i, j));// 取得当前点的颜色
+                    }
+                }
+            }
+            return result;
         }
         #endregion
     }

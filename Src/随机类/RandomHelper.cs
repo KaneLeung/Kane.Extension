@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:19:31
-* 更新时间 ：2021/02/22 09:14:21
-* 版 本 号 ：v1.0.4.0
+* 更新时间 ：2021/02/25 15:14:21
+* 版 本 号 ：v1.0.5.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
 *******************************************************************
@@ -19,6 +19,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -62,13 +63,22 @@ namespace Kane.Extension
         }
         #endregion
 
-        #region Guid转换为纯数字 + ToNumeric(this Guid guid)
+        #region Guid转换为纯数字 + ToLongData(this Guid guid)
         /// <summary>
-        /// Guid转换为纯数字，通常为16位长
+        /// Guid转换为Long值，通常为16位长
         /// </summary>
         /// <param name="guid">Guid对象</param>
         /// <returns></returns>
-        public static long ToNumeric(this Guid guid) => BitConverter.ToInt64(guid.ToByteArray(), 0);
+        public static long ToLongData(this Guid guid) => BitConverter.ToInt64(guid.ToByteArray(), 0);
+        #endregion
+
+        #region Guid转换为纯数字 + ToIntData(this Guid guid)
+        /// <summary>
+        /// Guid转换为Int值，通常为10位长
+        /// </summary>
+        /// <param name="guid">Guid对象</param>
+        /// <returns></returns>
+        public static int ToIntData(this Guid guid) => BitConverter.ToInt32(guid.ToByteArray(), 0);
         #endregion
 
         #region 获取一个全大写的【UUID】】 + UUID()
@@ -214,6 +224,52 @@ namespace Kane.Extension
         {
             if (list.IsNullOrEmpty()) return default;
             else return list[random.Next(0, list.Count)];
+        }
+        #endregion
+
+        #region 随机生成颜色，默认Alpha透明度值为255 + RandomColor(int alpha = 255)
+        /// <summary>
+        /// 随机生成颜色，默认Alpha透明度值为255
+        /// </summary>
+        /// <param name="alpha"></param>
+        /// <returns></returns>
+        public static Color RandomColor(int alpha = 255)
+            => Color.FromArgb(alpha, random.Next(0, 256), random.Next(0, 256), random.Next(0, 256));
+        #endregion
+
+        #region 随机生成较深的颜色，默认Alpha透明度值为255 + GetDarkColor(int alpha = 255)
+        /// <summary>
+        /// 随机生成较深的颜色，默认Alpha透明度值为255
+        /// </summary>
+        /// <param name="alpha">Alpha透明度值，有效值为 0 到 255。</param>
+        /// <returns></returns>
+        public static Color RandomDarkColor(int alpha = 255)
+        {
+            int red = random.Next(256);
+            int green = random.Next(256);
+            int blue = (red + green > 380) ? red + green - 380 : random.Next(256);
+            blue = (blue > 255) ? 255 : blue;
+            int increase = random.Next(30, 256);//加深颜色，可调整
+            red = Math.Abs(red - increase);
+            green = Math.Abs(green - increase);
+            blue = Math.Abs(blue - increase);
+            return Color.FromArgb(alpha, red, green, blue);
+        }
+        #endregion
+
+        #region 随机生成较浅的颜色，默认Alpha透明度值为255 + GetLightColor(int alpha = 255)
+        /// <summary>
+        /// 随机生成较浅的颜色，默认Alpha透明度值为255
+        /// </summary>
+        /// <param name="alpha">Alpha透明度值，有效值为 0 到 255。</param>
+        /// <returns></returns>
+        public static Color RandomLightColor(int alpha = 255)
+        {
+            // $R * 0.299 + $G * 0.587 + $B * 0.114 > 192，值越大，颜色越深
+            int red = random.Next(200, 256);
+            int green = red < 225 ? 255 : random.Next(220, 256);
+            int blue = red < 225 ? 255 : green < 235 ? 255 : random.Next(200, 256);
+            return Color.FromArgb(alpha, red, green, blue);
         }
         #endregion
     }
