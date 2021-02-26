@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2021/02/25 16:25:28
-* 更新时间 ：2021/02/25 16:25:28
-* 版 本 号 ：v1.0.0.0
+* 更新时间 ：2021/02/26 10:25:28
+* 版 本 号 ：v1.0.1.0
 *******************************************************************
 * Copyright @ Kane Leung 2021. All rights reserved.
 *******************************************************************
@@ -24,7 +24,7 @@ using System.Drawing.Drawing2D;
 using System.Text;
 using System.Linq;
 using System.IO;
-#if NETCOREAPP3_1 || NET5_0
+#if NETCOREAPP3_1_OR_GREATER
 using Kane.Extension.Json;
 #else
 using Kane.Extension.JsonNet;
@@ -37,7 +37,7 @@ namespace Kane.Extension
     /// </summary>
     public class CaptchaHelper
     {
-        private readonly Random random = new Random();
+        private readonly Random random = new();
         private readonly char[] operators = new char[] { '+', '*', '-', '/' };
         private CaptchaMode currentMode;
 
@@ -89,7 +89,7 @@ namespace Kane.Extension
         /// </summary>
         public string ChineseFontFamily { get; set; } = "宋体";
         /// <summary>
-        /// 是否设置为随机颜色，当为true时<see cref="FontColor"/>则失效
+        /// 是否设置为随机颜色，默认为【true】，当为true时<see cref="FontColor"/>则失效
         /// </summary>
         public bool RandomFontColor { get; set; } = true;
         /// <summary>
@@ -97,11 +97,11 @@ namespace Kane.Extension
         /// </summary>
         public Color FontColor { get; set; } = Color.Blue;
         /// <summary>
-        /// 是否设置为随机颜色，当为true时<see cref="BackgroundColor"/>则失效
+        /// 是否设置为随机颜色，默认为【true】，当为true时<see cref="BackgroundColor"/>则失效
         /// </summary>
         public bool RandomBackgroundColor { get; set; } = true;
         /// <summary>
-        /// 当设置为随机背景颜色时，本值不生效，默认为【魄】
+        /// 当设置为随机背景颜色时，本值不生效，默认为【白色】
         /// </summary>
         public Color BackgroundColor { get; set; } = Color.White;
         /// <summary>
@@ -130,7 +130,7 @@ namespace Kane.Extension
         /// </summary>
         public bool UseDarkMode { get; set; } = false;
         /// <summary>
-        /// 是否扭曲图片
+        /// 是否扭曲图片，默认为【false】
         /// </summary>
         public bool ToTwistImage { get; set; } = false;
         /// <summary>
@@ -183,7 +183,7 @@ namespace Kane.Extension
             var hasChinese = currentMode == CaptchaMode.Chinese || currentMode == CaptchaMode.QuestionBank;//当前选中的是否包含中文
             var width = code.Length * FontSize * (hasChinese ? 2 : 1);//如果是中文或题库，则乘二
             var height = Convert.ToInt32(0.6 * FontSize + FontSize);
-            Bitmap bitmap = new Bitmap(width, height);
+            Bitmap bitmap = new(width, height);
             using Graphics graphics = Graphics.FromImage(bitmap);
             graphics.SmoothingMode = SmoothingMode.HighQuality;
             var backgroundColor = RandomBackgroundColor ? UseDarkMode ? RandomHelper.RandomDarkColor() : RandomHelper.RandomLightColor() : BackgroundColor;
@@ -198,13 +198,13 @@ namespace Kane.Extension
                     RandomBackgroundColor ? UseDarkMode ? RandomHelper.RandomLightColor(150) : RandomHelper.RandomDarkColor(125) : FontColor, 1),
                     x1, y1, x2, y2);
             }
-            StringFormat format = new StringFormat(StringFormatFlags.NoClip)//设置文字居中
+            StringFormat format = new(StringFormatFlags.NoClip)//设置文字居中
             {
                 Alignment = StringAlignment.Center,
                 LineAlignment = StringAlignment.Center
             };
-            using SolidBrush brush = new SolidBrush(RandomFontColor ? UseDarkMode ? RandomHelper.RandomLightColor() : RandomHelper.RandomDarkColor() : FontColor);
-            Font font = new Font(hasChinese ? ChineseFontFamily : StringFontFamily, random.Next(FontSize - 3, FontSize + 1), FontStyle.Regular);//字体样式
+            using SolidBrush brush = new(RandomFontColor ? UseDarkMode ? RandomHelper.RandomLightColor() : RandomHelper.RandomDarkColor() : FontColor);
+            Font font = new(hasChinese ? ChineseFontFamily : StringFontFamily, random.Next(FontSize - 3, FontSize + 1), FontStyle.Regular);//字体样式
             for (int i = 0; i < code.Length; i++)
             {
                 if (hasChinese)//TODO:中文旋转会发生错位，暂时中文不旋转
@@ -216,7 +216,7 @@ namespace Kane.Extension
                     float angle = random.Next(-RandomAngle, RandomAngle + 1);//验证码旋转，防止机器识别，转动的度数
                     graphics.TranslateTransform(15, 12);
                     graphics.RotateTransform(angle);
-                    graphics.DrawString(code[i].ToString(), font, brush, -2 * i * 5, 3, format);
+                    graphics.DrawString(code[i].ToString(), font, brush, -2, 3, format);
                     graphics.RotateTransform(-angle);
                     graphics.TranslateTransform(2, -12);
                 }
@@ -246,7 +246,7 @@ namespace Kane.Extension
             if (mode == CaptchaMode.Letter) charList.AddRange(new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' });//去掉【I】和【l】这两个相似的
             if (mode == CaptchaMode.Numeric) charList.AddRange(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
             if (mode == CaptchaMode.LetterAndNumeric) charList.AddRange(new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '2', '3', '4', '5', '6', '7', '8', '9' });//去掉【I】、【l】、【0】、【1】、【o】、【O】这几个相似的
-            StringBuilder result = new StringBuilder();
+            StringBuilder result = new();
             int charCount = charList.Count;
             for (int i = 0; i < length; i++)
                 result.Append(charList[random.Next(0, charCount)]);
