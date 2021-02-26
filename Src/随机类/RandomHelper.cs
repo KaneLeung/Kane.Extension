@@ -30,7 +30,7 @@ namespace Kane.Extension
     /// </summary>
     public static class RandomHelper
     {
-        private static readonly Random random = new Random();
+        private static readonly Random random = new();
 #if NETCOREAPP
         static RandomHelper() => Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//NetCore中使用GB2312编码
 #endif

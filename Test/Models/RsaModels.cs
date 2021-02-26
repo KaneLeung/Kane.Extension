@@ -11,34 +11,34 @@ namespace Kane.Extension.Test
         /// <summary>
         /// 表示 D 算法的 System.Security.Cryptography.RSA 参数。
         /// </summary>
-        public string D{get;set;}
+        public string D { get; set; }
         /// <summary>
         /// 表示 DP 算法的 System.Security.Cryptography.RSA 参数。
         /// </summary>
-        public string DP{get;set;}
+        public string DP { get; set; }
         /// <summary>
         /// 表示 DQ 算法的 System.Security.Cryptography.RSA 参数。
         /// </summary>
-        public string DQ{get;set;}
+        public string DQ { get; set; }
         /// <summary>
         /// 表示 Exponent 算法的 System.Security.Cryptography.RSA 参数。
         /// </summary>
-        public string Exponent{get;set;}
+        public string Exponent { get; set; }
         /// <summary>
         /// 表示 InverseQ 算法的 System.Security.Cryptography.RSA 参数。
         /// </summary>
-        public string InverseQ{get;set;}
+        public string InverseQ { get; set; }
         /// <summary>
         /// 表示 Modulus 算法的 System.Security.Cryptography.RSA 参数。
         /// </summary>
-        public string Modulus{get;set;}
+        public string Modulus { get; set; }
         /// <summary>
         /// 表示 P 算法的 System.Security.Cryptography.RSA 参数。
         /// </summary>
-        public string P{get;set;}
+        public string P { get; set; }
         /// <summary>
         /// 表示 Q 算法的 System.Security.Cryptography.RSA 参数。
         /// </summary>
-        public string Q{get;set;}
+        public string Q { get; set; }
     }
 }

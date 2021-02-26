@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/10/16 23:17:28
-* 更新时间 ：2020/12/04 14:37:28
-* 版 本 号 ：v1.0.9.0
+* 更新时间 ：2021/02/26 10:37:28
+* 版 本 号 ：v1.1.0.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
 *******************************************************************
@@ -498,6 +498,8 @@ namespace Kane.Extension
             DateTimeFormat.ShortTime => datetime.ToString(removeSecond ? "H:m" : "H:m:s"),
             DateTimeFormat.LongWeek => datetime.ToString("dddd", new CultureInfo("zh-CN")),
             DateTimeFormat.ShortWeek => datetime.ToString("ddd", new CultureInfo("zh-CN")),
+            DateTimeFormat.String => datetime.ToString("yyyyMMddHHmmss"),
+            DateTimeFormat.LongString => datetime.ToString("yyyyMMddHHmmssff"),
             _ => datetime.ToString(),//05/16/2020 10:38:18
         };
         #endregion
