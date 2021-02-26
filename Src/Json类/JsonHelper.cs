@@ -10,8 +10,8 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2019/11/15 23:56:17
-* 更新时间 ：2020/11/12 16:16:17
-* 版 本 号 ：v1.0.2.0
+* 更新时间 ：2021/02/26 10:16:17
+* 版 本 号 ：v1.0.3.0
 *******************************************************************
 * Copyright @ Kane Leung 2019. All rights reserved.
 *******************************************************************
@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-#if NETCOREAPP3_1 || NET5_0
+#if NETCOREAPP3_1_OR_GREATER
 using System.Text.Json;
 #else
 using Newtonsoft.Json;
@@ -43,7 +43,7 @@ namespace Kane.Extension
         /// 默认分割的字符，默认为【:】半角冒号
         /// </summary>
         public static char SplitChar = ':';
-#if NETCOREAPP3_1 || NET5_0
+#if NETCOREAPP3_1_OR_GREATER
         /// <summary>
         /// 字符串转JsonDocument时设置的参数，可设置深度
         /// <para>【MaxDepth】深度默认为64</para>
@@ -120,7 +120,7 @@ namespace Kane.Extension
         }
         #endregion
 
-#if NETCOREAPP3_1 || NET5_0
+#if NETCOREAPP3_1_OR_GREATER
         #region 根据关键词，获取对应的值 + GetValue<T>(string keys, T returnValue = default)
         /// <summary>
         /// 根据关键词，获取对应的值，关键词可用 Key1:Key2:Key3进行遍历，
@@ -133,39 +133,28 @@ namespace Kane.Extension
         /// <returns></returns>
         public T GetValue<T>(string keys, T returnValue = default)
         {
-            try
+            var keyValues = keys.Trim(SplitChar).Split(SplitChar);
+            using var doc = JsonDocument.Parse(JSON_DATA, Options);
+            List<JsonElement> result = new List<JsonElement>();
+            if (keyValues.Length > 1 && int.TryParse(keyValues.LastOrDefault(), out int index))//大于两个元素，并且最后一位能转为Int类型
             {
-                var keyValues = keys.Trim(SplitChar).Split(SplitChar);
-                using var doc = JsonDocument.Parse(JSON_DATA, Options);
-                List<JsonElement> result = new List<JsonElement>();
-                if (keyValues.Length > 1 && int.TryParse(keyValues.LastOrDefault(), out int index))//大于两个元素，并且最后一位能转为Int类型
+                var _keyValues = keyValues[0..^1];//复制数组，并弃掉最后一个元素
+                GetElements(doc.RootElement.EnumerateObject(), _keyValues, result);
+                if (result.Count > 0 && result.FirstOrDefault().ValueKind == JsonValueKind.Array)
                 {
-                    var _keyValues = keyValues[0..^1];//复制数组，并弃掉最后一个元素
-                    GetElements(doc.RootElement.EnumerateObject(), _keyValues, result);
-                    if (result.Count > 0 && result.FirstOrDefault().ValueKind == JsonValueKind.Array)
-                    {
-                        var _result = GetValueByElement<List<T>>(result.FirstOrDefault(), null);
-                        if (_result.Count > index) return (T)Convert.ChangeType(_result[index], typeof(T));
-                        else return returnValue;
-                    }
+                    var _result = GetValueByElement<List<T>>(result.FirstOrDefault(), null);
+                    if (_result.Count > index) return (T)Convert.ChangeType(_result[index], typeof(T));
+                    else return returnValue;
                 }
-                else if (keyValues.Length > 1)
-                {
-                    GetElements(doc.RootElement.EnumerateObject(), keyValues, result);
-                    if (result.Count > 0) return GetValueByElement(result.FirstOrDefault(), returnValue);
-                }
-                else GetElemnets(doc.RootElement.EnumerateObject(), keys, result);
+            }
+            else if (keyValues.Length > 1)
+            {
+                GetElements(doc.RootElement.EnumerateObject(), keyValues, result);
                 if (result.Count > 0) return GetValueByElement(result.FirstOrDefault(), returnValue);
-                else return returnValue;
             }
-            catch (Exception ex)
-            {
-#if DEBUG
-                Console.WriteLine(ex.Message);
-#endif
-                throw;
-                //return returnValue;
-            }
+            else GetElemnets(doc.RootElement.EnumerateObject(), keys, result);
+            if (result.Count > 0) return GetValueByElement(result.FirstOrDefault(), returnValue);
+            else return returnValue;
         }
         #endregion
 
@@ -221,41 +210,31 @@ namespace Kane.Extension
         /// <returns></returns>
         private static T GetValueByElement<T>(JsonElement element, T returnValue)
         {
-            try
+            var type = typeof(T);
+            if (type.Equals(typeof(string))) return (T)Convert.ChangeType(element.GetString(), type);
+            else if (type.Equals(typeof(DateTime))) return element.TryGetDateTime(out DateTime result) ? (T)Convert.ChangeType(result, type) : returnValue;
+            else if (type.Equals(typeof(short))) return element.TryGetInt16(out short result) ? (T)Convert.ChangeType(result, type) : returnValue;
+            else if (type.Equals(typeof(int))) return element.TryGetInt32(out int result) ? (T)Convert.ChangeType(result, type) : returnValue;
+            else if (type.Equals(typeof(long))) return element.TryGetInt64(out long result) ? (T)Convert.ChangeType(result, type) : returnValue;
+            else if (type.Equals(typeof(float))) return element.TryGetSingle(out float result) ? (T)Convert.ChangeType(result, type) : returnValue;
+            else if (type.Equals(typeof(double))) return element.TryGetDouble(out double result) ? (T)Convert.ChangeType(result, type) : returnValue;
+            else if (type.Equals(typeof(decimal))) return element.TryGetDecimal(out decimal result) ? (T)Convert.ChangeType(result, type) : returnValue;
+            else if (type.Equals(typeof(bool))) return (T)Convert.ChangeType(element.ToString().ToBool(), type);
+            else if (type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))//判断是否为可空类型
             {
-                var type = typeof(T);
-                if (type.Equals(typeof(string))) return (T)Convert.ChangeType(element.GetString(), type);
-                else if (type.Equals(typeof(DateTime))) return element.TryGetDateTime(out DateTime result) ? (T)Convert.ChangeType(result, type) : returnValue;
-                else if (type.Equals(typeof(short))) return element.TryGetInt16(out short result) ? (T)Convert.ChangeType(result, type) : returnValue;
-                else if (type.Equals(typeof(int))) return element.TryGetInt32(out int result) ? (T)Convert.ChangeType(result, type) : returnValue;
-                else if (type.Equals(typeof(long))) return element.TryGetInt64(out long result) ? (T)Convert.ChangeType(result, type) : returnValue;
-                else if (type.Equals(typeof(float))) return element.TryGetSingle(out float result) ? (T)Convert.ChangeType(result, type) : returnValue;
-                else if (type.Equals(typeof(double))) return element.TryGetDouble(out double result) ? (T)Convert.ChangeType(result, type) : returnValue;
-                else if (type.Equals(typeof(decimal))) return element.TryGetDecimal(out decimal result) ? (T)Convert.ChangeType(result, type) : returnValue;
-                else if (type.Equals(typeof(bool))) return (T)Convert.ChangeType(element.ToString().ToBool(), type);
-                else if (type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))//判断是否为可空类型
-                {
-                    var actType = type.GetGenericArguments().FirstOrDefault();//获取实际的Type
-                    if (actType.Equals(typeof(string))) return (T)Convert.ChangeType(element.GetString(), actType);
-                    else if (actType.Equals(typeof(DateTime))) return element.TryGetDateTime(out DateTime result) ? (T)Convert.ChangeType(result, actType) : returnValue;
-                    else if (actType.Equals(typeof(short))) return element.TryGetInt16(out short result) ? (T)Convert.ChangeType(result, actType) : returnValue;
-                    else if (actType.Equals(typeof(int))) return element.TryGetInt32(out int result) ? (T)Convert.ChangeType(result, actType) : returnValue;
-                    else if (actType.Equals(typeof(long))) return element.TryGetInt64(out long result) ? (T)Convert.ChangeType(result, actType) : returnValue;
-                    else if (actType.Equals(typeof(float))) return element.TryGetSingle(out float result) ? (T)Convert.ChangeType(result, actType) : returnValue;
-                    else if (actType.Equals(typeof(double))) return element.TryGetDouble(out double result) ? (T)Convert.ChangeType(result, actType) : returnValue;
-                    else if (actType.Equals(typeof(decimal))) return element.TryGetDecimal(out decimal result) ? (T)Convert.ChangeType(result, actType) : returnValue;
-                    else if (actType.Equals(typeof(bool))) return (T)Convert.ChangeType(element.ToString().ToBool(), actType);
-                    else return default;
-                }
-                else return JsonSerializer.Deserialize<T>(element.ToString());//一些如Array、List 的集合
+                var actType = type.GetGenericArguments().FirstOrDefault();//获取实际的Type
+                if (actType.Equals(typeof(string))) return (T)Convert.ChangeType(element.GetString(), actType);
+                else if (actType.Equals(typeof(DateTime))) return element.TryGetDateTime(out DateTime result) ? (T)Convert.ChangeType(result, actType) : returnValue;
+                else if (actType.Equals(typeof(short))) return element.TryGetInt16(out short result) ? (T)Convert.ChangeType(result, actType) : returnValue;
+                else if (actType.Equals(typeof(int))) return element.TryGetInt32(out int result) ? (T)Convert.ChangeType(result, actType) : returnValue;
+                else if (actType.Equals(typeof(long))) return element.TryGetInt64(out long result) ? (T)Convert.ChangeType(result, actType) : returnValue;
+                else if (actType.Equals(typeof(float))) return element.TryGetSingle(out float result) ? (T)Convert.ChangeType(result, actType) : returnValue;
+                else if (actType.Equals(typeof(double))) return element.TryGetDouble(out double result) ? (T)Convert.ChangeType(result, actType) : returnValue;
+                else if (actType.Equals(typeof(decimal))) return element.TryGetDecimal(out decimal result) ? (T)Convert.ChangeType(result, actType) : returnValue;
+                else if (actType.Equals(typeof(bool))) return (T)Convert.ChangeType(element.ToString().ToBool(), actType);
+                else return default;
             }
-            catch (Exception ex)
-            {
-#if DEBUG
-                Console.WriteLine(ex.Message);
-#endif
-                throw;
-            }
+            else return JsonSerializer.Deserialize<T>(element.ToString());//一些如Array、List 的集合
         }
         #endregion
 
@@ -476,40 +455,29 @@ namespace Kane.Extension
         /// <returns></returns>
         public T GetValue<T>(string keys, T returnValue = default)
         {
-            try
+            var keyValues = keys.Trim(SplitChar).Split(SplitChar);
+            var rootData = JObject.Parse(JSON_DATA, Settings);
+            if (keyValues.Length > 1)
             {
-                var keyValues = keys.Trim(SplitChar).Split(SplitChar);
-                var rootData = JObject.Parse(JSON_DATA, Settings);
-                if (keyValues.Length > 1)
+                if (int.TryParse(keyValues.LastOrDefault(), out int index))//最后一位是数字
                 {
-                    if (int.TryParse(keyValues.LastOrDefault(), out int index))//最后一位是数字
+                    string[] tempKeys = new string[keyValues.Length - 1];
+                    Array.Copy(keyValues, tempKeys, keyValues.Length - 1);
+                    var temp = rootData.SelectToken(string.Join(".", tempKeys));
+                    if (temp.Type == JTokenType.Array)
                     {
-                        string[] tempKeys = new string[keyValues.Length - 1];
-                        Array.Copy(keyValues, tempKeys, keyValues.Length - 1);
-                        var temp = rootData.SelectToken(string.Join(".", tempKeys));
-                        if (temp.Type == JTokenType.Array)
-                        {
-                            var itemList = temp.ToObject<List<T>>();
-                            if (itemList.Count >= index + 1) return itemList[index];
-                        }
+                        var itemList = temp.ToObject<List<T>>();
+                        if (itemList.Count >= index + 1) return itemList[index];
                     }
-                    return rootData.SelectToken(string.Join(".", keyValues)).ToObject<T>() ?? returnValue;
                 }
-                else
-                {
-                    List<JToken> result = new List<JToken>();
-                    GetJTokens(rootData.Properties(), keys, result);
-                    if (result.Count > 0) return result.FirstOrDefault().ToObject<T>();
-                    else return default;
-                }
+                return rootData.SelectToken(string.Join(".", keyValues)).ToObject<T>() ?? returnValue;
             }
-            catch (Exception ex)
+            else
             {
-#if DEBUG
-                Console.WriteLine(ex.Message);
-#endif
-                throw;
-                //return returnValue;
+                List<JToken> result = new List<JToken>();
+                GetJTokens(rootData.Properties(), keys, result);
+                if (result.Count > 0) return result.FirstOrDefault().ToObject<T>();
+                else return default;
             }
         }
         #endregion

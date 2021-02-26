@@ -10,14 +10,14 @@
 * CLR 版本 ：4.0.30319.42000
 * 作　　者 ：Kane Leung
 * 创建时间 ：2020/01/15 23:29:15
-* 更新时间 ：2021/01/31 16:16:17
-* 版 本 号 ：v1.0.4.0
+* 更新时间 ：2021/02/26 10:16:17
+* 版 本 号 ：v1.0.5.0
 *******************************************************************
 * Copyright @ Kane Leung 2020. All rights reserved.
 *******************************************************************
 -----------------------------------------------------------------*/
 #endregion
-#if NETCOREAPP3_1 || NET5_0
+#if NETCOREAPP3_1_OR_GREATER
 using System.Text.Json;
 using System.Text.Unicode;
 using System.Text.Encodings.Web;
@@ -46,10 +46,12 @@ namespace Kane.Extension.Json
             {
                 PropertyNamingPolicy = null,//保持属性名称不变
                 AllowTrailingCommas = true,//忽略多余的逗号
-                IgnoreNullValues = true,//忽略Null值
                 PropertyNameCaseInsensitive = true,//反序列化是否不区分大小写
-#if NET5_0
+#if NET5_0_OR_GREATER
                 NumberHandling = JsonNumberHandling.AllowReadingFromString,//Net5.0新增，可将"88"反序列化为Int值
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+#else
+                IgnoreNullValues = true,//为True,忽略Null值 //等于5.0的 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 #endif
             };
             GlobalOption.Converters.Add(new DateTimeConverter());//使用【2020-02-21 17:06:15】时间格式
