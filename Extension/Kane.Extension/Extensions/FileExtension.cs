@@ -176,7 +176,7 @@ namespace Kane.Extension
             stream.Seek(0, SeekOrigin.Begin);
             using FileStream fileStream = new(path, FileMode.Create);
             var buffer = new byte[bufferSize * 1024 * 1024];
-#if NETCOREAPP2_1_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
             var size = await stream.ReadAsync(buffer.AsMemory(0, buffer.Length));
             while (size > 0)
             {
@@ -207,7 +207,7 @@ namespace Kane.Extension
             using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read);
             var bytes = new byte[fileStream.Length];
             fileStream.Seek(0, SeekOrigin.Begin);
-#if NETCOREAPP2_1_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
             await fileStream.ReadAsync(bytes.AsMemory(0, bytes.Length));
 #else
             await fileStream.ReadAsync(bytes, 0, bytes.Length);

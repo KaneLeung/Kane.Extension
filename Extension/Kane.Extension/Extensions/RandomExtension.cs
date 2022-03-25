@@ -20,7 +20,7 @@ namespace Kane.Extension
     public static class RandomExtension
     {
         private static readonly Random random = new Random();
-#if NETCOREAPP2_1_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
         static RandomExtension()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//NetCore中使用GB2312编码

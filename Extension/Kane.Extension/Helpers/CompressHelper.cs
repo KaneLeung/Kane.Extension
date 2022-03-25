@@ -38,7 +38,7 @@ namespace Kane.Extension
                 using var compressor = new DeflateStream(outputStream, CompressionMode.Compress, true);
                 inputStream.CopyTo(compressor);
             }
-#if NETCOREAPP2_1_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
             else if (mode == CompressMode.Brotli)
             {
                 using var compressor = new BrotliStream(outputStream, CompressionMode.Compress, true);
@@ -71,7 +71,7 @@ namespace Kane.Extension
                 using var compressor = new DeflateStream(outputStream, CompressionMode.Compress, true);
                 data.CopyTo(compressor);
             }
-#if NETCOREAPP2_1_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
             else if (mode == CompressMode.Brotli)
             {
                 using var compressor = new BrotliStream(outputStream, CompressionMode.Compress, true);
@@ -156,7 +156,7 @@ namespace Kane.Extension
                 using var decompressor = new DeflateStream(inputStream, CompressionMode.Decompress, true);
                 decompressor.CopyTo(outputStream);
             }
-#if NETCOREAPP2_1_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
             else if (mode == CompressMode.Brotli)
             {
                 using var decompressor = new BrotliStream(inputStream, CompressionMode.Decompress, true);
@@ -189,7 +189,7 @@ namespace Kane.Extension
                 using var decompressor = new DeflateStream(data, CompressionMode.Decompress, true);
                 decompressor.CopyTo(outputStream);
             }
-#if NETCOREAPP2_1_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
             else if (mode == CompressMode.Brotli)
             {
                 using var decompressor = new BrotliStream(data, CompressionMode.Decompress, true);
