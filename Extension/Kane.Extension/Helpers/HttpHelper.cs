@@ -15,7 +15,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
 using Kane.Extension.Json;
 #else
 using Kane.Extension.JsonNet;
@@ -36,7 +36,7 @@ namespace Kane.Extension
         /// </summary>
         static HttpHelper()
         {
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
             var handler = new HttpClientHandler() { UseCookies = true, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli };
 #else
             var handler = new HttpClientHandler() { UseCookies = true, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate };

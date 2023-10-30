@@ -152,14 +152,47 @@ namespace Kane.Extension
         }
         #endregion
 
-        #region 检测字符串是否为中国国内手机号码段，数据更新日期【2021-01-26】 + IsMobilePhone(string value)
+        #region 检测字符串是否为局域网IP + bool IsLanIP(string value)
         /// <summary>
-        /// 检测字符串是否为中国国内手机号码段，数据更新日期【2021-01-26】
-        /// <para>【资料来源】https://baike.baidu.com/item/手机号码 </para>
+        /// 检测字符串是否为局域网IP
+        /// </summary>
+        /// <param name="value">要检测的字符串</param>
+        /// <returns></returns>
+        public static bool IsLanIP(string value)
+        {
+            if (value.IsNullOrWhiteSpace()) return false;
+            if (IPAddress.TryParse(value, out var ip))
+            {
+                byte[] ipBytes = ip.GetAddressBytes();
+                if (ipBytes[0] == 10) return true;
+                if (ipBytes[0] == 172 && ipBytes[1] >= 16 && ipBytes[1] <= 31) return true;
+                if (ipBytes[0] == 192 && ipBytes[1] == 168) return true;
+            }
+            return false;
+        } 
+        #endregion
+
+        #region 检测字符串是否为11位手机号码 + IsMobilePhone(string value)
+        /// <summary>
+        /// 检测字符串是否为11位手机号码
         /// </summary>
         /// <param name="value">要检测的字符串</param>
         /// <returns></returns>
         public static bool IsMobilePhone(string value)
+        {
+            if (value.IsNullOrWhiteSpace()) return false;
+            return Regex.IsMatch(value.Trim(), @"^1[0-9]{10}$");
+        } 
+        #endregion
+
+        #region 检测字符串是否为中国国内手机号码段，数据更新日期【2022-11-10】 + IsMobilePhone(string value)
+        /// <summary>
+        /// 检测字符串是否为中国国内手机号码段，数据更新日期【2022-11-10】
+        /// <para>【资料来源】https://baike.baidu.com/item/手机号码 </para>
+        /// </summary>
+        /// <param name="value">要检测的字符串</param>
+        /// <returns></returns>
+        public static bool IsRealMobilePhone(string value)
         {
             if (value.IsNullOrWhiteSpace()) return false;
             if (new Regex(@"^1[0-9]{10}$").IsMatch(value.Trim()))
@@ -178,7 +211,7 @@ namespace Kane.Extension
                 prefix.AddRange(ChinaTelecomPrefix); // 中国电信号段
                 prefix.AddRange(ChinaUnicomPrefix); // 中国联通号段
 
-                for (var i = 0; i <= 8; i++) prefix.Add($"134{i}");//中国移动 134 号段特殊处理
+                for (int i = 0; i <= 8; i++) prefix.Add($"134{i}");//中国移动 134 号段特殊处理
                 prefix.AddRange(ChinaMobilePrefix.Skip(1)); // 中国移动号段
                 prefix.AddRange(ChinaBroadcstPrefix); // 中国广电号段
                 prefix.AddRange(ChinaTelecomVirtualPrefix); // 中国电信虚拟运营商号段
@@ -189,6 +222,20 @@ namespace Kane.Extension
                 return value.StartsWith(prefix.ToArray());
             }
             else return false;
+        }
+        #endregion
+
+        #region 使用正则检测字符串是否为中国国内手机号码段，数据更新日期【2022-11-10】 + IsRealMobilePhoneRegex(string value)
+        /// <summary>
+        /// 使用正则检测字符串是否为中国国内手机号码段，数据更新日期【2022-11-10】
+        /// <para>【资料来源】https://baike.baidu.com/item/手机号码 </para>
+        /// </summary>
+        /// <param name="value">要检测的字符串</param>
+        /// <returns></returns>
+        public static bool IsRealMobilePhoneRegex(string value)
+        {
+            if (value.IsNullOrWhiteSpace()) return false;
+            return Regex.IsMatch(value.Trim(), @"^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$");
         }
         #endregion
 

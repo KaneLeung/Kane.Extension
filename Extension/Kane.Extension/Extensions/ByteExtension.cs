@@ -26,7 +26,7 @@ namespace Kane.Extension
         public static string BytesToHex(this byte[] value)
         {
             var builder = new StringBuilder();
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
             var span = value.AsSpan();//有大幅度提升
             for (int i = 0; i < span.Length; i++)
             {
@@ -51,7 +51,7 @@ namespace Kane.Extension
         public static string BytesToHEX(this byte[] value)
         {
             var builder = new StringBuilder();
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
             var span = value.AsSpan();//有大幅度提升
             for (int i = 0; i < span.Length; i++)
             {
@@ -93,6 +93,16 @@ namespace Kane.Extension
         /// <param name="value">要转换的字节数组</param>
         /// <returns></returns>
         public static string ToBase64(this byte[] value) => Convert.ToBase64String(value);
+        #endregion
+
+        #region 字节数组转成Base64字符串，可控制换行 + ToBase64(this byte[] value, Base64FormattingOptions options)
+        /// <summary>
+        /// 字节数组转成Base64字符串，可控制换行
+        /// </summary>
+        /// <param name="value">要转换的字节数组</param>
+        /// <param name="options">选择InsertLineBreaks则每76字符换行</param>
+        /// <returns></returns>
+        public static string ToBase64(this byte[] value, Base64FormattingOptions options) => Convert.ToBase64String(value, options);
         #endregion
     }
 }

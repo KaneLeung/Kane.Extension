@@ -60,6 +60,7 @@ namespace Kane.Extension
         }
         #endregion
 
+#if NETFRAMEWORK
         #region 多个Bitmap叠加 + BitmapOverlay(Bitmap original, params Bitmap[] overlays)
         /// <summary>
         /// 多个Bitmap叠加
@@ -177,13 +178,13 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="value">要转换的Base64字符串</param>
         /// <returns></returns>
-        public static Image Base64ToImage(this string value)
+        public static Image? Base64ToImage(this string value)
         {
             try
             {
-                var imageBytes = value.Replace("data:image/png;base64,", "").Replace("data:image/jpg;base64,", "")
+                byte[] imageBytes = value.Replace("data:image/png;base64,", "").Replace("data:image/jpg;base64,", "")
                     .Replace("data:image/jpeg;base64,", "").Base64ToBytes();//如果包含CssBase64头部信息，则去掉
-                using MemoryStream ms = new MemoryStream(imageBytes, 0, imageBytes.Length);
+                using var ms = new MemoryStream(imageBytes, 0, imageBytes.Length);
                 return Image.FromStream(ms, true);
             }
             catch
@@ -263,7 +264,7 @@ namespace Kane.Extension
         }
         #endregion
 
-        private static readonly Random random = new Random();
+        private static readonly Random random = new();
 
         #region 随机生成颜色，默认Alpha透明度值为255 + RandomColor(int alpha = 255)
         /// <summary>
@@ -310,5 +311,6 @@ namespace Kane.Extension
             return Color.FromArgb(alpha, red, green, blue);
         }
         #endregion
+#endif
     }
 }

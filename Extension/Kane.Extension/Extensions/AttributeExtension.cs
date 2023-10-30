@@ -28,7 +28,7 @@ namespace Kane.Extension
         public static bool HasAttribute<T>(this Type type, bool inherit = false) where T : Attribute => type.GetTypeInfo().IsDefined(typeof(T), inherit);
         #endregion
 
-        #region 是否有指定特性 + HasAttribute<T>(this Type type, bool inherit = false)
+        #region 是否有指定特性 + HasAttribute<T, TAttribute>(this T _, bool inherit = false)
         /// <summary>
         /// 是否有指定特性
         /// </summary>

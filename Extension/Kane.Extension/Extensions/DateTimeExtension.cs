@@ -438,5 +438,25 @@ namespace Kane.Extension
         /// <returns></returns>
         public static int MaxWeekIndex(this DateTime datetime) => WeekIndex(new DateTime(datetime.Year, 12, 31), false);
         #endregion
+
+        #region 获取两个时间最大的时间 + DateTime Max(DateTime dt1, DateTime dt2)
+        /// <summary>
+        /// 获取两个时间最大的时间
+        /// </summary>
+        /// <param name="dt1"></param>
+        /// <param name="dt2"></param>
+        /// <returns></returns>
+        public static DateTime Max(DateTime dt1, DateTime dt2) => DateTime.Compare(dt1, dt2) > 0 ? dt1 : dt2;
+        #endregion
+
+        #region 获取两个时间最小的时间 + DateTime Min(DateTime dt1, DateTime dt2)
+        /// <summary>
+        /// 获取两个时间最小的时间
+        /// </summary>
+        /// <param name="dt1"></param>
+        /// <param name="dt2"></param>
+        /// <returns></returns>
+        public static DateTime Min(DateTime dt1, DateTime dt2) => DateTime.Compare(dt1, dt2) < 0 ? dt1 : dt2;
+        #endregion
     }
 }

@@ -19,11 +19,11 @@ namespace Kane.Extension
     /// </summary>
     public static class RandomExtension
     {
-        private static readonly Random random = new Random();
-#if NETCOREAPP3_1_OR_GREATER
+        private static readonly Random random = new ();
+#if NET6_0_OR_GREATER
         static RandomExtension()
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//NetCore中使用GB2312编码
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//Net中使用GB2312编码
         }
 #endif
 

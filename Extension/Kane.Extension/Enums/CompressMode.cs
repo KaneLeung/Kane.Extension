@@ -36,7 +36,7 @@ namespace Kane.Extension
         /// </summary>
         [Description("GZip算法")]
         GZip = 2,
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
         /// <summary>
         /// Brotli最初发布于2015年，用于网络字体的离线压缩。Google软件工程师在2015年9月发布了包含通用无损数据压缩的Brotli增强版本，特别侧重于HTTP压缩。其中的编码器被部分改写以提高压缩比，
         /// <para>编码器和解码器都提高了速度，流式API已被改进，增加更多压缩质量级别。新版本还展现了跨平台的性能改进，以及减少解码所需的内存。</para>

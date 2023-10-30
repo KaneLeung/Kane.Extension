@@ -37,6 +37,7 @@ namespace Kane.Extension
     /// </summary>
     public static class WebHelper
     {
+#if NETFRAMEWORK
         #region 根据字符串获取网络图片，默认超时时间为100秒 + GetUriImage(string uri, int timeout = 100000)
         /// <summary>
         /// 根据字符串获取网络图片，默认超时时间为100秒
@@ -76,6 +77,7 @@ namespace Kane.Extension
             catch { return null; }
         }
         #endregion
+#endif
 
         #region 移除HTML标签 + ReplaceHtml(string content)
         /// <summary>

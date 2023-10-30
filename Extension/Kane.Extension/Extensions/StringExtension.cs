@@ -345,7 +345,7 @@ namespace Kane.Extension
         }
         #endregion
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
         #region 查找并替换字符串，可查找多个目标【忽略大小写】 + ReplaceIgnoreCase(this string value, string newValue, params string[] oldValues)
         /// <summary>
         /// 查找并替换字符串，可查找多个目标【忽略大小写】

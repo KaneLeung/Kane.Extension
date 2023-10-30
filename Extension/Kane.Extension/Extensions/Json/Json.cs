@@ -7,7 +7,7 @@
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
 using System.Text.Json;
 using System.Text.Unicode;
 using System.Collections.Generic;
@@ -35,23 +35,19 @@ namespace Kane.Extension.Json
             #region 自用的【System.Text.Json】序列化和反序列化的配置选项
             GlobalOption = new JsonSerializerOptions
             {
+                IncludeFields = true,
+                ReadCommentHandling = JsonCommentHandling.Skip,//允许注释
                 PropertyNamingPolicy = null,//保持属性名称不变
                 AllowTrailingCommas = true,//忽略多余的逗号
                 PropertyNameCaseInsensitive = true,//反序列化是否不区分大小写
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,//中文不会被编码
-#if NET5_0_OR_GREATER
                 NumberHandling = JsonNumberHandling.AllowReadingFromString,//Net5.0新增，可将"88"反序列化为Int值
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-#else
-                IgnoreNullValues = true,//为True,忽略Null值 //等于5.0的 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-#endif
             };
             GlobalOption.Converters.Add(new DateTimeConverter());//使用【2020-02-21 17:06:15】时间格式
             GlobalOption.Converters.Add(new DateTimeOffsetConverter());//使用【2020-02-21 17:06:15】时间格式
             GlobalOption.Converters.Add(new BoolConverter());//"true"/"false"识别为boolean的True/False
-#if NETCOREAPP3_1
-            GlobalOption.Converters.Add(new IntConverter());//"88"转为Int
-#endif
+            GlobalOption.Converters.Add(new JsonStringEnumConverter());//能将字符串转为Enum
             #endregion
         }
         #endregion
@@ -87,23 +83,10 @@ namespace Kane.Extension.Json
         /// <returns></returns>
         public static string ToCamelCaseJson<T>(this T value)
         {
-#if NET5_0_OR_GREATER
             var options = new JsonSerializerOptions(GlobalOption)
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
-#else
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                IgnoreNullValues = GlobalOption.IgnoreNullValues,
-                Encoder = GlobalOption.Encoder
-            };
-            for (int i = 0; i < GlobalOption.Converters.Count; i++)//将所有转换器添加进去
-            {
-                options.Converters.Add(GlobalOption.Converters[i]);
-            }
-#endif
             return JsonSerializer.Serialize(value, options);
         }
         #endregion

@@ -64,7 +64,7 @@ namespace Kane.Extension
         {
             byte[] result = new byte[stream.Length];
             stream.Seek(0, SeekOrigin.Begin);//设置当前流的位置为流的开始
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
             await stream.ReadAsync(result.AsMemory(0, result.Length));
 #else
             await stream.ReadAsync(result, 0, result.Length);

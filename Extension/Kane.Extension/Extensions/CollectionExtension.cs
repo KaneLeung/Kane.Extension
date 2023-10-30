@@ -21,7 +21,7 @@ namespace Kane.Extension
     /// </summary>
     public static class CollectionExtension
     {
-        #region 判断集合是否为Null或空集合 + IsNullOrEmpty<T>(this IEnumerable<T> collection)
+        #region 判断集合是否为Null或空集合 + IsEmpty<T>(this IEnumerable<T> collection)
         /// <summary>
         /// 判断集合是否为Null或空集合
         /// </summary>

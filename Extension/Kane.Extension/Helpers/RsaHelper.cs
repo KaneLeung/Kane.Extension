@@ -9,9 +9,7 @@
 
 #if !NET40 && !NET45
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -247,7 +245,7 @@ namespace Kane.Extension
         /// <param name="autoBlock">是否自动分块</param>
         /// <returns>【Base64字符串】</returns>
         public string Encrypt(byte[] data, string key, RSAEncryptionPadding padding, bool isXmlKey = true, bool autoBlock = false)
-            => EncryptBytes(data, key, padding, isXmlKey, autoBlock)?.ToBase64();
+            => EncryptBytes(data, key, padding, isXmlKey, autoBlock)?.ToBase64() ?? string.Empty;
         #endregion
 
         #region 将字符串进行RSA加密，返回加密后的Base64字符串，默认为【Xml格式】的密钥，默认【不分块】 + Encrypt(...)
@@ -381,7 +379,7 @@ namespace Kane.Extension
         /// <param name="autoBlock">是否自动分块</param>
         /// <returns></returns>
         public string Decrypt(byte[] data, string privateKey, RSAEncryptionPadding padding, bool isXmlKey = true, bool autoBlock = false)
-            => DecryptBytes(data, privateKey, padding, isXmlKey, autoBlock)?.BytesToString();
+            => DecryptBytes(data, privateKey, padding, isXmlKey, autoBlock)?.BytesToString() ?? string.Empty;
         #endregion
 
         #region 将Base64字符串进行RSA解密，返回解密后的字符串，默认为【Xml格式】的私钥，默认【不分块】 + Decrypt(...)
@@ -601,7 +599,7 @@ namespace Kane.Extension
         {
             RSAParameters param = new RSAParameters();
             var content = pemKey.RegexReplace(@"--+[\w+\s]+--+|\s+", string.Empty);
-            byte[] data = null;
+            byte[]? data = null;
             try { data = content.Base64ToBytes(); } catch { }
             if (data == null) throw new Exception("PEM数据无效");
             var index = 0;

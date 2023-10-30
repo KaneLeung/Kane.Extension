@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Kane.Extension
@@ -205,7 +206,7 @@ namespace Kane.Extension
         }
         #endregion
 
-        #region [short/ushort/int/uint/long/ulong/float/double/decimal]转换大写金额，默认为设置【整】的结束标签 + ToAmoutInWords<T>(this T value, bool hasTag = true) where T : struct, IFormattable
+        #region [short/ushort/int/uint/long/ulong/float/double/decimal]转换大写金额，默认为设置【整】的结束标签 + ToAmoutInWords<T>(this T value, bool hasTag = true) where T : struct, IFormattable, IComparable<T>
         /// <summary>
         /// [short/ushort/int/uint/long/ulong/float/double/decimal]转换大写金额，默认为设置【整】的结束标签
         /// <para>【资料来源】https://baike.baidu.com/item/大写金额</para>
@@ -213,13 +214,13 @@ namespace Kane.Extension
         /// <param name="value">要转换的值</param>
         /// <param name="hasTag">以【元】结尾时，是否包含【整】字标签</param>
         /// <returns></returns>
-        public static string ToAmoutInWords<T>(this T value, bool hasTag = true) where T : struct, IFormattable
+        public static string ToAmoutInWords<T>(this T value, bool hasTag = true) where T : struct, IFormattable, IComparable<T>
         {
             var valueString = value.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A", null);
             var temp = Regex.Replace(valueString, @"((?<=-|^)[^1-9]*)|((?'z'0)[0A-E]*((?=[1-9])|(?'-z'(?=[F-L\.]|$))))|((?'b'[F-L])(?'z'0)[0A-L]*((?=[1-9])|(?'-z'(?=[\.]|$))))", "${b}${z}", RegexOptions.Compiled);
             var result = Regex.Replace(temp, ".", m => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟万亿兆京垓秭穰"[m.Value[0] - '-'].ToString(), RegexOptions.Compiled);
             if (hasTag && result.EndsWith("元")) result += "整";
-            return result;
+            return value.CompareTo(default) < 0 ? $"负{result}" : result;
         }
         #endregion
 
@@ -237,6 +238,97 @@ namespace Kane.Extension
             else return string.Empty;
         }
         #endregion
+
+        #region [short/ushort/int/uint/long/ulong/float/double/decimal]转换中文 + ToChinese<T>(this T value) where T : struct, IFormattable, IComparable<T>
+        /// <summary>
+        /// [short/ushort/int/uint/long/ulong/float/double/decimal]转换中文，暂不支持小数
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToChinese<T>(this T value) where T : struct, IFormattable, IComparable<T>
+        {
+            var valueString = value.ToString();
+            if (valueString.Length == 0) return "";
+            string result = "";
+            if (valueString[0] == '-')
+            {
+                result = "负";
+                valueString = valueString.Remove(0, 1);
+            }
+            if (valueString[0].ToString() == ".") valueString = "0" + valueString;
+            if (valueString[valueString.Length - 1].ToString() == ".") valueString = valueString.Remove(valueString.Length - 1, 1);
+            if (valueString.IndexOf(".") > -1)
+            {
+                result += ValueToInt(valueString.Substring(0, valueString.IndexOf("."))) + "点" + valueString.Substring(valueString.IndexOf(".") + 1)
+                    .Aggregate("", (current, t) => current + ToNum(t));
+            }
+            else result += ValueToInt(valueString);
+            return result;
+        }
+        #endregion
+
+        // 转换整数
+        private static string ValueToInt(string x)
+        {
+            int len = x.Length;
+            string result;
+            string temp;
+            if (len <= 4) result = ChangeInt(x);
+            else if (len <= 8)
+            {
+                result = ChangeInt(x.Substring(0, len - 4)) + "万";
+                temp = ChangeInt(x.Substring(len - 4, 4));
+                if (temp.IndexOf("千", StringComparison.Ordinal) == -1 && !string.IsNullOrEmpty(temp)) result += "零" + temp;
+                else result += temp;
+            }
+            else
+            {
+                result = ChangeInt(x.Substring(0, len - 8)) + "亿";
+                temp = ChangeInt(x.Substring(len - 8, 4));
+                if (temp.IndexOf("千", StringComparison.Ordinal) == -1 && !string.IsNullOrEmpty(temp)) result += "零" + temp;
+                else result += temp;
+
+                result += "万";
+                temp = ChangeInt(x.Substring(len - 4, 4));
+                if (temp.IndexOf("千", StringComparison.Ordinal) == -1 && !string.IsNullOrEmpty(temp)) result += "零" + temp;
+                else result += temp;
+            }
+            int i;
+            if ((i = result.IndexOf("零万", StringComparison.Ordinal)) != -1) result = result.Remove(i + 1, 1);
+            while ((i = result.IndexOf("零零", StringComparison.Ordinal)) != -1)
+            {
+                result = result.Remove(i, 1);
+            }
+            if (result[result.Length - 1] == '零' && result.Length > 1) result = result.Remove(result.Length - 1, 1);
+            return result;
+        }
+
+        // 转换万以下整数
+        private static string ChangeInt(string x)
+        {
+            string[] strArrayLevelNames = { "", "十", "百", "千" };
+            string ret = "";
+            int i;
+            for (i = x.Length - 1; i >= 0; i--)
+            {
+                if (x[i] == '0') ret = ToNum(x[i]) + ret;
+                else ret = ToNum(x[i]) + strArrayLevelNames[x.Length - 1 - i] + ret;
+            }
+            while ((i = ret.IndexOf("零零", StringComparison.Ordinal)) != -1)
+            {
+                ret = ret.Remove(i, 1);
+            }
+            if (ret[ret.Length - 1] == '零' && ret.Length > 1) ret = ret.Remove(ret.Length - 1, 1);
+            if (ret.Length >= 2 && ret.Substring(0, 2) == "一十") ret = ret.Remove(0, 1);
+            return ret;
+        }
+
+        private static char ToNum(char x)
+        {
+            string strChnNames = "零一二三四五六七八九";
+            string strNumNames = "0123456789";
+            return strChnNames[strNumNames.IndexOf(x)];
+        }
 
         #region 泛型转Decimal,默认保留两位小数，默认【采用4舍6入5取偶】 + ToRoundDec<T>(...)
         /// <summary>

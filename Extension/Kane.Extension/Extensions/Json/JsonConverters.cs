@@ -7,7 +7,7 @@
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;

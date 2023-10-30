@@ -14,7 +14,7 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text;
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
 using Kane.Extension.Json;
 #else
 using Kane.Extension.JsonNet;
@@ -128,6 +128,7 @@ namespace Kane.Extension
         /// </summary>
         public (bool XDirection, double MultValue, double Phase) TwistSetting { get; set; } = (false, 5, 2);
 
+#if NETFRAMEWORK
         #region 生成验证码，返回图片和图片对应该的字符串 + GetCaptcha(string code = null)
         /// <summary>
         /// 生成验证码，返回图片和图片对应该的字符串
@@ -222,6 +223,7 @@ namespace Kane.Extension
             return (bitmap, result);
         }
         #endregion
+#endif
 
         #region 生成随机字母和数字的字符串 + RandomCode(CaptchaMode mode, int length)
         /// <summary>

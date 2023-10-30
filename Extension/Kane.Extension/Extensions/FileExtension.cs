@@ -27,7 +27,7 @@ namespace Kane.Extension
         /// <param name="files">这个不用传值，或传Null</param>
         /// <param name="pattern">文字和通配符的组合, 但不支持正则表达式。</param>
         /// <returns></returns>
-        private static List<string> GetAllFiles(string path, List<string> files = null, string pattern = "")
+        private static List<string> GetAllFiles(string path, List<string>? files = null, string pattern = "")
         {
             files ??= new List<string>();
             string[] subPaths = pattern.IsNullOrEmpty() ? Directory.GetDirectories(path) : Directory.GetDirectories(path, pattern);
@@ -176,7 +176,7 @@ namespace Kane.Extension
             stream.Seek(0, SeekOrigin.Begin);
             using FileStream fileStream = new(path, FileMode.Create);
             var buffer = new byte[bufferSize * 1024 * 1024];
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
             var size = await stream.ReadAsync(buffer.AsMemory(0, buffer.Length));
             while (size > 0)
             {
@@ -201,13 +201,13 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="path">文件完整路径</param>
         /// <returns></returns>
-        public static async Task<byte[]> FileToBytesAsync(this string path)
+        public static async Task<byte[]?> FileToBytesAsync(this string path)
         {
             if (!File.Exists(path)) return default;
             using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read);
-            var bytes = new byte[fileStream.Length];
+            byte[] bytes = new byte[fileStream.Length];
             fileStream.Seek(0, SeekOrigin.Begin);
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
             await fileStream.ReadAsync(bytes.AsMemory(0, bytes.Length));
 #else
             await fileStream.ReadAsync(bytes, 0, bytes.Length);
@@ -222,11 +222,11 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="path">文件完整路径</param>
         /// <returns></returns>
-        public static byte[] FileToBytes(this string path)
+        public static byte[]? FileToBytes(this string path)
         {
             if (!File.Exists(path)) return default;
             using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read);
-            var bytes = new byte[fileStream.Length];
+            byte[] bytes = new byte[fileStream.Length];
             fileStream.Seek(0, SeekOrigin.Begin);
             fileStream.Read(bytes, 0, bytes.Length);
             return bytes;

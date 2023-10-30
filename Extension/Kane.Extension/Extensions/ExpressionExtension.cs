@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -70,6 +71,30 @@ namespace Kane.Extension
                 return true;
             }
             return false;
+        }
+        #endregion
+
+        #region 通过表达式树，深拷贝对象 + ExpDeepClone<T>(this T source) where T : class, new()
+        /// <summary>
+        /// 通过表达式树，深拷贝对象
+        /// </summary>
+        /// <typeparam name="T">源对象类型</typeparam>
+        /// <param name="source">源对象</param>
+        /// <returns></returns>
+        public static T ExpDeepClone<T>(this T source) where T : class, new()
+        {
+            var parameterExpression = Expression.Parameter(typeof(T), "p");
+            var memberBindingList = new List<MemberBinding>();
+            foreach (var item in typeof(T).GetProperties())
+            {
+                if (item.CanWrite == false) continue;
+                var property = Expression.Property(parameterExpression, typeof(T).GetProperty(item.Name));
+                var memberBinding = Expression.Bind(item, property);
+                memberBindingList.Add(memberBinding);
+            }
+            var memberInitExpression = Expression.MemberInit(Expression.New(typeof(T)), memberBindingList.ToArray());
+            var exp = Expression.Lambda<Func<T, T>>(memberInitExpression, new ParameterExpression[] { parameterExpression });
+            return exp.Compile()(source);
         }
         #endregion
     }
