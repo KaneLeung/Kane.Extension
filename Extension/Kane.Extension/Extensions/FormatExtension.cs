@@ -169,7 +169,7 @@ namespace Kane.Extension
                 if (ipBytes[0] == 192 && ipBytes[1] == 168) return true;
             }
             return false;
-        } 
+        }
         #endregion
 
         #region 检测字符串是否为11位手机号码 + IsMobilePhone(string value)
@@ -182,12 +182,12 @@ namespace Kane.Extension
         {
             if (value.IsNullOrWhiteSpace()) return false;
             return Regex.IsMatch(value.Trim(), @"^1[0-9]{10}$");
-        } 
+        }
         #endregion
 
-        #region 检测字符串是否为中国国内手机号码段，数据更新日期【2022-11-10】 + IsMobilePhone(string value)
+        #region 检测字符串是否为中国国内手机号码段，数据更新日期【2024-05-21】 + IsMobilePhone(string value)
         /// <summary>
-        /// 检测字符串是否为中国国内手机号码段，数据更新日期【2022-11-10】
+        /// 检测字符串是否为中国国内手机号码段，数据更新日期【2024-05-21】
         /// <para>【资料来源】https://baike.baidu.com/item/手机号码 </para>
         /// </summary>
         /// <param name="value">要检测的字符串</param>
@@ -225,9 +225,9 @@ namespace Kane.Extension
         }
         #endregion
 
-        #region 使用正则检测字符串是否为中国国内手机号码段，数据更新日期【2022-11-10】 + IsRealMobilePhoneRegex(string value)
+        #region 使用正则检测字符串是否为中国国内手机号码段，数据更新日期【2024-05-21】 + IsRealMobilePhoneRegex(string value)
         /// <summary>
-        /// 使用正则检测字符串是否为中国国内手机号码段，数据更新日期【2022-11-10】
+        /// 使用正则检测字符串是否为中国国内手机号码段，数据更新日期【2024-05-21】
         /// <para>【资料来源】https://baike.baidu.com/item/手机号码 </para>
         /// </summary>
         /// <param name="value">要检测的字符串</param>

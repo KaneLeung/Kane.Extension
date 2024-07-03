@@ -29,7 +29,9 @@ namespace Kane.Extension
     {
         private readonly Random random = new();
         private readonly char[] operators = new char[] { '+', '*', '-', '/' };
+#if NETFRAMEWORK
         private CaptchaMode currentMode;
+#endif
 
         #region 无参构造函数 + CaptchaHelper()
         /// <summary>

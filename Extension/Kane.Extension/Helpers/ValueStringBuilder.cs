@@ -26,7 +26,7 @@ public ref struct ValueStringBuilder
 {
     // 如果从ArrayPool里分配buffer 那么需要存储一下  
     // 以便在Dispose时归还  
-    private char[]? _arrayToReturnToPool;
+    private char[] _arrayToReturnToPool;
     // 暂存外部传入的buffer  
     private Span<char> _chars;
     // 当前字符串长度  
@@ -44,6 +44,10 @@ public ref struct ValueStringBuilder
         _pos = 0;
     }
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="initialCapacity"></param>
     public ValueStringBuilder(int initialCapacity)
     {
         // 如果外部传入了capacity 那么从ArrayPool里面获取  
@@ -52,8 +56,10 @@ public ref struct ValueStringBuilder
         _pos = 0;
     }
 
-    // 返回字符串的Length 由于Length可读可写  
-    // 所以重复使用ValueStringBuilder只需将Length设置为0  
+    /// <summary>
+    /// 返回字符串的Length 由于Length可读可写  
+    /// 所以重复使用ValueStringBuilder只需将Length设置为0  
+    /// </summary>
     public int Length {
         get => _pos;
         set {
@@ -63,6 +69,10 @@ public ref struct ValueStringBuilder
         }
     }  
   
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="c"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(char c)
     {
@@ -80,14 +90,14 @@ public ref struct ValueStringBuilder
         }
     }
 
+    /// <summary>
+    /// 插入
+    /// </summary>
+    /// <param name="s"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Append(string? s)
+    public void Append(string s)
     {
-        if (s == null)
-        {
-            return;
-        }
-
+        if (s == null) return;
         // 追加字符串也是一样的高效  
         int pos = _pos;
         // 如果字符串长度为1 那么可以直接像追加字符一样  
@@ -125,7 +135,7 @@ public ref struct ValueStringBuilder
     /// <param name="format"></param>
     /// <param name="provider"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void AppendSpanFormattable<T>(T value, string? format = null, IFormatProvider? provider = null) where T : ISpanFormattable
+    public void AppendSpanFormattable<T>(T value, string format = null, IFormatProvider provider = null) where T : ISpanFormattable
     {
         // ISpanFormattable非常高效  
         if (value.TryFormat(_chars.Slice(_pos), out int charsWritten, format, provider))
@@ -162,7 +172,7 @@ public ref struct ValueStringBuilder
 
         _chars.Slice(0, _pos).CopyTo(poolArray);
 
-        char[]? toReturn = _arrayToReturnToPool;
+        char[] toReturn = _arrayToReturnToPool;
         _chars = _arrayToReturnToPool = poolArray;
         if (toReturn != null)
         {
@@ -177,7 +187,7 @@ public ref struct ValueStringBuilder
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Dispose()
     {
-        char[]? toReturn = _arrayToReturnToPool;
+        char[] toReturn = _arrayToReturnToPool;
         this = default; // 为了安全，在释放时置空当前对象  
         if (toReturn != null)
         {

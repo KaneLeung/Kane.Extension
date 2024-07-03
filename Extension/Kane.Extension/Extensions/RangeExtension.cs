@@ -79,7 +79,7 @@ namespace Kane.Extension
         /// <param name="rightContain">是否右包含【右闭区间】，默认为包含</param>
         /// <returns></returns>
         public static T In<T>(this T? value, T min, T max, T returnValue, bool leftContain = true, bool rightContain = true) where T : struct, IComparable<T>
-            => value.In(min, max, leftContain, rightContain) ? value.Value : returnValue;
+            => value.In(min, max, leftContain, rightContain) ? value!.Value : returnValue;
         #endregion
 
         #region 判断字符串长度是否在指定范围内 + InLength(this string value, int min, int max)

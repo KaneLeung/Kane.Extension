@@ -7,8 +7,6 @@
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
 
-using System;
-
 namespace Kane.Extension
 {
     /// <summary>

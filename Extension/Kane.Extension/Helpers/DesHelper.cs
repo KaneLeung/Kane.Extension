@@ -30,7 +30,7 @@ namespace Kane.Extension
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns>返回Base64字符串</returns>
-        public string? Encrypt(byte[] data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
+        public string Encrypt(byte[] data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
             => EncryptBytes(data, key, iv, mode, padding)?.ToBase64();
         #endregion
 
@@ -45,7 +45,7 @@ namespace Kane.Extension
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns>返回Base64字符串</returns>
-        public string? Encrypt(string data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
+        public string Encrypt(string data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
             => Encrypt(data.ToBytes(), key, iv, mode, padding);
         #endregion
 
@@ -60,7 +60,7 @@ namespace Kane.Extension
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public byte[]? EncryptBytes(byte[] data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
+        public byte[] EncryptBytes(byte[] data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
         {
             byte[] keyBytes = new byte[24];
             Array.Copy(key.PadRight(keyBytes.Length).ToBytes(), keyBytes, keyBytes.Length);
@@ -205,7 +205,7 @@ namespace Kane.Extension
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns>返回Base64字符串</returns>
         public string Encrypt(byte[] data, string key, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
-            => EncryptBytes(data, key, mode, padding)?.ToBase64()??string.Empty;
+            => EncryptBytes(data, key, mode, padding)?.ToBase64() ?? string.Empty;
         #endregion
 
         #region 将字符串数据进行TirpleDES加密，返回加密后的Base64字符串 + Encrypt(string data, string key, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
@@ -280,7 +280,7 @@ namespace Kane.Extension
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
         public string Decrypt(byte[] data, string key, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
-            => DecryptBytes(data, key, mode, padding)?.BytesToString()??string.Empty;
+            => DecryptBytes(data, key, mode, padding)?.BytesToString() ?? string.Empty;
         #endregion
 
         #region 将Base64字符串进行TirpleDES解密，返回解密后的字符串 + Decrypt(string data, string key, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)

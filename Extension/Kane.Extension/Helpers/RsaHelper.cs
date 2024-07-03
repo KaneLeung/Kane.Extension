@@ -599,7 +599,7 @@ namespace Kane.Extension
         {
             RSAParameters param = new RSAParameters();
             var content = pemKey.RegexReplace(@"--+[\w+\s]+--+|\s+", string.Empty);
-            byte[]? data = null;
+            byte[] data = null;
             try { data = content.Base64ToBytes(); } catch { }
             if (data == null) throw new Exception("PEM数据无效");
             var index = 0;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31105.61
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.34929.205
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extension", "Extension", "{5D262277-BC90-4030-9223-48C2F753FE87}"
 EndProject
@@ -9,11 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTest", "UnitTest", "{29
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmark", "Benchmark", "{4FEB10AF-19F4-46AE-8BD0-54C6420A692C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenchmarkTest", "Benchmark\BenchmarkTest\BenchmarkTest.csproj", "{E70C3AA8-58CE-4B9A-8C8A-3D080F42C8E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BenchmarkTest", "Benchmark\BenchmarkTest\BenchmarkTest.csproj", "{E70C3AA8-58CE-4B9A-8C8A-3D080F42C8E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kane.Extension", "Extension\Kane.Extension\Kane.Extension.csproj", "{FFB5CC38-C9EF-45F2-9BC3-EE1A1C5E6D47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kane.Extension", "Extension\Kane.Extension\Kane.Extension.csproj", "{FFB5CC38-C9EF-45F2-9BC3-EE1A1C5E6D47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtensionTest", "UnitTest\ExtensionTest\ExtensionTest.csproj", "{74690B14-26B3-445B-A8A6-A90CC989E42A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtensionTest", "UnitTest\ExtensionTest\ExtensionTest.csproj", "{74690B14-26B3-445B-A8A6-A90CC989E42A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

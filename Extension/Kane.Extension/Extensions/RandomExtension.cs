@@ -19,7 +19,7 @@ namespace Kane.Extension
     /// </summary>
     public static class RandomExtension
     {
-        private static readonly Random random = new ();
+        private static readonly Random random = new();
 #if NET6_0_OR_GREATER
         static RandomExtension()
         {

@@ -178,7 +178,7 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="value">要转换的Base64字符串</param>
         /// <returns></returns>
-        public static Image? Base64ToImage(this string value)
+        public static Image Base64ToImage(this string value)
         {
             try
             {

@@ -26,7 +26,7 @@ namespace Kane.Extension
         private const int DefaultCapacity = 16; // == StringBuilder.DefaultCapacity
 
         [ThreadStatic]
-        private static StringBuilder? cachedInstance;
+        private static StringBuilder cachedInstance;
 
         /// <summary>
         /// 获得一个指定容量的StringBuilder
@@ -38,7 +38,7 @@ namespace Kane.Extension
         {
             if (capacity <= MaxBuilderSize)
             {
-                StringBuilder? sb = cachedInstance;
+                StringBuilder sb = cachedInstance;
                 if (sb != null)
                 {
                     // 当请求的大小大于当前容量时，

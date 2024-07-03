@@ -27,7 +27,7 @@ namespace Kane.Extension
         /// <param name="files">这个不用传值，或传Null</param>
         /// <param name="pattern">文字和通配符的组合, 但不支持正则表达式。</param>
         /// <returns></returns>
-        private static List<string> GetAllFiles(string path, List<string>? files = null, string pattern = "")
+        private static List<string> GetAllFiles(string path, List<string> files = null, string pattern = "")
         {
             files ??= new List<string>();
             string[] subPaths = pattern.IsNullOrEmpty() ? Directory.GetDirectories(path) : Directory.GetDirectories(path, pattern);
@@ -201,7 +201,7 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="path">文件完整路径</param>
         /// <returns></returns>
-        public static async Task<byte[]?> FileToBytesAsync(this string path)
+        public static async Task<byte[]> FileToBytesAsync(this string path)
         {
             if (!File.Exists(path)) return default;
             using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read);
@@ -222,7 +222,7 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="path">文件完整路径</param>
         /// <returns></returns>
-        public static byte[]? FileToBytes(this string path)
+        public static byte[] FileToBytes(this string path)
         {
             if (!File.Exists(path)) return default;
             using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read);

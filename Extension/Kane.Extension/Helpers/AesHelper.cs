@@ -32,7 +32,7 @@ namespace Kane.Extension
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns>返回Base64字符串</returns>
-        public string? Encrypt(byte[] data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
+        public string Encrypt(byte[] data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
             => EncryptBytes(data, key, iv, mode, padding)?.ToBase64();
         #endregion
 
@@ -47,7 +47,7 @@ namespace Kane.Extension
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns>返回Base64字符串</returns>
-        public string? Encrypt(string data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
+        public string Encrypt(string data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
             => Encrypt(data.ToBytes(), key, iv, mode, padding);
         #endregion
 
@@ -61,7 +61,7 @@ namespace Kane.Extension
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public byte[]? EncryptBytes(byte[] data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
+        public byte[] EncryptBytes(byte[] data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
         {
             byte[] keyBytes = new byte[32], ivBytes = new byte[16];
             Array.Copy(key.PadRight(keyBytes.Length).ToBytes(), keyBytes, keyBytes.Length);
@@ -94,7 +94,7 @@ namespace Kane.Extension
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public byte[]? EncryptBytes(string data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
+        public byte[] EncryptBytes(string data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
             => EncryptBytes(data.ToBytes(), key, iv, mode, padding);
         #endregion
 
@@ -108,7 +108,7 @@ namespace Kane.Extension
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public string? Decrypt(byte[] data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
+        public string Decrypt(byte[] data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
             => DecryptBytes(data, key, iv, mode, padding)?.BytesToString();
         #endregion
 
@@ -122,7 +122,7 @@ namespace Kane.Extension
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public string? Decrypt(string data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
+        public string Decrypt(string data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
             => Decrypt(data.Base64ToBytes(), key, iv, mode, padding);
         #endregion
 
@@ -136,7 +136,7 @@ namespace Kane.Extension
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public byte[]? DecryptBytes(byte[] data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
+        public byte[] DecryptBytes(byte[] data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
         {
             byte[] keyBytes = new byte[32], ivBytes = new byte[16];
             Array.Copy(key.PadRight(keyBytes.Length).ToBytes(), keyBytes, keyBytes.Length);
@@ -174,7 +174,7 @@ namespace Kane.Extension
         /// <param name="mode">分组加密的模式，默认使用【CBC】</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public byte[]? DecryptBytes(string data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
+        public byte[] DecryptBytes(string data, string key, string iv, CipherMode mode = CipherMode.CBC, PaddingMode padding = PaddingMode.PKCS7)
             => DecryptBytes(data.Base64ToBytes(), key, iv, mode, padding);
         #endregion
 
@@ -186,7 +186,7 @@ namespace Kane.Extension
         /// <param name="key">密钥，最大32Bit,可由<see cref="RandomExtension.RandCode(int, RandomMode, char[])"/>RandCode(32)生成</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns>返回Base64字符串</returns>
-        public string? Encrypt(byte[] data, string key, PaddingMode padding = PaddingMode.PKCS7)
+        public string Encrypt(byte[] data, string key, PaddingMode padding = PaddingMode.PKCS7)
             => EncryptBytes(data, key, padding)?.ToBase64();
         #endregion
 
@@ -199,7 +199,7 @@ namespace Kane.Extension
         /// <param name="key">密钥，最大32Bit,可由<see cref="RandomExtension.RandCode(int, RandomMode, char[])"/>RandCode(32)生成</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns>返回Base64字符串</returns>
-        public string? Encrypt(string data, string key, PaddingMode padding = PaddingMode.PKCS7)
+        public string Encrypt(string data, string key, PaddingMode padding = PaddingMode.PKCS7)
             => Encrypt(data.ToBytes(), key, padding);
         #endregion
 
@@ -211,7 +211,7 @@ namespace Kane.Extension
         /// <param name="key">密钥，最大32Bit,可由<see cref="RandomExtension.RandCode(int, RandomMode, char[])"/>RandCode(32)生成</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public byte[]? EncryptBytes(byte[] data, string key, PaddingMode padding = PaddingMode.PKCS7)
+        public byte[] EncryptBytes(byte[] data, string key, PaddingMode padding = PaddingMode.PKCS7)
         {
             byte[] keyBytes = new byte[32];
             Array.Copy(key.PadRight(keyBytes.Length).ToBytes(), keyBytes, keyBytes.Length);
@@ -243,7 +243,7 @@ namespace Kane.Extension
         /// <param name="key">密钥，最大32Bit,可由<see cref="RandomExtension.RandCode(int, RandomMode, char[])"/>RandCode(32)生成</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public byte[]? EncryptBytes(string data, string key, PaddingMode padding = PaddingMode.PKCS7)
+        public byte[] EncryptBytes(string data, string key, PaddingMode padding = PaddingMode.PKCS7)
             => EncryptBytes(data.ToBytes(), key, padding);
         #endregion
 
@@ -255,7 +255,7 @@ namespace Kane.Extension
         /// <param name="key">密钥，最大32Bit,可由<see cref="RandomExtension.RandCode(int, RandomMode, char[])"/>RandCode(32)生成</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public string? Decrypt(byte[] data, string key, PaddingMode padding = PaddingMode.PKCS7)
+        public string Decrypt(byte[] data, string key, PaddingMode padding = PaddingMode.PKCS7)
             => DecryptBytes(data, key, padding)?.BytesToString();
         #endregion
 
@@ -267,7 +267,7 @@ namespace Kane.Extension
         /// <param name="key">密钥，最大32Bit,可由<see cref="RandomExtension.RandCode(int, RandomMode, char[])"/>RandCode(32)生成</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public string? Decrypt(string data, string key, PaddingMode padding = PaddingMode.PKCS7)
+        public string Decrypt(string data, string key, PaddingMode padding = PaddingMode.PKCS7)
             => Decrypt(data.Base64ToBytes(), key, padding);
         #endregion
 
@@ -279,7 +279,7 @@ namespace Kane.Extension
         /// <param name="key">密钥，最大32Bit,可由<see cref="RandomExtension.RandCode(int, RandomMode, char[])"/>RandCode(32)生成</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public byte[]? DecryptBytes(byte[] data, string key, PaddingMode padding = PaddingMode.PKCS7)
+        public byte[] DecryptBytes(byte[] data, string key, PaddingMode padding = PaddingMode.PKCS7)
         {
             byte[] keyBytes = new byte[32];
             Array.Copy(key.PadRight(keyBytes.Length).ToBytes(), keyBytes, keyBytes.Length);
@@ -316,7 +316,7 @@ namespace Kane.Extension
         /// <param name="key">密钥，最大32Bit,可由<see cref="RandomExtension.RandCode(int, RandomMode, char[])"/>RandCode(32)生成</param>
         /// <param name="padding">填充方式，默认使用【PKCS7】</param>
         /// <returns></returns>
-        public byte[]? DecryptBytes(string data, string key, PaddingMode padding = PaddingMode.PKCS7)
+        public byte[] DecryptBytes(string data, string key, PaddingMode padding = PaddingMode.PKCS7)
             => DecryptBytes(data.Base64ToBytes(), key, padding);
         #endregion
     }

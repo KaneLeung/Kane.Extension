@@ -7,8 +7,6 @@
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -34,7 +32,11 @@ namespace Kane.Extension
         /// <returns></returns>
         public byte[] Md5Bytes(byte[] data)
         {
+#if NET6_0_OR_GREATER
+            using var md5  = MD5.Create();
+#else
             using var md5 = new MD5CryptoServiceProvider();
+#endif
             return md5.ComputeHash(data);
         }
         #endregion
