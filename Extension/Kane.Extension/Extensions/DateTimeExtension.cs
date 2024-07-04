@@ -449,6 +449,49 @@ namespace Kane.Extension
         public static DateTime Max(DateTime dt1, DateTime dt2) => DateTime.Compare(dt1, dt2) > 0 ? dt1 : dt2;
         #endregion
 
+        #region 获取两个时间最大的时间(返回可空) + DateTime? Max(DateTime? dt1, DateTime? dt2)
+        /// <summary>
+        /// 获取两个时间最大的时间(返回可空)
+        /// </summary>
+        /// <param name="dt1"></param>
+        /// <param name="dt2"></param>
+        /// <returns></returns>
+        public static DateTime? Max(DateTime? dt1, DateTime? dt2)
+        {
+            if (dt1 is null) return dt2;
+            if (dt2 is null) return dt1;
+            return DateTime.Compare(dt1.Value, dt2.Value) > 0 ? dt1 : dt2;
+        }
+        #endregion
+
+        #region 获取三个时间最大的时间 + Max(DateTime dt1, DateTime dt2, DateTime dt3)
+        /// <summary>
+        /// 获取三个时间最大的时间
+        /// </summary>
+        /// <param name="dt1"></param>
+        /// <param name="dt2"></param>
+        /// <param name="dt3"></param>
+        /// <returns></returns>
+        public static DateTime Max(DateTime dt1, DateTime dt2, DateTime dt3) => DateTime.Compare(dt1, dt2) > 0 ? (DateTime.Compare(dt1, dt3) > 0 ? dt1 : dt3) : (DateTime.Compare(dt2, dt3) > 0 ? dt2 : dt3);
+        #endregion
+
+        #region 获取三个时间最大的时间(返回可空) + Max(DateTime? dt1, DateTime? dt2, DateTime? dt3)
+        /// <summary>
+        /// 获取三个时间最大的时间(返回可空)
+        /// </summary>
+        /// <param name="dt1"></param>
+        /// <param name="dt2"></param>
+        /// <param name="dt3"></param>
+        /// <returns></returns>
+        public static DateTime? Max(DateTime? dt1, DateTime? dt2, DateTime? dt3)
+        {
+            if (dt1 is null) return Max(dt2, dt3);
+            if (dt2 is null) return Max(dt1, dt3);
+            if (dt3 is null) return Max(dt1, dt2);
+            return Max(dt1.Value, dt2.Value, dt3.Value);
+        }
+        #endregion
+
         #region 获取两个时间最小的时间 + DateTime Min(DateTime dt1, DateTime dt2)
         /// <summary>
         /// 获取两个时间最小的时间
@@ -457,6 +500,51 @@ namespace Kane.Extension
         /// <param name="dt2"></param>
         /// <returns></returns>
         public static DateTime Min(DateTime dt1, DateTime dt2) => DateTime.Compare(dt1, dt2) < 0 ? dt1 : dt2;
+        #endregion
+
+        #region 获取两个时间最小的时间(返回可空) + DateTime? Min(DateTime? dt1, DateTime? dt2)
+        /// <summary>
+        /// 获取两个时间最小的时间(返回可空)
+        /// 注：NULL不是最小值
+        /// </summary>
+        /// <param name="dt1"></param>
+        /// <param name="dt2"></param>
+        /// <returns></returns>
+        public static DateTime? Min(DateTime? dt1, DateTime? dt2)
+        {
+            if (dt1 is null) return dt2;
+            if (dt2 is null) return dt1;
+            return DateTime.Compare(dt1.Value, dt2.Value) < 0 ? dt1 : dt2;
+        }
+        #endregion
+
+        #region 获取三个时间最小的时间 + Min(DateTime dt1, DateTime dt2, DateTime dt3)
+        /// <summary>
+        /// 获取三个时间最小的时间
+        /// </summary>
+        /// <param name="dt1"></param>
+        /// <param name="dt2"></param>
+        /// <param name="dt3"></param>
+        /// <returns></returns>
+        public static DateTime Min(DateTime dt1, DateTime dt2, DateTime dt3) => DateTime.Compare(dt1, dt2) < 0 ? (DateTime.Compare(dt1, dt3) < 0 ? dt1 : dt3) : (DateTime.Compare(dt2, dt3) < 0 ? dt2 : dt3);
+        #endregion
+
+        #region 获取三个时间最小的时间(返回可空) + DateTime? Min(DateTime? dt1, DateTime? dt2)
+        /// <summary>
+        /// 获取三个时间最小的时间(返回可空)
+        /// 注：NULL不是最小值
+        /// </summary>
+        /// <param name="dt1"></param>
+        /// <param name="dt2"></param>
+        /// <param name="dt3"></param>
+        /// <returns></returns>
+        public static DateTime? Min(DateTime? dt1, DateTime? dt2, DateTime? dt3)
+        {
+            if (dt1 is null) return Min(dt2, dt3);
+            if (dt2 is null) return Min(dt1, dt3);
+            if (dt3 is null) return Min(dt1, dt2);
+            return Min(dt1.Value, dt2.Value, dt3.Value);
+        }
         #endregion
     }
 }

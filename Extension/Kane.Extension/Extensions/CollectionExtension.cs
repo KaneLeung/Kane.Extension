@@ -215,7 +215,7 @@ namespace Kane.Extension
             {
                 for (int i = 0; i < props.Length; i++)
                 {
-                    if (i != 0) builder.Append(",");
+                    if (i != 0) builder.Append(',');
                     var value = props[i].GetValue(item);
                     if (value == null) builder.Append("\"\"");//如果为空，
                     else
@@ -249,8 +249,8 @@ namespace Kane.Extension
         /// <returns></returns>
         private static string ToCsvFormat(string value)
         {
-            if (value.Contains("\"")) value = value.Replace("\"", "\"\"");
-            if (value.Contains("\"") || value.Contains(",") || value.Contains("\r\n") || value.Contains("\n")) value = $"\"{value}\"";
+            if (value.Contains('\"')) value = value.Replace("\"", "\"\"");
+            if (value.Contains('\"') || value.Contains(',') || value.Contains("\r\n") || value.Contains('\n')) value = $"\"{value}\"";
             return value;
         }
         #endregion
