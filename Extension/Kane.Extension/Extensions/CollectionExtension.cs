@@ -95,8 +95,8 @@ namespace Kane.Extension
                         var setter = property.GetSetMethod(true);
                         if (setter != null)
                         {
-                            var value = row[property.Name] == DBNull.Value ? null : row[property.Name];
-                            setter.Invoke(item, new[] { value });
+                            object value = row[property.Name] == DBNull.Value ? null : row[property.Name];
+                            setter.Invoke(item, [value]);
                         }
                     }
                 }
@@ -207,7 +207,7 @@ namespace Kane.Extension
                 foreach (var item in props)
                 {
                     builder.Append(item.Name);
-                    builder.Append(",");
+                    builder.Append(',');
                 }
                 builder.Append(Environment.NewLine);
             }
@@ -216,7 +216,7 @@ namespace Kane.Extension
                 for (int i = 0; i < props.Length; i++)
                 {
                     if (i != 0) builder.Append(',');
-                    var value = props[i].GetValue(item);
+                    object value = props[i].GetValue(item);
                     if (value == null) builder.Append("\"\"");//如果为空，
                     else
                     {

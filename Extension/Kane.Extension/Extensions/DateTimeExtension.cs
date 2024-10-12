@@ -22,7 +22,7 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="datetime">要转的日期</param>
         /// <returns></returns>
-        public static DateTime DayStart(this DateTime datetime) => new DateTime(datetime.Year, datetime.Month, datetime.Day);
+        public static DateTime DayStart(this DateTime datetime) => new(datetime.Year, datetime.Month, datetime.Day);
         #endregion
 
         #region 将DateTime转成下一天的开始时间 + NextDayStart(this DateTime datetime)
@@ -49,7 +49,7 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="datetime">要转的时间点</param>
         /// <returns></returns>
-        public static DateTime MonthStart(this DateTime datetime) => new DateTime(datetime.Year, datetime.Month, 1);
+        public static DateTime MonthStart(this DateTime datetime) => new(datetime.Year, datetime.Month, 1);
         #endregion
 
         #region 将DateTime转成下个月初的开始时间 + NextMonthStart(this DateTime datetime)
@@ -268,7 +268,7 @@ namespace Kane.Extension
         public static DateTime TimeStampToLocal(this long timeStamp, bool isSecond = true)
         {
             timeStamp *= isSecond ? 10000000 : 10000;
-            DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);//621355968000000000
+            var startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);//621355968000000000
             return startTime.Add(new TimeSpan(timeStamp));//以nanosecond为单位，nanosecond：十亿分之一秒   new TimeSpan(10,000,000)为一秒，1Ticks = 100ns
         }
         #endregion
@@ -284,7 +284,7 @@ namespace Kane.Extension
         {
             if (long.TryParse(string.Concat(timeStamp, isSecond ? "0000000" : "0000"), out long temp))
             {
-                DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+                var startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
                 return startTime.Add(new TimeSpan(temp));//以nanosecond为单位，nanosecond：十亿分之一秒   new TimeSpan(10,000,000)为一秒，1Ticks = 100ns
             }
             else throw new FormatException("时间戳格式有误");
@@ -303,7 +303,7 @@ namespace Kane.Extension
         public static DateTime TimeStampToUtc(this long timeStamp, bool isSecond = true)
         {
             timeStamp *= isSecond ? 10000000 : 10000;//new DateTime(621355968000000000 + long.Parse(timestamp) * 10000000);//更简单的方法
-            DateTime startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);//621355968000000000
+            var startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);//621355968000000000
             return startTime.Add(new TimeSpan(timeStamp));//以nanosecond为单位，nanosecond：十亿分之一秒   new TimeSpan(10,000,000)为一秒
         }
         #endregion
@@ -319,7 +319,7 @@ namespace Kane.Extension
         {
             if (long.TryParse(string.Concat(timeStamp, isSecond ? "0000000" : "0000"), out long stamp))
             {
-                DateTime startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);//621355968000000000
+                var startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);//621355968000000000
                 return startTime.Add(new TimeSpan(stamp));//以nanosecond为单位，nanosecond：十亿分之一秒   new TimeSpan(10,000,000)为一秒
             }
             else throw new FormatException("时间戳格式有误");
@@ -335,7 +335,7 @@ namespace Kane.Extension
         /// <returns>Int格式</returns>
         public static int ToTimeStamp(this DateTime datetime)
         {
-            DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+            var startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
             return (int)(datetime - startTime).TotalSeconds;
         }
         #endregion
@@ -349,7 +349,7 @@ namespace Kane.Extension
         /// <returns>Long格式</returns>
         public static long ToTimeStamp(this DateTime datetime, bool isSecond)
         {
-            DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+            var startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
             return isSecond ? (long)(datetime - startTime).TotalSeconds : (long)(datetime - startTime).TotalMilliseconds;
         }
         #endregion
@@ -372,7 +372,7 @@ namespace Kane.Extension
         /// <returns></returns>
         public static string DateDiff(this DateTime datetime, DateTime point)
         {
-            TimeSpan timeSpan = datetime - point;
+            var timeSpan = datetime - point;
             var tag = timeSpan > TimeSpan.Zero ? "后" : "前";
             var days = timeSpan.Days;
             if (days != 0)

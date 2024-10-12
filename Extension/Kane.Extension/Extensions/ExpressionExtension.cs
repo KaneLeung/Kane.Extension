@@ -93,7 +93,7 @@ namespace Kane.Extension
                 memberBindingList.Add(memberBinding);
             }
             var memberInitExpression = Expression.MemberInit(Expression.New(typeof(T)), memberBindingList.ToArray());
-            var exp = Expression.Lambda<Func<T, T>>(memberInitExpression, new ParameterExpression[] { parameterExpression });
+            var exp = Expression.Lambda<Func<T, T>>(memberInitExpression, [parameterExpression]);
             return exp.Compile()(source);
         }
         #endregion

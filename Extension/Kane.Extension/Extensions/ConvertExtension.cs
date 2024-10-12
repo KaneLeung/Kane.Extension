@@ -47,7 +47,7 @@ namespace Kane.Extension
         public static short? ToNShort(this string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            if (value.Contains(".")) value = value.Split('.')[0];
+            if (value.Contains('.')) value = value.Split('.')[0];
             if (short.TryParse(value, out short returnValue)) return returnValue;
             else return null;
         }
@@ -64,7 +64,7 @@ namespace Kane.Extension
         public static int ToInt(this string value, int returnValue = 0)
         {
             if (string.IsNullOrEmpty(value)) return returnValue;
-            if (value.Contains(".")) value = value.Split('.')[0];
+            if (value.Contains('.')) value = value.Split('.')[0];
             int.TryParse(value, out returnValue);
             return returnValue;
         }
@@ -80,7 +80,7 @@ namespace Kane.Extension
         public static int? ToNInt(this string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            if (value.Contains(".")) value = value.Split('.')[0];
+            if (value.Contains('.')) value = value.Split('.')[0];
             if (int.TryParse(value, out int returnValue)) return returnValue;
             else return null;
         }
@@ -97,7 +97,7 @@ namespace Kane.Extension
         public static long ToLong(this string value, long returnValue = 0)
         {
             if (string.IsNullOrEmpty(value)) return returnValue;
-            if (value.Contains(".")) value = value.Split('.')[0];
+            if (value.Contains('.')) value = value.Split('.')[0];
             long.TryParse(value, out returnValue);
             return returnValue;
         }
@@ -113,7 +113,7 @@ namespace Kane.Extension
         public static long? ToNLong(this string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            if (value.Contains(".")) value = value.Split('.')[0];
+            if (value.Contains('.')) value = value.Split('.')[0];
             if (long.TryParse(value, out long returnValue)) return returnValue;
             else return null;
         }
@@ -255,9 +255,9 @@ namespace Kane.Extension
                 result = "负";
                 valueString = valueString.Remove(0, 1);
             }
-            if (valueString[0].ToString() == ".") valueString = "0" + valueString;
-            if (valueString[valueString.Length - 1].ToString() == ".") valueString = valueString.Remove(valueString.Length - 1, 1);
-            if (valueString.IndexOf(".") > -1)
+            if (valueString[0] == '.') valueString = "0" + valueString;
+            if (valueString[valueString.Length - 1] == '.') valueString = valueString.Remove(valueString.Length - 1, 1);
+            if (valueString.IndexOf('.') > -1)
             {
                 result += ValueToInt(valueString.Substring(0, valueString.IndexOf("."))) + "点" + valueString.Substring(valueString.IndexOf(".") + 1)
                     .Aggregate("", (current, t) => current + ToNum(t));
@@ -330,9 +330,9 @@ namespace Kane.Extension
             return strChnNames[strNumNames.IndexOf(x)];
         }
 
-        #region 泛型转Decimal,默认保留两位小数，默认【采用4舍6入5取偶】 + ToRoundDec<T>(...)
+        #region 字符串转Decimal,默认保留两位小数，默认【采用4舍6入5取偶】 + ToRoundDec(...)
         /// <summary>
-        /// 泛型转Decimal,默认保留两位小数，默认【采用4舍6入5取偶】
+        /// 字符串转Decimal,默认保留两位小数，默认【采用4舍6入5取偶】
         /// <para>采用Banker's rounding（银行家算法），即：四舍六入五取偶。事实上这也是IEEE的规范。</para>
         /// <para>备注：<see cref="MidpointRounding.AwayFromZero"/>可以用来实现传统意义上的"四舍五入"。</para>
         /// </summary>

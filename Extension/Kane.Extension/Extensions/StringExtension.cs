@@ -19,7 +19,7 @@ namespace Kane.Extension
     /// </summary>
     public static class StringExtension
     {
-        #region 测试字符串是否为NullOrEmpty + IsEmpty(this string value)
+        #region 测试字符串是否为NullOrEmpty + IsNullOrEmpty(this string value)
         /// <summary>
         /// 测试字符串是否为NullOrEmpty
         /// <para>判断是否为【Null】【""】【String.Empty】</para>
@@ -29,7 +29,7 @@ namespace Kane.Extension
         public static bool IsNullOrEmpty(this string value) => string.IsNullOrEmpty(value);
         #endregion
 
-        #region 测试字符串是否为NullOrWhiteSpace + IsWhiteSpace(this string value)
+        #region 测试字符串是否为NullOrWhiteSpace + IsNullOrWhiteSpace(this string value)
         /// <summary>
         /// 测试字符串是否为NullOrWhiteSpace
         /// <para>null,String.Empty,new String(' ', 20),"  \t   ",new String('\u2000', 10)都会返回True</para>
@@ -418,5 +418,28 @@ namespace Kane.Extension
         }
         #endregion
 #endif
+
+        #region 字符串按指定长度进行截取(超过长度可加后缀) + Truncat(this string value, int length, string suffix)
+        /// <summary>
+        /// 字符串按指定长度进行截取(超过长度可加后缀)
+        /// </summary>
+        /// <param name="value">原字符串</param>
+        /// <param name="length">要截取的长度</param>
+        /// <param name="suffix">后缀</param>
+        /// <returns></returns>
+        public static string Truncat(this string value, int length, string suffix)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return value;
+            if (length < 1) return suffix;
+            //判断原字符串是否大于最大长度
+            if (value.Length > length)
+            {
+                //判断后缀是否为空
+                if (string.IsNullOrEmpty(suffix)) return value.Substring(0, length);
+                else return $"{value.Substring(0, length)}{suffix}";
+            }
+            return value;
+        }
+        #endregion
     }
 }
