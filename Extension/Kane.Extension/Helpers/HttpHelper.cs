@@ -26,18 +26,31 @@ namespace Kane.Extension
     /// <summary>
     /// 常用的Http请求扩展
     /// <para>如果使用频繁，请使用静态的【HttpClient】，避免【实例化每个请求的 HttpClient 类将耗尽重负载下可用的插槽数。这将导致 SocketException 错误】</para>
-    /// <para>https://docs.microsoft.com/zh-cn/dotnet/api/system.net.http.httpclient?view=netcore-3.1</para>
+    /// <para>https://learn.microsoft.com/zh-cn/dotnet/fundamentals/networking/http/httpclient-guidelines</para>
     /// </summary>
     public class HttpHelper
     {
         private static readonly HttpClient client;
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// 【写成静态】带来的问题显而易见，在不重启应用的前提下，HttpClient 中的 DNS 永远不会被刷新。
+        /// <para>根据预期的 DNS 更改，使用 static 或 singleton HttpClient 实例，并将 PooledConnectionLifetime 设置为所需间隔（例如 2 分钟）。</para> 
+        /// <para>这可以解决端口耗尽和 DNS 更改两个问题，而且不会增加 IHttpClientFactory 的开销。 如果需要模拟处理程序，可以单独注册它。</para>
+        /// </summary>
+#else
         /// <summary>
         /// 【写成静态】带来的问题显而易见，在不重启应用的前提下，HttpClient 中的 DNS 永远不会被刷新。
         /// </summary>
+#endif
         static HttpHelper()
         {
 #if NET6_0_OR_GREATER
-            var handler = new HttpClientHandler() { UseCookies = true, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli };
+            var handler = new SocketsHttpHandler()
+            {
+                UseCookies = true,
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli,
+                PooledConnectionLifetime = TimeSpan.FromMinutes(2)
+            };
 #else
             var handler = new HttpClientHandler() { UseCookies = true, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate };
 #endif

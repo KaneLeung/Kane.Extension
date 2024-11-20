@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net46;net47;net48;net6.0;net8.0;</TargetFrameworks>
-    <LangVersion>12.0</LangVersion>
+    <TargetFrameworks>net46;net47;net48;net6.0;net8.0;net9.0;</TargetFrameworks>
+    <!--https://learn.microsoft.com/zh-cn/dotnet/csharp/whats-new/csharp-13-->
+    <LangVersion>13.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net8.0'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net8.0' OR '$(TargetFramework)' == 'net9.0'">
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net46' OR '$(TargetFramework)' == 'net47' OR '$(TargetFramework)' == 'net48'">

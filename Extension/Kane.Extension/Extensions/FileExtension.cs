@@ -107,7 +107,11 @@ namespace Kane.Extension
         {
             stream.Seek(0, SeekOrigin.Begin);
             byte[] buffer = new byte[stream.Length];
+#if NET8_0_OR_GREATER
+            stream.ReadExactly(buffer, 0, buffer.Length);
+#else
             stream.Read(buffer, 0, buffer.Length);
+#endif
             buffer.ToFile(path);
         }
         #endregion
@@ -207,7 +211,9 @@ namespace Kane.Extension
             using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read);
             byte[] bytes = new byte[fileStream.Length];
             fileStream.Seek(0, SeekOrigin.Begin);
-#if NET6_0_OR_GREATER
+#if NET8_0_OR_GREATER
+            await fileStream.ReadExactlyAsync(bytes.AsMemory(0, bytes.Length));
+#elif NET6_0
             await fileStream.ReadAsync(bytes.AsMemory(0, bytes.Length));
 #else
             await fileStream.ReadAsync(bytes, 0, bytes.Length);
@@ -228,7 +234,11 @@ namespace Kane.Extension
             using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read);
             byte[] bytes = new byte[fileStream.Length];
             fileStream.Seek(0, SeekOrigin.Begin);
+#if NET8_0_OR_GREATER
+            fileStream.ReadExactly(bytes, 0, bytes.Length);
+#else
             fileStream.Read(bytes, 0, bytes.Length);
+#endif
             return bytes;
         }
         #endregion

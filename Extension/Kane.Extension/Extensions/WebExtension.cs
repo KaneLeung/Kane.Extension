@@ -122,7 +122,7 @@ namespace Kane.Extension
         public static IOrderedEnumerable<KeyValuePair<string, string>> GetQuerys(this Uri uri, bool toLower = true)
         {
             var collection = HttpUtility.ParseQueryString(uri.Query);
-            return collection.Cast<string>().Where(k => k.HasValue()).Select(k => new KeyValuePair<string, string>(true ? k.ToLower() : k, toLower ? collection[k].ToLower() : collection[k])).OrderBy(k => k.Key);
+            return collection.Cast<string>().Where(k => k.HasValue()).Select(k => new KeyValuePair<string, string>(toLower ? k.ToLower() : k, collection[k])).OrderBy(k => k.Key);
         }
         #endregion
 

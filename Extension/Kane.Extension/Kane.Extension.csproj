@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net46;net47;net48;net6.0;net8.0;</TargetFrameworks>
-    <LangVersion>12.0</LangVersion>
+    <TargetFrameworks>net46;net47;net48;net6.0;net8.0;net9.0;</TargetFrameworks>
+    <!--https://learn.microsoft.com/zh-cn/dotnet/csharp/whats-new/csharp-13-->
+    <LangVersion>13.0</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Kane.Extension.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -16,9 +17,9 @@
     <RepositoryType>Git</RepositoryType>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>包含常用的基本扩展，具体请看源码</Description>
-    <Version>2.0.4</Version>
-    <AssemblyVersion>2.0.4.0</AssemblyVersion>
-    <FileVersion>2.0.4.0</FileVersion>
+    <Version>2.0.5</Version>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <FileVersion>2.0.5.0</FileVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageIcon>ProjectIcon.png</PackageIcon>
     <IncludeSymbols>true</IncludeSymbols>
@@ -31,8 +32,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net8.0'">
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net8.0' OR '$(TargetFramework)' == 'net9.0'">
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net46'">

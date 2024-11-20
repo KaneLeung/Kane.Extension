@@ -29,7 +29,11 @@ namespace Kane.Extension
         {
             byte[] result = new byte[stream.Length];
             stream.Seek(0, SeekOrigin.Begin);//设置当前流的位置为流的开始
+#if NET8_0_OR_GREATER
+            stream.ReadExactly(result, 0, result.Length);
+#else
             stream.Read(result, 0, result.Length);
+#endif
             return result;
         }
         #endregion
@@ -64,7 +68,9 @@ namespace Kane.Extension
         {
             byte[] result = new byte[stream.Length];
             stream.Seek(0, SeekOrigin.Begin);//设置当前流的位置为流的开始
-#if NET6_0_OR_GREATER
+#if NET8_0_OR_GREATER
+            await stream.ReadExactlyAsync(result.AsMemory(0, result.Length));
+#elif NET6_0
             await stream.ReadAsync(result.AsMemory(0, result.Length));
 #else
             await stream.ReadAsync(result, 0, result.Length);

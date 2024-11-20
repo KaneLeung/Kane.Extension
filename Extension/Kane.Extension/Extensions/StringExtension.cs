@@ -180,13 +180,13 @@ namespace Kane.Extension
         /// <summary>
         /// 全局字符串转换Bool格式
         /// </summary>
-        public static IEnumerable<string> BoolFormats = new string[] { "true", "是", "真", "1", "ok", "yes", "enable" };
+        public static IEnumerable<string> BoolFormats = ["true", "1", "ok", "yes", "enable", "是", "真", "可以"];
         #endregion
 
-        #region 将字符串转换为Bool类型，默认包含【true】【是】【真】【1】【ok】【yes】【enable】 + ToBool(this string value)
+        #region 将字符串转换为Bool类型，默认包含【true】【1】【ok】【yes】【enable】【是】【真】【可以】 + ToBool(this string value)
         /// <summary>
         /// 将字符串转换为Bool类型
-        /// <para>默认包含【true】【是】【真】【1】【ok】【yes】【enable】</para>
+        /// <para>默认包含【true】【1】【ok】【yes】【enable】【是】【真】【可以】</para>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -401,7 +401,7 @@ namespace Kane.Extension
         }
         #endregion
 
-#if NETCOREAPP
+#if NET6_0_OR_GREATER
         #region 查找并移除字符串，可查找多个目标【忽略大小写】 + RemoveIgnoreCase(this string value, params string[] keywords)
         /// <summary>
         /// 查找并移除字符串，可查找多个目标【忽略大小写】
