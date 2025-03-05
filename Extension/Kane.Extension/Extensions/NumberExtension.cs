@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 
 using System;
+using System.Globalization;
 
 namespace Kane.Extension.Extensions;
 /// <summary>
@@ -69,5 +70,38 @@ public static class NumberExtension
     /// <returns></returns>
     public static decimal? ToRound(this decimal? value, int digits = 2, MidpointRounding mode = MidpointRounding.ToEven)
         => value.HasValue ? Math.Round(value.Value, digits, mode) : value;
+    #endregion
+
+    #region Decimal转成字符串，并去掉小数点后面的0 + ToStringTrimEndZero(this decimal value)
+    /// <summary>
+    /// Decimal转成字符串，并去掉小数点后面的0
+    /// <para>https://learn.microsoft.com/zh-cn/dotnet/standard/base-types/standard-numeric-format-strings#GFormatString</para>
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static string ToStringTrimEndZero(this decimal value) 
+        => value.ToString("G29", CultureInfo.InvariantCulture);
+    #endregion
+
+    #region Double转成字符串，并去掉小数点后面的0 + ToStringTrimEndZero(this double value)
+    /// <summary>
+    /// Double转成字符串，并去掉小数点后面的0
+    /// <para>https://learn.microsoft.com/zh-cn/dotnet/standard/base-types/standard-numeric-format-strings#GFormatString</para>
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static string ToStringTrimEndZero(this double value) 
+        => value.ToString("G17", CultureInfo.InvariantCulture);
+    #endregion
+
+    #region Float转成字符串，并去掉小数点后面的0 + ToStringTrimEndZero(this float value)
+    /// <summary>
+    /// Float转成字符串，并去掉小数点后面的0
+    /// <para>https://learn.microsoft.com/zh-cn/dotnet/standard/base-types/standard-numeric-format-strings#GFormatString</para>
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static string ToStringTrimEndZero(this float value) 
+        => value.ToString("G7", CultureInfo.InvariantCulture);
     #endregion
 }

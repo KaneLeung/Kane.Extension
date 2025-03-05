@@ -31,7 +31,7 @@ namespace Kane.Extension
         public static short ToShort(this string value, short returnValue = 0)
         {
             if (string.IsNullOrEmpty(value)) return returnValue;
-            if (value.Contains(".")) value = value.Split('.')[0];
+            if (value.Contains('.')) value = value.Split('.')[0];
             short.TryParse(value, out returnValue);
             return returnValue;
         }
@@ -129,7 +129,7 @@ namespace Kane.Extension
         public static float ToFloat(this string value, float returnValue = 0)
         {
             if (string.IsNullOrEmpty(value)) return returnValue;
-            float.TryParse(value.ToString(), out returnValue);
+            float.TryParse(value, out returnValue);
             return returnValue;
         }
         #endregion
@@ -143,7 +143,7 @@ namespace Kane.Extension
         public static float? ToNFloat(this string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            if (float.TryParse(value.ToString(), out float returnValue)) return returnValue;
+            if (float.TryParse(value, out float returnValue)) return returnValue;
             else return null;
         }
         #endregion
@@ -158,7 +158,7 @@ namespace Kane.Extension
         public static double ToDouble(this string value, double returnValue = 0)
         {
             if (string.IsNullOrEmpty(value)) return returnValue;
-            double.TryParse(value.ToString(), out returnValue);
+            double.TryParse(value, out returnValue);
             return returnValue;
         }
         #endregion
@@ -172,7 +172,7 @@ namespace Kane.Extension
         public static double? ToNDouble(this string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            if (double.TryParse(value.ToString(), out double returnValue)) return returnValue;
+            if (double.TryParse(value, out double returnValue)) return returnValue;
             else return null;
         }
         #endregion
@@ -187,7 +187,7 @@ namespace Kane.Extension
         public static decimal ToDec(this string value, decimal returnValue = 0)
         {
             if (string.IsNullOrEmpty(value)) return returnValue;
-            decimal.TryParse(value.ToString(), out returnValue);
+            decimal.TryParse(value, out returnValue);
             return returnValue;
         }
         #endregion
@@ -201,7 +201,7 @@ namespace Kane.Extension
         public static decimal? ToNDec(this string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            if (decimal.TryParse(value.ToString(), out decimal returnValue)) return returnValue;
+            if (decimal.TryParse(value, out decimal returnValue)) return returnValue;
             else return null;
         }
         #endregion
