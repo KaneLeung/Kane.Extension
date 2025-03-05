@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------------------------
 // 项目名称：Kane.Extension
 // 项目作者：Kane Leung
-// 项目版本：2.0.0
+// 项目版本：2.0.6
 // 源码地址：Gitee：https://gitee.com/KaneLeung/Kane.Extension 
 //         Github：https://github.com/KaneLeung/Kane.Extension 
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
@@ -10,7 +10,7 @@
 using System;
 using System.Globalization;
 
-namespace Kane.Extension.Extensions;
+namespace Kane.Extension;
 /// <summary>
 /// 数字类扩展方法
 /// </summary>
@@ -79,7 +79,7 @@ public static class NumberExtension
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static string ToStringTrimEndZero(this decimal value) 
+    public static string ToStringTrimEndZero(this decimal value)
         => value.ToString("G29", CultureInfo.InvariantCulture);
     #endregion
 
@@ -90,7 +90,7 @@ public static class NumberExtension
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static string ToStringTrimEndZero(this double value) 
+    public static string ToStringTrimEndZero(this double value)
         => value.ToString("G17", CultureInfo.InvariantCulture);
     #endregion
 
@@ -101,7 +101,7 @@ public static class NumberExtension
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static string ToStringTrimEndZero(this float value) 
+    public static string ToStringTrimEndZero(this float value)
         => value.ToString("G7", CultureInfo.InvariantCulture);
     #endregion
 }

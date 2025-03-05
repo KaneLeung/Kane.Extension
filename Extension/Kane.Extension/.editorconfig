@@ -124,4 +124,4 @@ dotnet_style_qualification_for_method = false:suggestion
 dotnet_style_qualification_for_property = false:suggestion
 
 # Add file header
-file_header_template = -----------------------------------------------------------------------------\n项目名称：Kane.Extension\n项目作者：Kane Leung\n项目版本：2.0.0\n源码地址：Gitee：https://gitee.com/KaneLeung/Kane.Extension \n        Github：https://github.com/KaneLeung/Kane.Extension \n开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）\n-----------------------------------------------------------------------------
+file_header_template = -----------------------------------------------------------------------------\n项目名称：Kane.Extension\n项目作者：Kane Leung\n项目版本：2.0.6\n源码地址：Gitee：https://gitee.com/KaneLeung/Kane.Extension \n        Github：https://github.com/KaneLeung/Kane.Extension \n开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）\n-----------------------------------------------------------------------------
