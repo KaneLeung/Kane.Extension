@@ -1,9 +1,8 @@
 ﻿// -----------------------------------------------------------------------------
 // 项目名称：Kane.Extension
 // 项目作者：Kane Leung
-// 项目版本：2.0.6
 // 源码地址：Gitee：https://gitee.com/KaneLeung/Kane.Extension 
-//         Github：https://github.com/KaneLeung/Kane.Extension 
+// 　　　　　Github：https://github.com/KaneLeung/Kane.Extension 
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
 
@@ -25,6 +24,15 @@ namespace Kane.Extension
         public static DateTime DayStart(this DateTime datetime) => new(datetime.Year, datetime.Month, datetime.Day);
         #endregion
 
+        #region 将DateTime转成当天结束时间23时59分59秒 + DayEnd(this DateTime datetime)
+        /// <summary>
+        /// 将DateTime转成当天结束时间23时59分59秒
+        /// </summary>
+        /// <param name="datetime">要转的日期</param>
+        /// <returns></returns>
+        public static DateTime DayEnd(this DateTime datetime) => new(datetime.Year, datetime.Month, datetime.Day, 23, 59, 59);
+        #endregion
+
         #region 将DateTime转成下一天的开始时间 + NextDayStart(this DateTime datetime)
         /// <summary>
         /// 将DateTime转成下一天的开始时间
@@ -32,6 +40,15 @@ namespace Kane.Extension
         /// <param name="datetime">要转的日期</param>
         /// <returns></returns>
         public static DateTime NextDayStart(this DateTime datetime) => datetime.AddDays(1).DayStart();
+        #endregion
+
+        #region 将DateTime转成下一天的结束时间23时59分59秒 + NextDayEnd(this DateTime datetime)
+        /// <summary>
+        /// 将DateTime转成下一天的结束时间23时59分59秒
+        /// </summary>
+        /// <param name="datetime">要转的日期</param>
+        /// <returns></returns>
+        public static DateTime NextDayEnd(this DateTime datetime) => datetime.AddDays(1).DayEnd();
         #endregion
 
         #region 将DateTime转成前一天的开始时间 + LastDayStart(this DateTime datetime)
@@ -43,6 +60,15 @@ namespace Kane.Extension
         public static DateTime LastDayStart(this DateTime datetime) => datetime.AddDays(-1).DayStart();
         #endregion
 
+        #region 将DateTime转成前一天的结束时间23时59分59秒 + LastDayEnd(this DateTime datetime)
+        /// <summary>
+        /// 将DateTime转成前一天的结束时间23时59分59秒
+        /// </summary>
+        /// <param name="datetime">要转的日期</param>
+        /// <returns></returns>
+        public static DateTime LastDayEnd(this DateTime datetime) => datetime.DayStart().AddSeconds(-1);
+        #endregion
+
         #region 将DateTime转成当月初时间 + MonthStart(this DateTime datetime)
         /// <summary>
         /// 将DateTime转成当月初时间
@@ -50,6 +76,15 @@ namespace Kane.Extension
         /// <param name="datetime">要转的时间点</param>
         /// <returns></returns>
         public static DateTime MonthStart(this DateTime datetime) => new(datetime.Year, datetime.Month, 1);
+        #endregion
+
+        #region 将DateTime转成当月月末当天23时59分59秒 + MonthEnd(this DateTime datetime)
+        /// <summary>
+        /// 将DateTime转成当月月末当天23时59分59秒
+        /// </summary>
+        /// <param name="datetime">要转的时间点</param>
+        /// <returns></returns>
+        public static DateTime MonthEnd(this DateTime datetime) => datetime.NextMonthStart().AddSeconds(-1);
         #endregion
 
         #region 将DateTime转成下个月初的开始时间 + NextMonthStart(this DateTime datetime)
@@ -61,6 +96,15 @@ namespace Kane.Extension
         public static DateTime NextMonthStart(this DateTime datetime) => datetime.AddMonths(1).MonthStart();
         #endregion
 
+        #region 将DateTime转成下个月月末当天23时59分59秒 + NextMonthEnd(this DateTime datetime)
+        /// <summary>
+        /// 将DateTime转成下个月月末当天23时59分59秒
+        /// </summary>
+        /// <param name="datetime">要转的时间点</param>
+        /// <returns></returns>
+        public static DateTime NextMonthEnd(this DateTime datetime) => datetime.AddMonths(2).MonthStart().AddSeconds(-1);
+        #endregion
+
         #region 将DateTime转成上个月初的开始时间 + LastMonthStart(this DateTime datetime)
         /// <summary>
         /// 将DateTime转成上个月初的开始时间
@@ -68,6 +112,15 @@ namespace Kane.Extension
         /// <param name="datetime">要转的时间点</param>
         /// <returns></returns>
         public static DateTime LastMonthStart(this DateTime datetime) => datetime.AddMonths(-1).MonthStart();
+        #endregion
+
+        #region 将DateTime转成上个月月末当天23时59分59秒 + LastMonthEnd(this DateTime datetime)
+        /// <summary>
+        /// 将DateTime转成上个月月末当天23时59分59秒
+        /// </summary>
+        /// <param name="datetime">要转的时间点</param>
+        /// <returns></returns>
+        public static DateTime LastMonthEnd(this DateTime datetime) => datetime.MonthStart().AddSeconds(-1);
         #endregion
 
         #region 获取今天时间段，通常常用 Start ≥ X ＜ End + Today()

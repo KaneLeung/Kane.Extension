@@ -1,9 +1,8 @@
 ﻿// -----------------------------------------------------------------------------
 // 项目名称：Kane.Extension
 // 项目作者：Kane Leung
-// 项目版本：2.0.6
 // 源码地址：Gitee：https://gitee.com/KaneLeung/Kane.Extension 
-//         Github：https://github.com/KaneLeung/Kane.Extension 
+// 　　　　　Github：https://github.com/KaneLeung/Kane.Extension 
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
 
@@ -27,8 +26,13 @@ namespace Kane.Extension
         /// <para>【Static】：查找类型中的静态成员</para>
         /// <para>获取所有成员：BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance</para>
         /// <para>获取公有的实例成员：BindingFlags.Public | BindingFlags.Instance</para>
+        /// <para>获取非公有的实例成员：BindingFlags.NonPublic | BindingFlags.Instance</para>
         /// </summary>
-        internal const BindingFlags BINDING_FLAGS = BindingFlags.Public | BindingFlags.Instance;
+        internal const BindingFlags PUBLIC_BINDING_FLAGS = BindingFlags.Public | BindingFlags.Instance;
+        /// <summary>
+        /// 公开和非公开的，一般用于字段
+        /// </summary>
+        internal const BindingFlags BINDING_FLAGS = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
         #region 获取类所有成员的属性信息 + GetProps<TSource>(this TSource source)
         /// <summary>
@@ -36,7 +40,7 @@ namespace Kane.Extension
         /// </summary>
         /// <param name="source">反射对象</param>
         /// <returns>属性信息</returns>
-        public static PropertyInfo[] GetProps<TSource>(this TSource source) => source.GetType().GetProperties(BINDING_FLAGS);
+        public static PropertyInfo[] GetProps<TSource>(this TSource source) => source.GetType().GetProperties(PUBLIC_BINDING_FLAGS);
         #endregion
 
         #region 根据BindingFlags获取类指定成员的属性信息 + GetProps<TSource>(this TSource source, BindingFlags flags)
@@ -58,7 +62,7 @@ namespace Kane.Extension
         /// <param name="source">反射对象</param>
         /// <param name="name">成员名称</param>
         /// <returns></returns>
-        public static PropertyInfo GetProp<TSource>(this TSource source, string name) => source.GetType().GetProperty(name, BINDING_FLAGS);
+        public static PropertyInfo GetProp<TSource>(this TSource source, string name) => source.GetType().GetProperty(name, PUBLIC_BINDING_FLAGS);
         #endregion
 
         #region 检测对象是否包含指定【属性】 + HasProp<TSource>(this TSource source, string name)
@@ -69,7 +73,7 @@ namespace Kane.Extension
         /// <param name="source">要检测对象</param>
         /// <param name="name">属性名</param>
         /// <returns></returns>
-        public static bool HasProp<TSource>(this TSource source, string name) => source.GetType().GetProperty(name, BINDING_FLAGS) != null;
+        public static bool HasProp<TSource>(this TSource source, string name) => source.GetType().GetProperty(name, PUBLIC_BINDING_FLAGS) != null;
         #endregion
 
         #region 通过反射，根据属性名获取属性值，失败返回TResult的默认值 + GetPropValue<TSource, TResult>(this TSource source, string name)

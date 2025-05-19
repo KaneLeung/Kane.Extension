@@ -1,9 +1,8 @@
 ﻿// -----------------------------------------------------------------------------
 // 项目名称：Kane.Extension
 // 项目作者：Kane Leung
-// 项目版本：2.0.6
 // 源码地址：Gitee：https://gitee.com/KaneLeung/Kane.Extension 
-//         Github：https://github.com/KaneLeung/Kane.Extension 
+// 　　　　　Github：https://github.com/KaneLeung/Kane.Extension 
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
 
@@ -33,7 +32,7 @@ namespace Kane.Extension
         public byte[] Md5Bytes(byte[] data)
         {
 #if NET6_0_OR_GREATER
-            using var md5  = MD5.Create();
+            using var md5 = MD5.Create();
 #else
             using var md5 = new MD5CryptoServiceProvider();
 #endif

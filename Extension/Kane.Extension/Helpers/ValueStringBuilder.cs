@@ -1,9 +1,8 @@
 ﻿// -----------------------------------------------------------------------------
 // 项目名称：Kane.Extension
 // 项目作者：Kane Leung
-// 项目版本：2.0.6
 // 源码地址：Gitee：https://gitee.com/KaneLeung/Kane.Extension 
-//         Github：https://github.com/KaneLeung/Kane.Extension 
+// 　　　　　Github：https://github.com/KaneLeung/Kane.Extension 
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
 
@@ -68,8 +67,8 @@ public ref struct ValueStringBuilder
             Debug.Assert(value <= _chars.Length);
             _pos = value;
         }
-    }  
-  
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -165,7 +164,7 @@ public ref struct ValueStringBuilder
     private void Grow(int additionalCapacityBeyondPos)
     {
         Debug.Assert(additionalCapacityBeyondPos > 0);
-        Debug.Assert(_pos > _chars.Length - additionalCapacityBeyondPos,"Grow called incorrectly, no resize is needed.");
+        Debug.Assert(_pos > _chars.Length - additionalCapacityBeyondPos, "Grow called incorrectly, no resize is needed.");
 
         // 同样也是2倍扩容，默认从对象池中获取buffer  
         char[] poolArray = ArrayPool<char>.Shared.Rent((int)Math.Max((uint)(_pos + additionalCapacityBeyondPos),

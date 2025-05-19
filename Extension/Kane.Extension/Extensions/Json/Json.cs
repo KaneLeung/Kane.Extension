@@ -1,18 +1,17 @@
 ﻿// -----------------------------------------------------------------------------
 // 项目名称：Kane.Extension
 // 项目作者：Kane Leung
-// 项目版本：2.0.6
 // 源码地址：Gitee：https://gitee.com/KaneLeung/Kane.Extension 
-//         Github：https://github.com/KaneLeung/Kane.Extension 
+// 　　　　　Github：https://github.com/KaneLeung/Kane.Extension 
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
 
 #if NET6_0_OR_GREATER
-using System.Text.Json;
-using System.Text.Unicode;
 using System.Collections.Generic;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace Kane.Extension.Json
 {

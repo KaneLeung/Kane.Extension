@@ -1,9 +1,8 @@
 ﻿// -----------------------------------------------------------------------------
 // 项目名称：Kane.Extension
 // 项目作者：Kane Leung
-// 项目版本：2.0.6
 // 源码地址：Gitee：https://gitee.com/KaneLeung/Kane.Extension 
-//         Github：https://github.com/KaneLeung/Kane.Extension 
+// 　　　　　Github：https://github.com/KaneLeung/Kane.Extension 
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
 
@@ -439,6 +438,86 @@ namespace Kane.Extension
                 else return $"{value.Substring(0, length)}{suffix}";
             }
             return value;
+        }
+        #endregion
+
+        #region 字符串以字符(默认是逗号)分割，并转成List<int>集合 + SplitToInts(this string value, char separator = ',')
+        /// <summary>
+        /// 字符串以字符(默认是逗号)分割，并转成List&lt;int&gt;集合
+        /// </summary>
+        /// <param name="value">原字符串</param>
+        /// <param name="separator">分割的字符</param>
+        /// <returns></returns>
+        public static List<int> SplitToInts(this string value, char separator = ',')
+        {
+            var result = new List<int>();
+            if (string.IsNullOrWhiteSpace(value)) return result;
+            string[] array = value.Split([separator], options: StringSplitOptions.RemoveEmptyEntries);
+            foreach (string item in array)
+            {
+                if (int.TryParse(item.Trim(), out int intValue)) result.Add(intValue);
+            }
+            return result;
+        }
+        #endregion
+
+        #region 字符串以字符串(默认是逗号)分割，并转成List<int>集合 + SplitToInts(this string value, string separator = ",")
+        /// <summary>
+        /// 字符串以字符串(默认是逗号)分割，并转成List&lt;int&gt;集合
+        /// </summary>
+        /// <param name="value">原字符串</param>
+        /// <param name="separator">分割的字符</param>
+        /// <returns></returns>
+        public static List<int> SplitToInts(this string value, string separator = ",")
+        {
+            var result = new List<int>();
+            if (string.IsNullOrWhiteSpace(value)) return result;
+            string[] array = value.Split([separator], options: StringSplitOptions.RemoveEmptyEntries);
+            foreach (string item in array)
+            {
+                if (int.TryParse(item.Trim(), out int intValue)) result.Add(intValue);
+            }
+            return result;
+        }
+        #endregion
+
+        #region 字符串以字符(默认是逗号)分割，并转成List<long>集合 + SplitToLongs(this string value, char separator = ',')
+        /// <summary>
+        /// 字符串以字符(默认是逗号)分割，并转成List&lt;long&gt;集合
+        /// </summary>
+        /// <param name="value">原字符串</param>
+        /// <param name="separator">分割的字符</param>
+        /// <returns></returns>
+        public static List<long> SplitToLongs(this string value, char separator = ',')
+        {
+            var result = new List<long>();
+            if (string.IsNullOrWhiteSpace(value)) return result;
+            string[] array = value.Split([separator], options: StringSplitOptions.RemoveEmptyEntries);
+            foreach (string item in array)
+            {
+                if (long.TryParse(item.Trim(), out long intValue)) result.Add(intValue);
+            }
+            return result;
+        }
+        #endregion
+
+        #region 字符串以字符串(默认是逗号)分割，并转成List<long>集合 + SplitToLongs(this string value, string separator = ",")
+        /// <summary>
+        /// 字符串以字符串(默认是逗号)分割，并转成List&lt;long&gt;集合
+        /// </summary>
+        /// <param name="value">原字符串</param>
+        /// <param name="separator">分割的字符</param>
+        /// <returns></returns>
+        public static List<long> SplitToLongs(this string value, string separator = ",")
+        {
+            var result = new List<long>();
+            if (string.IsNullOrWhiteSpace(value)) return result;
+            string[] array = value.Split([separator], options: StringSplitOptions.RemoveEmptyEntries);
+            foreach (string item in array)
+            {
+                if (long.TryParse(item.Trim(), out long intValue)) result.Add(intValue);
+            }
+            return result;
         }
         #endregion
     }
