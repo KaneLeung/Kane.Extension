@@ -50,5 +50,19 @@ namespace ExtensionTest
             Assert.AreEqual(DateTimeExtension.Min(nullableMax2, nullableMin2, nullableMid2), nullableMin2);
             Assert.AreEqual(DateTimeExtension.Min(nullableMax2, nullableMid2, nullableMin2), nullableMin2);
         }
+
+        [TestMethod]
+        public void TestDateTimeEnd()
+        {
+            var now = new DateTime(2025, 5, 20, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+
+            Assert.AreEqual(new DateTime(2025, 5, 19, 23, 59, 59), now.LastDayEnd());
+            Assert.AreEqual(new DateTime(2025, 5, 20, 23, 59, 59), now.DayEnd());
+            Assert.AreEqual(new DateTime(2025, 5, 21, 23, 59, 59), now.NextDayEnd());
+
+            Assert.AreEqual(new DateTime(2025, 4, 30, 23, 59, 59), now.LastMonthEnd());
+            Assert.AreEqual(new DateTime(2025, 5, 31, 23, 59, 59), now.MonthEnd());
+            Assert.AreEqual(new DateTime(2025, 6, 30, 23, 59, 59), now.NextMonthEnd());
+        }
     }
 }

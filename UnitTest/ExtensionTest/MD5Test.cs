@@ -1,5 +1,4 @@
 ﻿using Kane.Extension;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ExtensionTest
 {

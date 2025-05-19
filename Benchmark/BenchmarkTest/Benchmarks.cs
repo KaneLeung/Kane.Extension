@@ -1,8 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BenchmarkTest
 {
