@@ -5,7 +5,7 @@
 // 　　　　　Github：https://github.com/KaneLeung/Kane.Extension 
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
-
+#if NETFRAMEWORK
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,11 +13,7 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text;
-#if NET6_0_OR_GREATER
-using Kane.Extension.Json;
-#else
 using Kane.Extension.JsonNet;
-#endif
 
 namespace Kane.Extension
 {
@@ -27,10 +23,10 @@ namespace Kane.Extension
     public class CaptchaHelper
     {
         private readonly Random random = new();
-        private readonly char[] operators = new char[] { '+', '*', '-', '/' };
-#if NETFRAMEWORK
+        private readonly char[] operators = ['+', '*', '-', '/'];
+
         private CaptchaMode currentMode;
-#endif
+
 
         #region 无参构造函数 + CaptchaHelper()
         /// <summary>
@@ -129,7 +125,6 @@ namespace Kane.Extension
         /// </summary>
         public (bool XDirection, double MultValue, double Phase) TwistSetting { get; set; } = (false, 5, 2);
 
-#if NETFRAMEWORK
         #region 生成验证码，返回图片和图片对应该的字符串 + GetCaptcha(string code = null)
         /// <summary>
         /// 生成验证码，返回图片和图片对应该的字符串
@@ -176,7 +171,7 @@ namespace Kane.Extension
             var width = code.Length * FontSize * (hasChinese ? 2 : 1);//如果是中文或题库，则乘二
             var height = Convert.ToInt32(0.6 * FontSize + FontSize);
             Bitmap bitmap = new(width, height);
-            using Graphics graphics = Graphics.FromImage(bitmap);
+            using var graphics = Graphics.FromImage(bitmap);
             graphics.SmoothingMode = SmoothingMode.HighQuality;
             var backgroundColor = RandomBackgroundColor ? UseDarkMode ? ImageExtension.RandomDarkColor() : ImageExtension.RandomLightColor() : BackgroundColor;
             graphics.Clear(backgroundColor);//设置背景色
@@ -224,7 +219,7 @@ namespace Kane.Extension
             return (bitmap, result);
         }
         #endregion
-#endif
+
 
         #region 生成随机字母和数字的字符串 + RandomCode(CaptchaMode mode, int length)
         /// <summary>
@@ -236,9 +231,9 @@ namespace Kane.Extension
         private string RandomCode(CaptchaMode mode, int length)
         {
             var charList = new List<char>();
-            if (mode == CaptchaMode.Letter) charList.AddRange(new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' });//去掉【I】和【l】这两个相似的
-            if (mode == CaptchaMode.Numeric) charList.AddRange(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
-            if (mode == CaptchaMode.LetterAndNumeric) charList.AddRange(new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '2', '3', '4', '5', '6', '7', '8', '9' });//去掉【I】、【l】、【0】、【1】、【o】、【O】这几个相似的
+            if (mode == CaptchaMode.Letter) charList.AddRange(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);//去掉【I】和【l】这两个相似的
+            if (mode == CaptchaMode.Numeric) charList.AddRange(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']);
+            if (mode == CaptchaMode.LetterAndNumeric) charList.AddRange(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '2', '3', '4', '5', '6', '7', '8', '9']);//去掉【I】、【l】、【0】、【1】、【o】、【O】这几个相似的
             StringBuilder result = new();
             int charCount = charList.Count;
             for (int i = 0; i < length; i++)
@@ -254,37 +249,38 @@ namespace Kane.Extension
         /// <returns></returns>
         public KeyValuePair<string, int> Arithmetic()
         {
-            var oper = operators[random.Next(operators.Length)];
+            char oper = operators[random.Next(operators.Length)];
             if (oper == '+')//加法
             {
-                var left = random.Next(0, 101);
-                var right = left >= 10 ? random.Next(0, 11) : random.Next(0, 101);
+                int left = random.Next(0, 101);
+                int right = left >= 10 ? random.Next(0, 11) : random.Next(0, 101);
                 return new KeyValuePair<string, int>($"{left}+{right}=?", left + right);
             }
             else if (oper == '-')//减法
             {
-                var left = random.Next(0, 101);
-                var right = left > 10 ? random.Next(0, 11) : random.Next(0, 101);
+                int left = random.Next(0, 101);
+                int right = left > 10 ? random.Next(0, 11) : random.Next(0, 101);
                 if (right > left)//如果右边比左边大，则交换两数，避免结果出现负数
                 {
-                    int temp = left; left = right; right = temp;
+                    (right, left) = (left, right);
                 }
                 return new KeyValuePair<string, int>($"{left}-{right}=?", left - right);
             }
             else if (oper == '*')//乘法
             {
-                var left = random.Next(0, 11);
-                var right = left == 0 || left == 10 ? random.Next(0, 101) : random.Next(0, 11);
+                int left = random.Next(0, 11);
+                int right = left == 0 || left == 10 ? random.Next(0, 101) : random.Next(0, 11);
                 return new KeyValuePair<string, int>($"{left}×{right}=?", left * right);
             }
             else//除法
             {
-                var left = random.Next(0, 11);
-                var right = left == 0 ? random.Next(1, 11) : random.Next(0, 11);//避免两数中有【零】存在
-                var result = left * right;
+                int left = random.Next(0, 11);
+                int right = left == 0 ? random.Next(1, 11) : random.Next(0, 11);//避免两数中有【零】存在
+                int result = left * right;
                 return new KeyValuePair<string, int>($"{result}÷{(left > right ? left : right)}=?", left > right ? right : left);
             }
         }
         #endregion
     }
 }
+#endif

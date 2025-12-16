@@ -8,7 +8,9 @@
 
 using System;
 using System.Collections.Generic;
+#if NETFRAMEWORK
 using System.Drawing;
+#endif
 using System.Linq;
 using System.Net;
 using System.Text;

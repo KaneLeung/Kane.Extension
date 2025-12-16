@@ -5,12 +5,14 @@
 // 　　　　　Github：https://github.com/KaneLeung/Kane.Extension 
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
-
+#if NETFRAMEWORK || NET
 using System;
 using System.Collections.Generic;
+#if NETFRAMEWORK
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+#endif
 using System.IO;
 using System.Linq;
 
@@ -313,3 +315,4 @@ namespace Kane.Extension
 #endif
     }
 }
+#endif

@@ -27,7 +27,7 @@ namespace Kane.Extension
         public byte[] Compress(byte[] data, CompressMode mode)
         {
             if (mode == CompressMode.None) return data;
-            using MemoryStream inputStream = new MemoryStream(data);
+            using var inputStream = new MemoryStream(data);
             using var outputStream = new MemoryStream();
             if (mode == CompressMode.Deflate)
             {
@@ -61,7 +61,7 @@ namespace Kane.Extension
         {
             if (mode == CompressMode.None) return data;
             data.Seek(0, SeekOrigin.Begin);
-            MemoryStream outputStream = new MemoryStream();
+            var outputStream = new MemoryStream();
             if (mode == CompressMode.Deflate)
             {
                 using var compressor = new DeflateStream(outputStream, CompressionMode.Compress, true);
@@ -145,7 +145,7 @@ namespace Kane.Extension
         public byte[] DeCompress(byte[] data, CompressMode mode)
         {
             if (mode == CompressMode.None) return data;
-            using MemoryStream inputStream = new MemoryStream(data);
+            using var inputStream = new MemoryStream(data);
             using var outputStream = new MemoryStream();
             if (mode == CompressMode.Deflate)
             {

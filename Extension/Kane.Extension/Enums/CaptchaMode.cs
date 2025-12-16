@@ -5,7 +5,7 @@
 // 　　　　　Github：https://github.com/KaneLeung/Kane.Extension 
 // 开源协议：MIT（https://raw.githubusercontent.com/KaneLeung/Kane.Extension/master/LICENSE）
 // -----------------------------------------------------------------------------
-
+#if NETFRAMEWORK
 using System;
 
 namespace Kane.Extension
@@ -46,3 +46,4 @@ namespace Kane.Extension
         QuestionBank = 64,
     }
 }
+#endif

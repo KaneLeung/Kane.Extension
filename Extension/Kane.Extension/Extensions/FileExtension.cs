@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Kane.Extension
@@ -64,6 +65,24 @@ namespace Kane.Extension
         {
             char[] forbidChars = { '\\', '/', ':', '*', '?', '"', '<', '>', '|' };
             return filename.IndexOfAny(forbidChars) == -1;
+        }
+        #endregion
+
+        #region 转成Window文件命名规范 + SafeFileName(string filename)
+        /// <summary>
+        /// 转成Window文件命名规范
+        /// </summary>
+        /// <param name="filename">文件名</param>
+        /// <param name="extLen">扩展文件名长度</param>
+        /// <param name="replacement">替换文本，默认移除</param>
+        /// <returns></returns>
+        public static string SafeFileName(string filename, int extLen = 3, string replacement = "")
+        {
+            if (string.IsNullOrWhiteSpace(filename)) return filename;
+            filename = Regex.Replace(filename, @"[\\/:*?""<>|\x00-\x1F]", replacement);
+            var maxLen = 255 - extLen;
+            if (filename.Length > maxLen) filename = filename.Substring(0, maxLen);
+            return filename;
         }
         #endregion
 

@@ -106,7 +106,7 @@ namespace Kane.Extension
         /// <returns></returns>
         public static IEnumerable<string> Matches(this string value, string pattern)
         {
-            if (value.IsNullOrEmpty()) return new string[] { };
+            if (value.IsNullOrEmpty()) return [];
             MatchCollection matches = Regex.Matches(value, pattern, RegexOptions.Compiled);
             return from Match match in matches select match.Value;
         }

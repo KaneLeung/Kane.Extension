@@ -15,7 +15,7 @@ namespace Kane.Extension
 {
     /// <summary>
     /// Linq扩展类
-    /// <para>https://docs.microsoft.com/zh-cn/dotnet/api/system.linq.queryable?view=netcore-3.1</para>
+    /// <para>https://learn.microsoft.com/zh-cn/dotnet/api/system.linq.queryable?view=net-10.0</para>
     /// </summary>
     public static class LinqExtension
     {
@@ -159,7 +159,7 @@ namespace Kane.Extension
             var pi = typeof(TSource).GetProperty(property);
             var selector = Expression.MakeMemberAccess(param, pi);
             var exp = Expression.Lambda(selector, param);
-            var resultExp = Expression.Call(typeof(Queryable), methodName, new Type[] { typeof(TSource), pi.PropertyType }, source.Expression, exp);
+            var resultExp = Expression.Call(typeof(Queryable), methodName, [typeof(TSource), pi.PropertyType], source.Expression, exp);
             return source.Provider.CreateQuery<TSource>(resultExp);
         }
         #endregion

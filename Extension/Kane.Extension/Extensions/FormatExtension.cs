@@ -184,9 +184,9 @@ namespace Kane.Extension
         }
         #endregion
 
-        #region 检测字符串是否为中国国内手机号码段，数据更新日期【2024-05-21】 + IsMobilePhone(string value)
+        #region 检测字符串是否为中国国内手机号码段，数据更新日期【2025-12-02】 + IsMobilePhone(string value)
         /// <summary>
-        /// 检测字符串是否为中国国内手机号码段，数据更新日期【2024-05-21】
+        /// 检测字符串是否为中国国内手机号码段，数据更新日期【2025-12-02】
         /// <para>【资料来源】https://baike.baidu.com/item/手机号码 </para>
         /// </summary>
         /// <param name="value">要检测的字符串</param>
@@ -200,7 +200,7 @@ namespace Kane.Extension
                 string[] ChinaTelecomPrefix = "133、149、153、173、177、180、181、189、190、191、193、199".Split('、');
                 string[] ChinaUnicomPrefix = "130、131、132、145、155、156、166、167、171、175、176、185、186、196".Split('、');
                 string[] ChinaMobilePrefix = "134(0-8)、135、136、137、138、139、1440、147、148、150、151、152、157、158、159、172、178、182、183、184、187、188、195、197、198".Split('、');
-                string[] ChinaBroadcstPrefix = new[] { "192" };
+                string[] ChinaBroadcstPrefix = ["192"];
                 string[] ChinaTelecomVirtualPrefix = "1700、1701、1702、162".Split('、');
                 string[] ChinaMobileVirtualPrefix = "1703、1705、1706、165".Split('、');
                 string[] ChinaUnicomVirtualPrefix = "1704、1707、1708、1709、171、167".Split('、');
@@ -224,9 +224,9 @@ namespace Kane.Extension
         }
         #endregion
 
-        #region 使用正则检测字符串是否为中国国内手机号码段，数据更新日期【2024-05-21】 + IsRealMobilePhoneRegex(string value)
+        #region 使用正则检测字符串是否为中国国内手机号码段，数据更新日期【2025-12-02】 + IsRealMobilePhoneRegex(string value)
         /// <summary>
-        /// 使用正则检测字符串是否为中国国内手机号码段，数据更新日期【2024-05-21】
+        /// 使用正则检测字符串是否为中国国内手机号码段，数据更新日期【2025-12-02】
         /// <para>【资料来源】https://baike.baidu.com/item/手机号码 </para>
         /// </summary>
         /// <param name="value">要检测的字符串</param>

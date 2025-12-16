@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net46;net47;net48;net6.0;net8.0;net9.0;</TargetFrameworks>
-    <!--https://learn.microsoft.com/zh-cn/dotnet/csharp/whats-new/csharp-13-->
-    <LangVersion>13.0</LangVersion>
+    <TargetFrameworks>net46;net47;net48;netstandard2.0;netstandard2.1;net6.0;net8.0;net9.0;net10.0;</TargetFrameworks>
+    <!--https://learn.microsoft.com/zh-cn/dotnet/csharp/whats-new/csharp-14-->
+    <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Kane.Extension.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -17,9 +17,9 @@
     <RepositoryType>Git</RepositoryType>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>包含常用的基本扩展，具体请看源码</Description>
-    <Version>2.0.7</Version>
-    <AssemblyVersion>2.0.7.0</AssemblyVersion>
-    <FileVersion>2.0.7.0</FileVersion>
+    <Version>2.0.8</Version>
+    <AssemblyVersion>2.0.8.0</AssemblyVersion>
+    <FileVersion>2.0.8.0</FileVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageIcon>ProjectIcon.png</PackageIcon>
     <IncludeSymbols>true</IncludeSymbols>
@@ -28,12 +28,9 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+	<!--通用-->
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net8.0' OR '$(TargetFramework)' == 'net9.0'">
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net46'">
@@ -57,6 +54,14 @@
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Web.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'netstandard2.1'">
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net8.0' OR '$(TargetFramework)' == 'net9.0' OR '$(TargetFramework)' == 'net10.0'">
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.1" />
+	</ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\LICENSE">

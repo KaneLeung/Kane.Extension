@@ -192,6 +192,16 @@ namespace Kane.Extension
         public static bool ToBool(this string value) => BoolFormats.Any(k => k.Equals(value, StringComparison.OrdinalIgnoreCase));
         #endregion
 
+        #region 将字符串转换为可空Bool类型，默认包含【true】【1】【ok】【yes】【enable】【是】【真】【可以】 + ToNBool(this string value)
+        /// <summary>
+        /// 将字符串转换为可空Bool类型
+        /// <para>默认包含【true】【1】【ok】【yes】【enable】【是】【真】【可以】</para>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool? ToNBool(this string value) => string.IsNullOrEmpty(value) ? null : BoolFormats.Any(k => k.Equals(value, StringComparison.OrdinalIgnoreCase));
+        #endregion
+
         #region 判断两个字符串是否相同，忽略大小写 + EqualsIgnoreCase(this string str1, string str2)
         /// <summary>
         /// 判断两个字符串是否相同，忽略大小写

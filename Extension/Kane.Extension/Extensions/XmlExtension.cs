@@ -99,10 +99,10 @@ namespace Kane.Extension
                 Indent = true,//为True时，换行，缩进
                 Encoding = Encoding.UTF8//默认为UTF8编码
             };
-            using MemoryStream stream = new MemoryStream();
-            using (XmlWriter xmlWriter = XmlWriter.Create(stream, settings))
+            using var stream = new MemoryStream();
+            using (var xmlWriter = XmlWriter.Create(stream, settings))
             {
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                var ns = new XmlSerializerNamespaces();
                 if (removeNamespace) ns.Add(string.Empty, string.Empty);//去除默认命名空间xmlns:xsd和xmlns:xsi
                 new XmlSerializer(typeof(T)).Serialize(xmlWriter, value, ns);//序列化对象
             }
@@ -121,10 +121,10 @@ namespace Kane.Extension
         /// <returns></returns>
         public static byte[] ToXmlBytes<T>(this T value, IEnumerable<KeyValuePair<string, string>> namespaces, XmlWriterSettings settings = null) where T : class, new()
         {
-            using MemoryStream stream = new MemoryStream();
-            using (XmlWriter xmlWriter = settings == null ? XmlWriter.Create(stream) : XmlWriter.Create(stream, settings))
+            using var stream = new MemoryStream();
+            using (var xmlWriter = settings == null ? XmlWriter.Create(stream) : XmlWriter.Create(stream, settings))
             {
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                var ns = new XmlSerializerNamespaces();
                 if (namespaces?.Count() > 0)
                 {
                     foreach (var item in namespaces)

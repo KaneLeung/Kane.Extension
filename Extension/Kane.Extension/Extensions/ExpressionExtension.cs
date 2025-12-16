@@ -30,8 +30,8 @@ namespace Kane.Extension
         /// <returns>属性的值</returns>
         public static TResult GetPropValueExp<TSource, TResult>(this TSource source, string name)
         {
-            Type type = source.GetType();
-            PropertyInfo info = type.GetProperty(name);
+            var type = source.GetType();
+            var info = type.GetProperty(name);
             if (info == null) return default;
             var sourceParaExp = Expression.Parameter(type);
             var resultParaExp = Expression.Parameter(typeof(TResult));
@@ -55,8 +55,8 @@ namespace Kane.Extension
         /// <returns>是否设置成功</returns>
         public static bool SetPropValueExp<TSource, TValue>(this TSource source, string name, TValue value)
         {
-            Type type = source.GetType();
-            PropertyInfo info = type.GetProperty(name);
+            var type = source.GetType();
+            var info = type.GetProperty(name);
             if (info == null) return false;
             var sourceParaExp = Expression.Parameter(type);
             var valueParaExp = Expression.Parameter(typeof(TValue));

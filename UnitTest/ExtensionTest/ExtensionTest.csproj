@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net46;net47;net48;net6.0;net8.0;net9.0;</TargetFrameworks>
+    <TargetFrameworks>net46;net47;net48;netstandard2.0;netstandard2.1;net6.0;net8.0;net9.0;net10.0;</TargetFrameworks>
     <!--https://learn.microsoft.com/zh-cn/dotnet/csharp/whats-new/csharp-13-->
-    <LangVersion>13.0</LangVersion>
+		<LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>

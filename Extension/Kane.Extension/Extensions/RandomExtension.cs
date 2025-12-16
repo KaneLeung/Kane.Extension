@@ -38,15 +38,15 @@ namespace Kane.Extension
         {
             var charList = new List<char>();
             if (mode.HasFlag(RandomMode.All) || mode.HasFlag(RandomMode.Numeric))
-                charList.AddRange(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
+                charList.AddRange(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']);
             if (mode.HasFlag(RandomMode.All) || mode.HasFlag(RandomMode.Letter) || mode.HasFlag(RandomMode.Lowercase))
-                charList.AddRange(new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' });
+                charList.AddRange(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']);
             if (mode.HasFlag(RandomMode.All) || mode.HasFlag(RandomMode.Letter) || mode.HasFlag(RandomMode.Uppercase))
-                charList.AddRange(new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' });
+                charList.AddRange(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
             if (mode.HasFlag(RandomMode.All) || mode.HasFlag(RandomMode.Punctuation))
-                charList.AddRange(new char[] { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '~', '`', '|', '}', '{', '[', ']', '\\', ':', ';', '?', '>', '<', ',', '.', '/', '-', '=' });
+                charList.AddRange(['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '~', '`', '|', '}', '{', '[', ']', '\\', ':', ';', '?', '>', '<', ',', '.', '/', '-', '=']);
             if (exceptChar.Length > 0) charList = charList.Except(exceptChar).ToList();
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             int charCount = charList.Count;
             for (int i = 0; i < length; i++)
                 result.Append(charList[random.Next(0, charCount)]);
@@ -96,7 +96,7 @@ namespace Kane.Extension
         /// <returns></returns>
         public static string RandomChinese(int length)
         {
-            var chars = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };//汉字编码的组成元素，十六进制数
+            char[] chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];//汉字编码的组成元素，十六进制数
             var result = new StringBuilder();
             //每循环一次产生一个含两个元素的十六进制字节数组，并放入bytes数组中
             //汉字由四个区位码组成，1、2位作为字节数组的第一个元素，3、4位作为第二个元素
@@ -107,9 +107,9 @@ namespace Kane.Extension
                 int index3 = random.Next(10, 16);
                 int index4 = index3 == 10 ? random.Next(1, 16) : (index3 == 15 ? random.Next(0, 15) : random.Next(0, 16));
                 //定义两个字节变量存储产生的随机汉字区位码
-                byte prefix = Convert.ToByte(new string(new char[] { chars[index1], chars[index2] }), 16);
-                byte postfix = Convert.ToByte(new string(new char[] { chars[index3], chars[index4] }), 16);
-                result.Append(Encoding.GetEncoding("GB2312").GetString(new byte[] { prefix, postfix }));
+                byte prefix = Convert.ToByte(new string([chars[index1], chars[index2]]), 16);
+                byte postfix = Convert.ToByte(new string([chars[index3], chars[index4]]), 16);
+                result.Append(Encoding.GetEncoding("GB2312").GetString([prefix, postfix]));
             }
             return result.ToString();
         }

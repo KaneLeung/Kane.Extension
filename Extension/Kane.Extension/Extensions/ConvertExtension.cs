@@ -31,7 +31,7 @@ namespace Kane.Extension
         {
             if (string.IsNullOrEmpty(value)) return returnValue;
             if (value.Contains('.')) value = value.Split('.')[0];
-            short.TryParse(value, out returnValue);
+            _ = short.TryParse(value, out returnValue);
             return returnValue;
         }
         #endregion
@@ -64,7 +64,7 @@ namespace Kane.Extension
         {
             if (string.IsNullOrEmpty(value)) return returnValue;
             if (value.Contains('.')) value = value.Split('.')[0];
-            int.TryParse(value, out returnValue);
+            _ = int.TryParse(value, out returnValue);
             return returnValue;
         }
         #endregion
@@ -97,7 +97,7 @@ namespace Kane.Extension
         {
             if (string.IsNullOrEmpty(value)) return returnValue;
             if (value.Contains('.')) value = value.Split('.')[0];
-            long.TryParse(value, out returnValue);
+            _ = long.TryParse(value, out returnValue);
             return returnValue;
         }
         #endregion
@@ -128,7 +128,7 @@ namespace Kane.Extension
         public static float ToFloat(this string value, float returnValue = 0)
         {
             if (string.IsNullOrEmpty(value)) return returnValue;
-            float.TryParse(value, out returnValue);
+            _ = float.TryParse(value, out returnValue);
             return returnValue;
         }
         #endregion
@@ -157,7 +157,7 @@ namespace Kane.Extension
         public static double ToDouble(this string value, double returnValue = 0)
         {
             if (string.IsNullOrEmpty(value)) return returnValue;
-            double.TryParse(value, out returnValue);
+            _ = double.TryParse(value, out returnValue);
             return returnValue;
         }
         #endregion
@@ -186,7 +186,7 @@ namespace Kane.Extension
         public static decimal ToDec(this string value, decimal returnValue = 0)
         {
             if (string.IsNullOrEmpty(value)) return returnValue;
-            decimal.TryParse(value, out returnValue);
+            _ = decimal.TryParse(value, out returnValue);
             return returnValue;
         }
         #endregion
@@ -348,8 +348,8 @@ namespace Kane.Extension
         /// <summary>
         /// 全局日期转换格式
         /// </summary>
-        public static IEnumerable<string> GlobalFormats = new string[]
-        {
+        public static IEnumerable<string> GlobalFormats =
+        [
             "yyyy-MM-dd HH:mm:ss",
             "yyyyMMdd HH:mm:ss",
             "yyyy/MM/dd HH:mm:ss",
@@ -387,7 +387,7 @@ namespace Kane.Extension
             "yy-M-d",
             "yyMd",
             "yy/M/d"
-        };
+        ];
         #endregion
 
         #region 将字符串转换为可空的日期对象 + ToNDT(this string value, string format = "")
@@ -445,7 +445,7 @@ namespace Kane.Extension
         #region 字符串转换DateTime，可根据自定义格式转换，可设置失败后的返回值 + ToDT(this string value, string format, DateTime returnValue)
         /// <summary>
         /// 字符串转换DateTime，可根据自定义格式转换，可设置失败后的返回值
-        /// <para>https://docs.microsoft.com/zh-cn/dotnet/api/system.globalization.datetimeformatinfo?view=netcore-3.1</para>
+        /// <para>https://learn.microsoft.com/zh-cn/dotnet/api/system.globalization.datetimeformatinfo?view=net-10.0</para>
         /// </summary>
         /// <param name="value">要转的字符串</param>
         /// <param name="format">自定义转换格式</param>
