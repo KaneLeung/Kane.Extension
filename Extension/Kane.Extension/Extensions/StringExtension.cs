@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Kane.Extension
 {
@@ -528,6 +529,95 @@ namespace Kane.Extension
                 if (long.TryParse(item.Trim(), out long intValue)) result.Add(intValue);
             }
             return result;
+        }
+        #endregion
+
+
+        #region 将字符串转为帕斯卡命名法 + ToPascalCase(this string value)
+        /// <summary>
+        /// 将字符串转为帕斯卡命名法
+        /// </summary>
+        /// <param name="value">要转换的字符串</param>
+        /// <returns></returns>
+        public static string ToPascalCase(this string value)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            // 1. 任何非字母数字字符（作为原分隔符：-、_、空格等）[^a-zA-Z0-9]+
+            // 2. camelCase的单词边界：小写字母后紧跟大写字母的位置 (?<=[a-z])(?=[A-Z]) 
+            var words = Regex.Split(value, @"[^a-zA-Z0-9]+|(?<=[a-z])(?=[A-Z])").Where(e => string.IsNullOrEmpty(e) == false).ToArray();
+            // 将每个单词的首字母大写，其余字母小写，然后连接 
+            return string.Concat(words.Select(e => char.ToUpper(e[0]) + e.Substring(1).ToLower()));
+        }
+        #endregion
+
+        #region 将字符串转为骆驼命名法 + ToCamelCase(this string value)
+        /// <summary>
+        /// 将字符串转为骆驼命名法
+        /// </summary>
+        /// <param name="value">要转换的字符串</param>
+        /// <returns></returns>
+        public static string ToCamelCase(this string value)
+        {
+            // 先转换为PascalCase 
+            string pascalCase = ToPascalCase(value);
+            // 将PascalCase结果的首字母改为小写 
+            return pascalCase?.Length > 0 ? char.ToLower(pascalCase[0]) + pascalCase.Substring(1) : pascalCase;
+        }
+        #endregion
+
+        #region 将字符串转为蛇形命名 + ToSnakeCase(this string value, bool upperCase = false)
+        /// <summary>
+        /// 将字符串转为蛇形命名
+        /// </summary>
+        /// <param name="value">要转换的字符串</param>
+        /// <param name="upperCase">是否大写输出</param>
+        /// <returns></returns>
+        public static string ToSnakeCase(this string value, bool upperCase = false)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            // 统一分割逻辑：匹配任何非字母数字字符（作为原分隔符）或camelCase单词边界 
+            var words = Regex.Split(value, @"[^a-zA-Z0-9]+|(?<=[a-z])(?=[A-Z])").Where(e => string.IsNullOrEmpty(e) == false).ToArray();
+            return upperCase ? string.Join("_", words.Select(e => e.ToUpper())) : string.Join("_", words.Select(e => e.ToLower()));
+        }
+        #endregion
+
+        #region 将字符串转为烤串命名 + ToKebabCase(this string value, bool upperCase = false)
+        /// <summary>
+        /// 将字符串转为烤串命名
+        /// </summary>
+        /// <param name="value">要转换的字符串</param>
+        /// <param name="upperCase">是否大写输出</param>
+        /// <returns></returns>
+        public static string ToKebabCase(this string value, bool upperCase = false)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            // 逻辑与ToSnakeCase类似，但使用短横线作为分隔符 
+            var words = Regex.Split(value, @"[^a-zA-Z0-9]+|(?<=[a-z])(?=[A-Z])").Where(e => string.IsNullOrEmpty(e) == false).ToArray();
+            return upperCase ? string.Join("-", words.Select(e => e.ToUpper())) : string.Join("-", words.Select(e => e.ToLower()));
+        }
+        #endregion
+
+        #region 格式化字符串 + FormatString(this string value, FormatCase formatCase)
+        /// <summary>
+        /// 格式化字符串
+        /// </summary>
+        /// <param name="value">要转换的字符串</param>
+        /// <param name="formatCase">格式化方式</param>
+        /// <returns></returns>
+        public static string FormatString(this string value, FormatCase formatCase)
+        {
+            return formatCase switch
+            {
+                FormatCase.LowerCase => value?.ToLower(),
+                FormatCase.UpperCase => value?.ToUpper(),
+                FormatCase.PascalCase => value.ToPascalCase(),
+                FormatCase.CamelCase => value.ToCamelCase(),
+                FormatCase.SnakeCase => value.ToSnakeCase(),
+                FormatCase.UpperSnakeCase => value.ToSnakeCase(true),
+                FormatCase.KebabCase => value.ToKebabCase(),
+                FormatCase.UpperKebabCase => value.ToKebabCase(true),
+                _ => value
+            };
         }
         #endregion
     }
