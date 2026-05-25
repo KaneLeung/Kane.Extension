@@ -59,7 +59,7 @@ namespace Kane.Extension
         {
             var temp = ToXmlBytes(value, removeNamespace, removeVersion).BytesToString();
             if (!temp.StartsWith("<", StringComparison.OrdinalIgnoreCase))
-                return temp.Substring(1, temp.Length - 1);//写入器使用UTF8编码时，转换后第一个字符会出现一个不存在的符号，其十六进制为【0xEFBBBF】
+                return temp.Substring(1);//写入器使用UTF8编码时，转换后第一个字符会出现一个不存在的符号，其十六进制为【0xEFBBBF】
             return temp;
         }
         #endregion
@@ -77,7 +77,7 @@ namespace Kane.Extension
         {
             var temp = ToXmlBytes(value, namespaces, settings).BytesToString();
             if (!temp.StartsWith("<", StringComparison.OrdinalIgnoreCase))
-                return temp.Substring(1, temp.Length - 1);//写入器使用UTF8编码时，转换后第一个字符会出现一个不存在的符号，其十六进制为【0xEFBBBF】
+                return temp.Substring(1);//写入器使用UTF8编码时，转换后第一个字符会出现一个不存在的符号，其十六进制为【0xEFBBBF】
             return temp;
         }
         #endregion

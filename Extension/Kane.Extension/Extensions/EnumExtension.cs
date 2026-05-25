@@ -19,17 +19,34 @@ namespace Kane.Extension
     /// </summary>
     public static class EnumExtension
     {
-        #region 获取枚举值的描述特性 + Description(this Enum item, bool inherit = false)
+        #region 获取枚举值的描述特性 + Description(this Enum item, bool inherit = false, string separator = ",")
         /// <summary>
         /// 获取枚举值的描述特性，默认【不继承】
         /// </summary>
         /// <param name="item">该枚举的其中一个成员即可</param>
         /// <param name="inherit">是否继承</param>
+        /// <param name="separator">默认分割符","，组合值时有效</param>
         /// <returns></returns>
-        public static string Description(this Enum item, bool inherit = false)
+        public static string Description(this Enum item, bool inherit = false, string separator = ",")
         {
-            var fieldInfo = item.GetType().GetField(item.ToString());
-            var attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(fieldInfo, typeof(DescriptionAttribute), inherit);
+            var enumType = item.GetType();
+            if (enumType.GetCustomAttribute<FlagsAttribute>(inherit) == null) return GetDescription(item, enumType, inherit);
+            else
+            {
+                var descriptions = new List<string>();
+                foreach (Enum enumValue in Enum.GetValues(enumType))
+                {
+                    if (Convert.ToInt64(enumValue) == 0) continue;
+                    if (item.HasFlag(enumValue)) descriptions.Add(GetDescription(enumValue, enumType, inherit));
+                }
+                return descriptions.Count < 1 ? string.Empty : string.Join(separator, descriptions);
+            }
+        }
+
+        private static string GetDescription(Enum item, Type enumType, bool inherit)
+        {
+            var fieldInfo = enumType.GetField(item.ToString());
+            var attribute = Attribute.GetCustomAttribute(fieldInfo, typeof(DescriptionAttribute), inherit) as DescriptionAttribute;
             return attribute?.Description ?? string.Empty;
         }
         #endregion
@@ -47,8 +64,9 @@ namespace Kane.Extension
             var type = typeof(T);
             var fieldInfos = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.Default);
             var fieldInfo = fieldInfos.FirstOrDefault(k => k.GetCustomAttribute<DescriptionAttribute>(false)?.Description == description);
-            if (fieldInfo == null) throw new ArgumentNullException($"在枚举【{type.FullName}】中，未发现描述特性为【{description}】的枚举项。");
-            return (T)Enum.Parse(type, fieldInfo.Name);
+            return fieldInfo == null
+                ? throw new ArgumentNullException($"在枚举【{type.FullName}】中，未发现描述特性为【{description}】的枚举项。")
+                : (T)Enum.Parse(type, fieldInfo.Name);
         }
         #endregion
 #endif
